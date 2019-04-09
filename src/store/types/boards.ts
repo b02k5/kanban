@@ -1,12 +1,12 @@
 import { ADD_BOARD } from "../constants/boards";
 
-export type BoardsState = { [name: string]: BoardType };
+export type BoardsState = { [id: string]: BoardType };
 
 export interface BoardType {
   id: number;
   name: string;
   isOpen: boolean;
-  lists: [];
+  lists: {};
 }
 
 export interface AddBoardAction {
