@@ -6,11 +6,21 @@ const MainForm = styled.div``;
 const MainInput = styled.input``;
 const MainButton = styled.button``;
 
-export default (): JSX.Element => (
+interface IProps {
+  boardValue: string;
+  onAddBoard: () => void;
+  onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export default ({
+  boardValue,
+  onAddBoard,
+  onInputChange
+}: IProps): JSX.Element => (
   <Main>
     <MainForm>
-      <MainInput />
-      <MainButton>add board</MainButton>
+      <MainInput onChange={onInputChange} value={boardValue} />
+      <MainButton onClick={onAddBoard}>add board</MainButton>
     </MainForm>
   </Main>
 );
