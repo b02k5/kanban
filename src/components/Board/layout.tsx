@@ -18,6 +18,7 @@ const AddListButton = styled.button``;
 interface IProps {
   activeBoard: BoardType | undefined;
   listName: string;
+  lists: any;
   onAddList: () => void;
   onSetListName: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -26,18 +27,15 @@ export default ({
   activeBoard,
   listName,
   onSetListName,
-  onAddList
+  onAddList,
+  lists
 }: IProps) => (
   <Board>
     {activeBoard && (
       <Fragment>
         <BoardName>{activeBoard.name}</BoardName>
         <BoardList>
-          {/* {activeBoard.lists &&
-            [...activeBoard.lists].map(
-              list => window.console.log(list)
-              // <List key={list.id} list={list} />
-            )} */}
+          {[...lists].map(list => window.console.log(list))}
           <AddList>
             <AddListInput
               type="text"

@@ -1,4 +1,5 @@
 import { ADD_BOARD, ACTIVE_BOARD } from "../constants/boards";
+import { AddListAction } from "./lists";
 
 export type BoardsState = { [id: string]: BoardType };
 
@@ -6,7 +7,7 @@ export interface BoardType {
   id: number;
   name: string;
   isOpen: boolean;
-  lists: {};
+  lists: [];
 }
 
 export interface AddBoardAction {
@@ -22,4 +23,4 @@ export interface ActiveBoardAction {
   payload: number;
 }
 
-export type BoardAction = AddBoardAction | ActiveBoardAction;
+export type BoardAction = AddBoardAction | ActiveBoardAction | AddListAction;

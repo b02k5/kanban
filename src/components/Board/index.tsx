@@ -4,12 +4,20 @@ import { connect } from "react-redux";
 import { AppState } from "../../store";
 import { getActiveBoard } from "../../store/selectors/boards";
 import { BoardType } from "../../store/types/boards";
+import { addList } from "../../store/actions/lists";
+import { getLists } from "../../store/selectors/lists";
+import { IList } from "../../store/types/lists";
 
 interface IStateToProps {
   activeBoard: BoardType | undefined;
+  lists: IList[];
 }
 
-type Props = IStateToProps;
+interface IDispatchToProps {
+  addList: (boardId: number, listId: number, listName: string) => void;
+}
+
+type Props = IStateToProps & IDispatchToProps;
 
 class Board extends PureComponent<Props, any> {
   public state = {
@@ -27,6 +35,8 @@ class Board extends PureComponent<Props, any> {
       ? this.props.activeBoard.id
       : 0;
     const listId: number = new Date().getTime();
+
+    this.props.addList(boardId, listId, this.state.listName);
     this.state.listName !== "" &&
       this.setState({
         listName: ""
@@ -46,10 +56,15 @@ class Board extends PureComponent<Props, any> {
 }
 
 const mapStateToProps = (state: AppState): IStateToProps => ({
-  activeBoard: getActiveBoard(state.boards)
+  activeBoard: getActiveBoard(state.boards),
+  lists: getLists(state)
 });
+
+const mapDispatchToProps: IDispatchToProps = {
+  addList
+};
 
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Board);
