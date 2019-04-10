@@ -20,12 +20,17 @@ export const boards: Reducer<BoardsState, BoardAction> = (
       };
     }
     case boardConstants.ACTIVE_BOARD: {
-      return Object.keys(state).map(board => {
+      Object.keys(state).map(board => {
         state[board].id === action.payload
           ? (state[board].isOpen = true)
           : (state[board].isOpen = false);
-        return state[board];
       });
+      return {
+        ...state,
+        [action.payload]: {
+          ...state[action.payload]
+        }
+      };
     }
     default:
       return {

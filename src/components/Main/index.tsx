@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { AppState } from "../../store";
 import { BoardsState } from "../../store/types/boards";
 import { addBoard } from "../../store/actions/boards";
-import { getActiveBoard } from "../../store/selectors/boards";
+import { getBoards } from "../../store/selectors/boards";
 
 interface IStateToProps {
   boards: BoardsState;
@@ -53,7 +53,7 @@ class Main extends PureComponent<Props, IState> {
 }
 
 const mapStateToProps = (state: AppState): IStateToProps => ({
-  boards: getActiveBoard(state)
+  boards: getBoards(state)
 });
 
 const mapDispatchToProps: IDispatchToProps = {
