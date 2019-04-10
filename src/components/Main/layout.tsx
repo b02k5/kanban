@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { BoardsState } from "../../store/types/boards";
+import BoardLink from "../BoardLink";
 
 const Main = styled.main``;
 const MainForm = styled.div``;
@@ -24,7 +25,9 @@ export default ({
     <MainForm>
       <MainInput onChange={onInputChange} value={boardValue} />
       <MainButton onClick={onAddBoard}>add board</MainButton>
-      {Object.keys(boards).map(board => window.console.log(boards[board]))}
+      {Object.keys(boards).map(board => (
+        <BoardLink key={boards[board].id} board={boards[board]} />
+      ))}
     </MainForm>
   </Main>
 );

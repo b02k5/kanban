@@ -1,4 +1,4 @@
-import { ADD_BOARD } from "../constants/boards";
+import { ADD_BOARD, ACTIVE_BOARD } from "../constants/boards";
 
 export type BoardsState = { [id: string]: BoardType };
 
@@ -17,4 +17,9 @@ export interface AddBoardAction {
   };
 }
 
-export type BoardAction = AddBoardAction;
+export interface ActiveBoardAction {
+  type: ACTIVE_BOARD;
+  payload: number;
+}
+
+export type BoardAction = AddBoardAction | ActiveBoardAction;

@@ -1,5 +1,10 @@
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import { createLogger } from "redux-logger";
 import rootReducer from "./reducers";
 
+const logger = createLogger({
+  collapsed: true
+});
+
 export type AppState = ReturnType<typeof rootReducer>;
-export const store = createStore(rootReducer);
+export const store = createStore(rootReducer, applyMiddleware(logger));

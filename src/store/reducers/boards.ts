@@ -7,7 +7,7 @@ export const boards: Reducer<BoardsState, BoardAction> = (
   action
 ) => {
   switch (action.type) {
-    case boardConstants.ADD_BOARD:
+    case boardConstants.ADD_BOARD: {
       const { boardId, boardName } = action.payload;
       return {
         ...state,
@@ -18,6 +18,15 @@ export const boards: Reducer<BoardsState, BoardAction> = (
           lists: []
         }
       };
+    }
+    case boardConstants.ACTIVE_BOARD: {
+      return Object.keys(state).map(board => {
+        state[board].id === action.payload
+          ? (state[board].isOpen = true)
+          : (state[board].isOpen = false);
+        return state[board];
+      });
+    }
     default:
       return {
         ...state

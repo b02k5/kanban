@@ -1,4 +1,4 @@
-import { AddBoardAction } from "../types/boards";
+import { AddBoardAction, ActiveBoardAction } from "../types/boards";
 import { boardConstants } from "../constants/boards";
 
 export const addBoard = (
@@ -10,4 +10,9 @@ export const addBoard = (
     boardId,
     boardName
   }
+});
+
+export const activeBoard = (boardId: number): ActiveBoardAction => ({
+  type: boardConstants.ACTIVE_BOARD,
+  payload: boardId
 });
