@@ -4,23 +4,30 @@ import ListLayout from "./layout";
 import { IList } from "../../../store/types/lists";
 import { removeList, editListName } from "../../../store/actions/lists";
 import { addTask } from "../../../store/actions/tasks";
+import { AppState } from "../../../store";
+import { getTasks } from "../../../store/selectors/tasks";
+import { TaskType } from "../../../store/types/tasks";
 
 interface IProps {
   list: IList;
   boardId: number;
 }
 
+interface IStateToProps {
+  tasks: TaskType[];
+}
+
 interface IDispatchProps {
   removeList: (boardId: number, listId: number) => void;
   editListName: (listId: number, nameList: string) => void;
-  addTask: (boardId: number, listId: number, taskName: string) => void;
+  addTask: (listId: number, taskId: number, taskName: string) => void;
 }
 
 interface IState {
   taskName: string;
 }
 
-type Props = IProps & IDispatchProps;
+type Props = IProps & IStateToProps & IDispatchProps;
 
 class List extends PureComponent<Props, IState> {
   public state = {
@@ -40,12 +47,11 @@ class List extends PureComponent<Props, IState> {
     });
   };
 
-  public addTaskHandle = () => {
-    const { boardId } = this.props;
+  public addTaskHandle = (listId: number) => {
     const taskId: number = new Date().getTime();
 
     if (this.state.taskName !== "") {
-      this.props.addTask(boardId, taskId, this.state.taskName);
+      this.props.addTask(listId, taskId, this.state.taskName);
       this.setState({
         taskName: ""
       });
@@ -71,6 +77,10 @@ class List extends PureComponent<Props, IState> {
   }
 }
 
+const mapStateToProps = (state: AppState, ownProps: any): IStateToProps => ({
+  tasks: getTasks(state, ownProps.list.id)
+});
+
 const mapDispatchToProps: IDispatchProps = {
   removeList,
   editListName,
@@ -78,6 +88,6 @@ const mapDispatchToProps: IDispatchProps = {
 };
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(List);

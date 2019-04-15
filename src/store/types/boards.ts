@@ -1,6 +1,5 @@
 import { ADD_BOARD, ACTIVE_BOARD } from "../constants/boards";
 import { AddListAction, RemoveListAction } from "./lists";
-import { AddTaskAction } from "./tasks";
 
 export type BoardsState = { [id: string]: BoardType };
 
@@ -29,5 +28,4 @@ export type BoardAction =
   | AddBoardAction
   | ActiveBoardAction
   | AddListAction
-  | RemoveListAction
-  | AddTaskAction;
+  | RemoveListAction;

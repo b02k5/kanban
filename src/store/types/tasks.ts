@@ -10,7 +10,7 @@ export interface TaskType {
 export interface AddTaskAction {
   type: ADD_TASK;
   payload: {
-    boardId: number;
+    listId: number;
     taskId: number;
     taskName: string;
   };

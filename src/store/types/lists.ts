@@ -1,11 +1,12 @@
 import { ADD_LIST, REMOVE_LIST, EDIT_NAME_LIST } from "../constants/lists";
+import { AddTaskAction } from "../types/tasks";
 
 export type ListsState = { [listId: number]: IList };
 
 export interface IList {
   id: number;
   name: string;
-  tasks: [];
+  tasks: Array<number>;
 }
 
 export interface AddListAction {
@@ -26,11 +27,15 @@ export interface RemoveListAction {
 }
 
 export interface EditListNameAction {
-  type: EDIT_NAME_LIST,
+  type: EDIT_NAME_LIST;
   payload: {
-    listId: number
-    listName: string,
-  }
+    listId: number;
+    listName: string;
+  };
 }
 
-export type ListsAction = AddListAction | RemoveListAction | EditListNameAction;
+export type ListsAction =
+  | AddListAction
+  | RemoveListAction
+  | EditListNameAction
+  | AddTaskAction;

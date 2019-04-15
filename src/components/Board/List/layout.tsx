@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { IList } from "../../../store/types/lists";
+import Task from "../Task";
+import { TaskType } from "../../../store/types/tasks";
 
 const BoardListContent = styled.div`
   flex: 0 0 auto;
@@ -21,6 +23,7 @@ const BoardListAddItemButton = styled.button``;
 
 interface IProps {
   list: IList;
+  tasks: TaskType[];
   taskName: string;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveList: (listId: number) => void;
@@ -28,7 +31,7 @@ interface IProps {
     e: React.ChangeEvent<HTMLTextAreaElement>,
     listId: number
   ) => void;
-  onAddTask: () => void;
+  onAddTask: (listId: number) => void;
 }
 
 export default ({
@@ -37,7 +40,8 @@ export default ({
   onSetTaskName,
   onRemoveList,
   onEditNameList,
-  onAddTask
+  onAddTask,
+  tasks
 }: IProps): JSX.Element => (
   <BoardListContent>
     <BoardListHeader>
@@ -50,7 +54,11 @@ export default ({
       </BoardListButtonItem>
     </BoardListHeader>
     <BoardListTasks>
-      <BoardListItem>task</BoardListItem>
+      <BoardListItem>
+        {[...tasks].map(task => (
+          <Task key={task.id} task={task} />
+        ))}
+      </BoardListItem>
     </BoardListTasks>
     <BoardListFooter>
       <BoardListAddItemInput
@@ -58,7 +66,7 @@ export default ({
         onChange={onSetTaskName}
         value={taskName}
       />
-      <BoardListAddItemButton onClick={onAddTask}>
+      <BoardListAddItemButton onClick={() => onAddTask(list.id)}>
         Add another card
       </BoardListAddItemButton>
     </BoardListFooter>

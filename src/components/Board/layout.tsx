@@ -3,6 +3,7 @@ import styled from "styled-components";
 // import List from "./List";
 import { BoardType } from "../../store/types/boards";
 import List from "./List";
+import { IList } from "../../store/types/lists";
 
 const Board = styled.div``;
 const BoardName = styled.h1``;
@@ -19,7 +20,7 @@ const AddListButton = styled.button``;
 interface IProps {
   activeBoard: BoardType | undefined;
   listName: string;
-  lists: any;
+  lists: IList[];
   onAddList: () => void;
   onSetListName: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -31,24 +32,24 @@ export default ({
   onAddList,
   lists
 }: IProps) => (
-    <Board>
-      {activeBoard && (
-        <Fragment>
-          <BoardName>{activeBoard.name}</BoardName>
-          <BoardList>
-            {[...lists].map(list => (
-              <List key={list.id} list={list} boardId={activeBoard.id} />
-            ))}
-            <AddList>
-              <AddListInput
-                type="text"
-                value={listName}
-                onChange={onSetListName}
-              />
-              <AddListButton onClick={onAddList}>Add another list</AddListButton>
-            </AddList>
-          </BoardList>
-        </Fragment>
-      )}
-    </Board>
-  );
+  <Board>
+    {activeBoard && (
+      <Fragment>
+        <BoardName>{activeBoard.name}</BoardName>
+        <BoardList>
+          {[...lists].map(list => (
+            <List key={list.id} list={list} boardId={activeBoard.id} />
+          ))}
+          <AddList>
+            <AddListInput
+              type="text"
+              value={listName}
+              onChange={onSetListName}
+            />
+            <AddListButton onClick={onAddList}>Add another list</AddListButton>
+          </AddList>
+        </BoardList>
+      </Fragment>
+    )}
+  </Board>
+);
