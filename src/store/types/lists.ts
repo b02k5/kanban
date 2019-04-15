@@ -1,4 +1,4 @@
-import { ADD_LIST } from "../constants/lists";
+import { ADD_LIST, REMOVE_LIST } from "../constants/lists";
 
 export type ListsState = { [listId: number]: IList };
 
@@ -17,4 +17,12 @@ export interface AddListAction {
   };
 }
 
-export type ListsAction = AddListAction;
+export interface RemoveListAction {
+  type: REMOVE_LIST;
+  payload: {
+    boardId: number;
+    listId: number;
+  };
+}
+
+export type ListsAction = AddListAction | RemoveListAction;

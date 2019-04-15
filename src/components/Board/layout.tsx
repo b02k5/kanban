@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 // import List from "./List";
 import { BoardType } from "../../store/types/boards";
+import List from "./List";
 
 const Board = styled.div``;
 const BoardName = styled.h1``;
@@ -30,22 +31,24 @@ export default ({
   onAddList,
   lists
 }: IProps) => (
-  <Board>
-    {activeBoard && (
-      <Fragment>
-        <BoardName>{activeBoard.name}</BoardName>
-        <BoardList>
-          {[...lists].map(list => window.console.log(list))}
-          <AddList>
-            <AddListInput
-              type="text"
-              value={listName}
-              onChange={onSetListName}
-            />
-            <AddListButton onClick={onAddList}>Add another list</AddListButton>
-          </AddList>
-        </BoardList>
-      </Fragment>
-    )}
-  </Board>
-);
+    <Board>
+      {activeBoard && (
+        <Fragment>
+          <BoardName>{activeBoard.name}</BoardName>
+          <BoardList>
+            {[...lists].map(list => (
+              <List key={list.id} list={list} boardId={activeBoard.id} />
+            ))}
+            <AddList>
+              <AddListInput
+                type="text"
+                value={listName}
+                onChange={onSetListName}
+              />
+              <AddListButton onClick={onAddList}>Add another list</AddListButton>
+            </AddList>
+          </BoardList>
+        </Fragment>
+      )}
+    </Board>
+  );

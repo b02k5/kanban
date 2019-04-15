@@ -43,6 +43,16 @@ export const boards: Reducer<BoardsState, BoardAction> = (
         }
       };
     }
+    case listConstants.REMOVE_LIST: {
+      const { boardId, listId } = action.payload;
+      return {
+        ...state,
+        [boardId]: {
+          ...state[boardId],
+          lists: state[boardId].lists.filter(list => list !== listId)
+        }
+      };
+    }
     default:
       return {
         ...state

@@ -1,4 +1,4 @@
-import { AddListAction } from "../types/lists";
+import { AddListAction, RemoveListAction } from "../types/lists";
 import { listConstants } from "../constants/lists";
 
 export const addList = (
@@ -11,5 +11,16 @@ export const addList = (
     boardId,
     listId,
     listName
+  }
+});
+
+export const removeList = (
+  boardId: number,
+  listId: number,
+): RemoveListAction => ({
+  type: listConstants.REMOVE_LIST,
+  payload: {
+    boardId,
+    listId,
   }
 });
