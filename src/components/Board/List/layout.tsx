@@ -24,7 +24,11 @@ interface IProps {
   taskName: string;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveList: (listId: number) => void;
-  onEditNameList: (e: React.ChangeEvent<HTMLTextAreaElement>, listId: number) => void;
+  onEditNameList: (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+    listId: number
+  ) => void;
+  onAddTask: () => void;
 }
 
 export default ({
@@ -32,23 +36,31 @@ export default ({
   taskName,
   onSetTaskName,
   onRemoveList,
-  onEditNameList
+  onEditNameList,
+  onAddTask
 }: IProps): JSX.Element => (
-    <BoardListContent>
-      <BoardListHeader>
-        <BoardListTextarea onChange={e => onEditNameList(e, list.id)} defaultValue={list.name} />
-        <BoardListButtonItem onClick={() => onRemoveList(list.id)}>remove</BoardListButtonItem>
-      </BoardListHeader>
-      <BoardListTasks>
-        <BoardListItem>task</BoardListItem>
-      </BoardListTasks>
-      <BoardListFooter>
-        <BoardListAddItemInput
-          type="text"
-          onChange={onSetTaskName}
-          value={taskName}
-        />
-        <BoardListAddItemButton>Add another card</BoardListAddItemButton>
-      </BoardListFooter>
-    </BoardListContent>
-  );
+  <BoardListContent>
+    <BoardListHeader>
+      <BoardListTextarea
+        onChange={e => onEditNameList(e, list.id)}
+        defaultValue={list.name}
+      />
+      <BoardListButtonItem onClick={() => onRemoveList(list.id)}>
+        remove
+      </BoardListButtonItem>
+    </BoardListHeader>
+    <BoardListTasks>
+      <BoardListItem>task</BoardListItem>
+    </BoardListTasks>
+    <BoardListFooter>
+      <BoardListAddItemInput
+        type="text"
+        onChange={onSetTaskName}
+        value={taskName}
+      />
+      <BoardListAddItemButton onClick={onAddTask}>
+        Add another card
+      </BoardListAddItemButton>
+    </BoardListFooter>
+  </BoardListContent>
+);

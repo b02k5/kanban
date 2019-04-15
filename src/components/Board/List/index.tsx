@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import ListLayout from "./layout";
 import { IList } from "../../../store/types/lists";
 import { removeList, editListName } from "../../../store/actions/lists";
+import { addTask } from "../../../store/actions/tasks";
 
 interface IProps {
   list: IList;
@@ -12,6 +13,7 @@ interface IProps {
 interface IDispatchProps {
   removeList: (boardId: number, listId: number) => void;
   editListName: (listId: number, nameList: string) => void;
+  addTask: (boardId: number, listId: number, taskName: string) => void;
 }
 
 interface IState {
@@ -25,7 +27,10 @@ class List extends PureComponent<Props, IState> {
     taskName: ""
   };
 
-  public editNameListHandle = (e: React.ChangeEvent<HTMLTextAreaElement>, listId: number) => {
+  public editNameListHandle = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+    listId: number
+  ) => {
     this.props.editListName(listId, e.target.value);
   };
 
@@ -35,19 +40,21 @@ class List extends PureComponent<Props, IState> {
     });
   };
 
-  // public addTaskHandle = () => {
-  //   if (this.state.taskName !== "") {
-  //     this.setState({
-  //       taskName: ""
-  //     });
+  public addTaskHandle = () => {
+    const { boardId } = this.props;
+    const taskId: number = new Date().getTime();
 
-  //     this.props.addTask(this.props.list.id, this.state.taskName);
-  //   }
-  // };
+    if (this.state.taskName !== "") {
+      this.props.addTask(boardId, taskId, this.state.taskName);
+      this.setState({
+        taskName: ""
+      });
+    }
+  };
 
   public removeListHandle = (listId: number) => {
     const { boardId } = this.props;
-    this.props.removeList(boardId, listId)
+    this.props.removeList(boardId, listId);
   };
 
   public render(): JSX.Element {
@@ -58,6 +65,7 @@ class List extends PureComponent<Props, IState> {
         onRemoveList={this.removeListHandle}
         onSetTaskName={this.setTaskNameHandle}
         onEditNameList={this.editNameListHandle}
+        onAddTask={this.addTaskHandle}
       />
     );
   }
@@ -65,7 +73,8 @@ class List extends PureComponent<Props, IState> {
 
 const mapDispatchToProps: IDispatchProps = {
   removeList,
-  editListName
+  editListName,
+  addTask
 };
 
 export default connect(

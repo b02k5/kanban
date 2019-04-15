@@ -2,6 +2,7 @@ import { Reducer } from "redux";
 import { boardConstants } from "../constants/boards";
 import { BoardAction, BoardsState } from "../types/boards";
 import { listConstants } from "../constants/lists";
+import { taskConstants } from "../constants/tasks";
 
 export const boards: Reducer<BoardsState, BoardAction> = (
   state = {},
@@ -16,7 +17,8 @@ export const boards: Reducer<BoardsState, BoardAction> = (
           id: boardId,
           name: boardName,
           isOpen: false,
-          lists: []
+          lists: [],
+          tasks: []
         }
       };
     }
@@ -50,6 +52,16 @@ export const boards: Reducer<BoardsState, BoardAction> = (
         [boardId]: {
           ...state[boardId],
           lists: state[boardId].lists.filter(list => list !== listId)
+        }
+      };
+    }
+    case taskConstants.ADD_TASK: {
+      const { boardId, taskId } = action.payload;
+      return {
+        ...state,
+        [boardId]: {
+          ...state[boardId],
+          tasks: [...state[boardId].tasks, taskId]
         }
       };
     }
