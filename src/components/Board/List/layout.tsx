@@ -24,17 +24,19 @@ interface IProps {
   taskName: string;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveList: (listId: number) => void;
+  onEditNameList: (e: React.ChangeEvent<HTMLTextAreaElement>, listId: number) => void;
 }
 
 export default ({
   list,
   taskName,
   onSetTaskName,
-  onRemoveList
+  onRemoveList,
+  onEditNameList
 }: IProps): JSX.Element => (
     <BoardListContent>
       <BoardListHeader>
-        <BoardListTextarea defaultValue={list.name} />
+        <BoardListTextarea onChange={e => onEditNameList(e, list.id)} defaultValue={list.name} />
         <BoardListButtonItem onClick={() => onRemoveList(list.id)}>remove</BoardListButtonItem>
       </BoardListHeader>
       <BoardListTasks>

@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import ListLayout from "./layout";
 import { IList } from "../../../store/types/lists";
-import { removeList } from "../../../store/actions/lists";
+import { removeList, editListName } from "../../../store/actions/lists";
 
 interface IProps {
   list: IList;
@@ -11,6 +11,7 @@ interface IProps {
 
 interface IDispatchProps {
   removeList: (boardId: number, listId: number) => void;
+  editListName: (listId: number, nameList: string) => void;
 }
 
 interface IState {
@@ -24,11 +25,25 @@ class List extends PureComponent<Props, IState> {
     taskName: ""
   };
 
+  public editNameListHandle = (e: React.ChangeEvent<HTMLTextAreaElement>, listId: number) => {
+    this.props.editListName(listId, e.target.value);
+  };
+
   public setTaskNameHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       taskName: e.target.value
     });
   };
+
+  // public addTaskHandle = () => {
+  //   if (this.state.taskName !== "") {
+  //     this.setState({
+  //       taskName: ""
+  //     });
+
+  //     this.props.addTask(this.props.list.id, this.state.taskName);
+  //   }
+  // };
 
   public removeListHandle = (listId: number) => {
     const { boardId } = this.props;
@@ -42,13 +57,15 @@ class List extends PureComponent<Props, IState> {
         {...this.state}
         onRemoveList={this.removeListHandle}
         onSetTaskName={this.setTaskNameHandle}
+        onEditNameList={this.editNameListHandle}
       />
     );
   }
 }
 
 const mapDispatchToProps: IDispatchProps = {
-  removeList
+  removeList,
+  editListName
 };
 
 export default connect(
