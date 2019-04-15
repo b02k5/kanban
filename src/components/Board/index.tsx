@@ -36,11 +36,12 @@ class Board extends PureComponent<Props, any> {
       : 0;
     const listId: number = new Date().getTime();
 
-    this.props.addList(boardId, listId, this.state.listName);
-    this.state.listName !== "" &&
+    if (this.state.listName !== "") {
+      this.props.addList(boardId, listId, this.state.listName);
       this.setState({
         listName: ""
       });
+    }
   };
 
   render(): JSX.Element {
