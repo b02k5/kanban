@@ -16,22 +16,27 @@ interface IDispatchToProps {
 
 interface IState {
   boardValue: string;
+  isOpenCreateForm: boolean;
 }
 
 type Props = IStateToProps & IDispatchToProps;
 
 class Main extends PureComponent<Props, IState> {
   public state = {
-    boardValue: ""
+    boardValue: "",
+    isOpenCreateForm: false
   };
 
   public addBoardHandler = () => {
     const createBoardId = new Date().getTime();
-    this.state.boardValue !== "" &&
+    if (this.state.boardValue !== "") {
+      this.props.addBoard(createBoardId, this.state.boardValue);
+
       this.setState({
-        boardValue: ""
+        boardValue: "",
+        isOpenCreateForm: false
       });
-    this.props.addBoard(createBoardId, this.state.boardValue);
+    }
   };
 
   public inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +45,12 @@ class Main extends PureComponent<Props, IState> {
     });
   };
 
+  public openCreateFormHandle = () => {
+    this.setState({
+      isOpenCreateForm: true
+    })
+  }
+
   public render(): JSX.Element {
     return (
       <Layout
@@ -47,6 +58,7 @@ class Main extends PureComponent<Props, IState> {
         {...this.state}
         onAddBoard={this.addBoardHandler}
         onInputChange={this.inputChangeHandler}
+        onOpenCreateForm={this.openCreateFormHandle}
       />
     );
   }
