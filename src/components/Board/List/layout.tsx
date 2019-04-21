@@ -3,6 +3,9 @@ import styled from "styled-components";
 import { IList } from "../../../store/types/lists";
 import Task from "../Task";
 import { TaskType } from "../../../store/types/tasks";
+import ReactSVG from "react-svg";
+
+import plusCircle from "../../../assets/images/svg/plus-circle.svg";
 
 const BoardListContent = styled.div`
   flex: 0 0 auto;
@@ -30,7 +33,7 @@ const ListsItem = styled.li`
 
 const ListsHeader = styled.div`
   position: relative;
-  margin-bottom: 15px;
+  margin-bottom: 13px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -88,9 +91,27 @@ const ListAddItemWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 `;
-const ListsAddTaskButton = styled.button``;
+const ListsAddTaskButton = styled.button`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+`;
+
+const ListsAddTaskButtonSpan = styled.span`
+  color: #122144;
+  display: block;
+  padding-left: 22px;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+`;
 
 const ListsAddItemForm = styled.div``;
 
@@ -104,7 +125,6 @@ const TasksItem = styled.li`
   margin-bottom: 10px;
 `;
 
-const BoardListFooter = styled.div``;
 const BoardListAddItemInput = styled.input``;
 const BoardListAddItemButton = styled.button``;
 
@@ -142,8 +162,21 @@ export default ({
         </ListsRemoveButton>
       </ListsHeader>
       <ListAddItemWrapper>
-        <ListsAddTaskButton>Add new item</ListsAddTaskButton>
-        <ListsAddItemForm>
+        <ListsAddTaskButton>
+          <ReactSVG
+            src={plusCircle}
+            svgStyle={{
+              position: "absolute",
+              top: "50%",
+              left: 0,
+              transform: "translateY(-50%)",
+              width: 15,
+              height: 15
+            }}
+          />
+          <ListsAddTaskButtonSpan>Add new item</ListsAddTaskButtonSpan>
+        </ListsAddTaskButton>
+        {/* <ListsAddItemForm>
           <BoardListAddItemInput
             type="text"
             onChange={onSetTaskName}
@@ -152,7 +185,7 @@ export default ({
           <BoardListAddItemButton onClick={() => onAddTask(list.id)}>
             Add item
           </BoardListAddItemButton>
-        </ListsAddItemForm>
+        </ListsAddItemForm> */}
       </ListAddItemWrapper>
 
       <Tasks>
