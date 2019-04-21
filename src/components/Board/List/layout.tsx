@@ -34,9 +34,6 @@ const ListsItem = styled.li`
 const ListsHeader = styled.div`
   position: relative;
   margin-bottom: 13px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
 `;
 const ListsTextarea = styled.textarea`
   color: #122144;
@@ -45,14 +42,21 @@ const ListsTextarea = styled.textarea`
   font-weight: bold;
   width: 100%;
   height: 30px;
-  margin: 0 10px 0 0;
-  padding: 0;
+  margin: 0;
+  padding: 0 20px 0 0;
   border: 0;
   outline: none;
   resize: none;
 `;
 const ListsRemoveButton = styled.button`
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  transform: translateY(-50%);
   margin: 0;
+  padding: 0;
+  width: 20px;
+  height: 30px;
   border: 0;
   display: flex;
   flex-direction: row;
@@ -71,7 +75,7 @@ const ListsRemoveButtonCircle = styled.span`
   &::before,
   &::after {
     content: "";
-    top: 0;
+    left: 0;
     position: absolute;
     width: 4px;
     height: 4px;
@@ -79,10 +83,10 @@ const ListsRemoveButtonCircle = styled.span`
     border-radius: 50%;
   }
   &::before {
-    left: -6px;
+    top: -6px;
   }
   &::after {
-    left: 6px;
+    top: 6px;
   }
 `;
 
