@@ -22,10 +22,6 @@ interface IProps {
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, listId: number) => void;
 }
 
-const BoardListContent = styled.div`
-  flex: 0 0 auto;
-`;
-
 const ListsItemWrapper = styled.div`
   position: relative;
   padding: 20px 30px;
@@ -44,6 +40,7 @@ const ListsItemWrapper = styled.div`
 const ListsItem = styled.li`
   width: 350px;
   margin-right: 5px;
+  flex: 0 0 auto;
 `;
 
 const ListsHeader = styled.div`
