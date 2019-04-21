@@ -7,6 +7,21 @@ import ReactSVG from "react-svg";
 
 import plusCircle from "../../../assets/images/svg/plus-circle.svg";
 
+interface IProps {
+  list: IList;
+  tasks: TaskType[];
+  taskName: string;
+  isAddTaskInputOpen: boolean;
+  onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onRemoveList: (listId: number) => void;
+  onEditNameList: (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+    listId: number
+  ) => void;
+  onAddTask: () => void;
+  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, listId: number) => void;
+}
+
 const BoardListContent = styled.div`
   flex: 0 0 auto;
 `;
@@ -92,9 +107,8 @@ const ListsRemoveButtonCircle = styled.span`
 
 const ListAddItemWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
-  align-items: center;
   margin-bottom: 10px;
 `;
 const ListsAddTaskButton = styled.button`
@@ -117,8 +131,6 @@ const ListsAddTaskButtonSpan = styled.span`
   font-weight: 500;
 `;
 
-const ListsAddItemForm = styled.div``;
-
 const Tasks = styled.ul`
   list-style-type: none;
   margin: 0;
@@ -129,21 +141,18 @@ const TasksItem = styled.li`
   margin-bottom: 10px;
 `;
 
-const BoardListAddItemInput = styled.input``;
-const BoardListAddItemButton = styled.button``;
-
-interface IProps {
-  list: IList;
-  tasks: TaskType[];
-  taskName: string;
-  onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onRemoveList: (listId: number) => void;
-  onEditNameList: (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-    listId: number
-  ) => void;
-  onAddTask: (listId: number) => void;
-}
+const BoardListAddItemInput = styled.input`
+  width: 65%;
+  font-size: 15px;
+  padding: 5px 7px;
+  outline: none;
+  border: 1px solid rgba(9, 45, 66, 0.4);
+  border-radius: 3px;
+  transition: 0.1s;
+  &:focus {
+    border-color: rgba(9, 45, 66, 0.8);
+  }
+`;
 
 export default ({
   list,
@@ -151,8 +160,10 @@ export default ({
   onSetTaskName,
   onRemoveList,
   onEditNameList,
+  tasks,
+  onKeyDown,
   onAddTask,
-  tasks
+  isAddTaskInputOpen
 }: IProps): JSX.Element => (
   <ListsItem>
     <ListsItemWrapper>
@@ -166,30 +177,30 @@ export default ({
         </ListsRemoveButton>
       </ListsHeader>
       <ListAddItemWrapper>
-        <ListsAddTaskButton>
-          <ReactSVG
-            src={plusCircle}
-            svgStyle={{
-              position: "absolute",
-              top: "50%",
-              left: 0,
-              transform: "translateY(-50%)",
-              width: 15,
-              height: 15
-            }}
-          />
-          <ListsAddTaskButtonSpan>Add new item</ListsAddTaskButtonSpan>
-        </ListsAddTaskButton>
-        {/* <ListsAddItemForm>
+        {isAddTaskInputOpen ? (
           <BoardListAddItemInput
             type="text"
+            onKeyDown={e => onKeyDown(e, list.id)}
             onChange={onSetTaskName}
             value={taskName}
+            autoFocus
           />
-          <BoardListAddItemButton onClick={() => onAddTask(list.id)}>
-            Add item
-          </BoardListAddItemButton>
-        </ListsAddItemForm> */}
+        ) : (
+          <ListsAddTaskButton onClick={onAddTask}>
+            <ReactSVG
+              src={plusCircle}
+              svgStyle={{
+                position: "absolute",
+                top: "50%",
+                left: 0,
+                transform: "translateY(-50%)",
+                width: 15,
+                height: 15
+              }}
+            />
+            <ListsAddTaskButtonSpan>Add new item</ListsAddTaskButtonSpan>
+          </ListsAddTaskButton>
+        )}
       </ListAddItemWrapper>
 
       <Tasks>

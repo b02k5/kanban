@@ -25,13 +25,15 @@ interface IDispatchProps {
 
 interface IState {
   taskName: string;
+  isAddTaskInputOpen: boolean;
 }
 
 type Props = IProps & IStateToProps & IDispatchProps;
 
 class List extends PureComponent<Props, IState> {
   public state = {
-    taskName: ""
+    taskName: "",
+    isAddTaskInputOpen: false
   };
 
   public editNameListHandle = (
@@ -41,21 +43,37 @@ class List extends PureComponent<Props, IState> {
     this.props.editListName(listId, e.target.value);
   };
 
-  public setTaskNameHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
+  private setTaskNameHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       taskName: e.target.value
     });
   };
 
-  public addTaskHandle = (listId: number) => {
+  private _keyDownHandle = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    listId: number
+  ) => {
+    if (e.key === "Enter") {
+      this.addTask(listId);
+    }
+  };
+
+  public addTask = (listId: number) => {
     const taskId: number = new Date().getTime();
 
     if (this.state.taskName !== "") {
       this.props.addTask(listId, taskId, this.state.taskName);
       this.setState({
-        taskName: ""
+        taskName: "",
+        isAddTaskInputOpen: false
       });
     }
+  };
+
+  private addTaskHandle = () => {
+    this.setState({
+      isAddTaskInputOpen: true
+    });
   };
 
   public removeListHandle = (listId: number) => {
@@ -72,6 +90,7 @@ class List extends PureComponent<Props, IState> {
         onSetTaskName={this.setTaskNameHandle}
         onEditNameList={this.editNameListHandle}
         onAddTask={this.addTaskHandle}
+        onKeyDown={this._keyDownHandle}
       />
     );
   }
