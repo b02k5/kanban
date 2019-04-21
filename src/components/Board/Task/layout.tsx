@@ -16,14 +16,15 @@ const BoardTask = styled.div`
   align-items: center;
 `;
 
-const BoardTaskIcon = styled.div`
+const TaskLetterWrapper = styled.div`
+  position: relative;
   width: 40px;
   height: 40px;
   border-radius: 50%;
   background-color: #fff0f3;
   margin-right: 18px;
   border: 3px solid #ffffff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 `;
 
 const BoardTaskName = styled.span`
@@ -33,9 +34,21 @@ const BoardTaskName = styled.span`
   font-weight: 400;
 `;
 
+const BoardTaskLetter = styled.span`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: 500;
+`;
+
 export default ({ task }: IProps): JSX.Element => (
   <BoardTask>
-    <BoardTaskIcon />
+    <TaskLetterWrapper>
+      <BoardTaskLetter>{task.name.charAt(0).toUpperCase()}</BoardTaskLetter>
+    </TaskLetterWrapper>
     <BoardTaskName>{task.name}</BoardTaskName>
   </BoardTask>
 );
