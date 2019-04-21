@@ -7,7 +7,10 @@ import { IList } from "../../store/types/lists";
 
 const Board = styled.div``;
 const BoardName = styled.h1``;
-const BoardList = styled.div`
+const BoardList = styled.ul`
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
   display: flex;
 `;
 
