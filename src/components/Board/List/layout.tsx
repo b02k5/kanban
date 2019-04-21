@@ -48,6 +48,7 @@ const ListsItem = styled.li`
 
 const ListsHeader = styled.div`
   position: relative;
+  height: 30px;
   margin-bottom: 13px;
 `;
 const ListsTextarea = styled.textarea`
@@ -111,16 +112,6 @@ const ListAddItemWrapper = styled.div`
   justify-content: center;
   margin-bottom: 10px;
 `;
-const ListsAddTaskButton = styled.button`
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 30px;
-  padding: 0;
-  border: 0;
-  cursor: pointer;
-`;
 
 const ListsAddTaskButtonSpan = styled.span`
   color: #122144;
@@ -129,6 +120,22 @@ const ListsAddTaskButtonSpan = styled.span`
   font-size: 12px;
   line-height: 18px;
   font-weight: 500;
+`;
+
+const ListsAddTaskButton = styled.button`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 30px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: 0.1s;
+  &:hover {
+    background-color: rgba(18, 33, 68, 0.05);
+  }
 `;
 
 const Tasks = styled.ul`
@@ -192,7 +199,7 @@ export default ({
               svgStyle={{
                 position: "absolute",
                 top: "50%",
-                left: 0,
+                left: 10,
                 transform: "translateY(-50%)",
                 width: 15,
                 height: 15
