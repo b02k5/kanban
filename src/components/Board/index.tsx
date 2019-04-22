@@ -8,6 +8,11 @@ import { addList } from "../../store/actions/lists";
 import { getLists } from "../../store/selectors/lists";
 import { IList } from "../../store/types/lists";
 
+interface IState {
+  listName: string;
+  isOpenInputList: boolean;
+}
+
 interface IStateToProps {
   activeBoard: BoardType | undefined;
   lists: IList[];
@@ -19,9 +24,10 @@ interface IDispatchToProps {
 
 type Props = IStateToProps & IDispatchToProps;
 
-class Board extends PureComponent<Props, any> {
+class Board extends PureComponent<Props, IState> {
   public state = {
-    listName: ""
+    listName: "",
+    isOpenInputList: false
   };
 
   public setListNameHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +36,13 @@ class Board extends PureComponent<Props, any> {
     });
   };
 
-  public addListHandler = () => {
+  public addListHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      this.addList();
+    }
+  };
+
+  private addList = () => {
     const boardId: number = this.props.activeBoard
       ? this.props.activeBoard.id
       : 0;
@@ -39,9 +51,16 @@ class Board extends PureComponent<Props, any> {
     if (this.state.listName !== "") {
       this.props.addList(boardId, listId, this.state.listName);
       this.setState({
-        listName: ""
+        listName: "",
+        isOpenInputList: false
       });
     }
+  };
+
+  private visibleInputHandle = () => {
+    this.setState({
+      isOpenInputList: true
+    });
   };
 
   render(): JSX.Element {
@@ -51,6 +70,7 @@ class Board extends PureComponent<Props, any> {
         {...this.state}
         onSetListName={this.setListNameHandle}
         onAddList={this.addListHandler}
+        onVisibleInput={this.visibleInputHandle}
       />
     );
   }

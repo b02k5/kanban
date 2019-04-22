@@ -199,7 +199,8 @@ export default ({
                 left: 10,
                 transform: "translateY(-50%)",
                 width: 15,
-                height: 15
+                height: 15,
+                fill: "#122144"
               }}
             />
             <ListsAddTaskButtonSpan>Add new item</ListsAddTaskButtonSpan>
