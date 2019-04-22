@@ -25,6 +25,7 @@ const TaskLetterWrapper = styled.div`
   margin-right: 18px;
   border: 3px solid #ffffff;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  flex: 0 0 auto;
 `;
 
 const BoardTaskName = styled.span`
