@@ -58,8 +58,13 @@ const ListsTextarea = styled.textarea`
   margin: 0;
   padding: 0 20px 0 0;
   border: 0;
+  border-bottom: 1px solid transparent;
   outline: none;
   resize: none;
+  transition: 0.1s;
+  &:focus, &:hover {
+    border-bottom: 1px solid rgba(18, 33, 68, 0.15);
+  }
 `;
 const ListsRemoveButton = styled.button`
   position: absolute;
@@ -169,52 +174,52 @@ export default ({
   onAddTask,
   isAddTaskInputOpen
 }: IProps): JSX.Element => (
-  <ListsItem>
-    <ListsItemWrapper>
-      <ListsHeader>
-        <ListsTextarea
-          onChange={e => onEditNameList(e, list.id)}
-          defaultValue={list.name}
-        />
-        <ListsRemoveButton onClick={() => onRemoveList(list.id)}>
-          <ListsRemoveButtonCircle />
-        </ListsRemoveButton>
-      </ListsHeader>
-      <ListAddItemWrapper>
-        {isAddTaskInputOpen ? (
-          <BoardListAddItemInput
-            type="text"
-            onKeyDown={e => onKeyDown(e, list.id)}
-            onChange={onSetTaskName}
-            value={taskName}
-            autoFocus
+    <ListsItem>
+      <ListsItemWrapper>
+        <ListsHeader>
+          <ListsTextarea
+            onChange={e => onEditNameList(e, list.id)}
+            defaultValue={list.name}
           />
-        ) : (
-          <ListsAddTaskButton onClick={onAddTask}>
-            <ReactSVG
-              src={plusCircle}
-              svgStyle={{
-                position: "absolute",
-                top: "50%",
-                left: 10,
-                transform: "translateY(-50%)",
-                width: 15,
-                height: 15,
-                fill: "#122144"
-              }}
+          <ListsRemoveButton onClick={() => onRemoveList(list.id)}>
+            <ListsRemoveButtonCircle />
+          </ListsRemoveButton>
+        </ListsHeader>
+        <ListAddItemWrapper>
+          {isAddTaskInputOpen ? (
+            <BoardListAddItemInput
+              type="text"
+              onKeyDown={e => onKeyDown(e, list.id)}
+              onChange={onSetTaskName}
+              value={taskName}
+              autoFocus
             />
-            <ListsAddTaskButtonSpan>Add new item</ListsAddTaskButtonSpan>
-          </ListsAddTaskButton>
-        )}
-      </ListAddItemWrapper>
+          ) : (
+              <ListsAddTaskButton onClick={onAddTask}>
+                <ReactSVG
+                  src={plusCircle}
+                  svgStyle={{
+                    position: "absolute",
+                    top: "50%",
+                    left: 10,
+                    transform: "translateY(-50%)",
+                    width: 15,
+                    height: 15,
+                    fill: "#122144"
+                  }}
+                />
+                <ListsAddTaskButtonSpan>Add new item</ListsAddTaskButtonSpan>
+              </ListsAddTaskButton>
+            )}
+        </ListAddItemWrapper>
 
-      <Tasks>
-        {[...tasks].map(task => (
-          <TasksItem key={task.id}>
-            <Task task={task} />
-          </TasksItem>
-        ))}
-      </Tasks>
-    </ListsItemWrapper>
-  </ListsItem>
-);
+        <Tasks>
+          {[...tasks].map(task => (
+            <TasksItem key={task.id}>
+              <Task task={task} />
+            </TasksItem>
+          ))}
+        </Tasks>
+      </ListsItemWrapper>
+    </ListsItem>
+  );
