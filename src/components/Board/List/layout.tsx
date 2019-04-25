@@ -20,6 +20,8 @@ interface IProps {
   ) => void;
   onAddTask: () => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, listId: number) => void;
+  drop: (e: React.DragEvent<HTMLElement>, listId: number) => void;
+  allowDrop: (e: React.DragEvent<HTMLElement>) => void
 }
 
 const ListsItemWrapper = styled.div`
@@ -172,9 +174,11 @@ export default ({
   tasks,
   onKeyDown,
   onAddTask,
-  isAddTaskInputOpen
+  isAddTaskInputOpen,
+  drop,
+  allowDrop
 }: IProps): JSX.Element => (
-    <ListsItem>
+    <ListsItem id={`${list.id}`} onDrop={e => drop(e, list.id)} onDragOver={allowDrop}>
       <ListsItemWrapper>
         <ListsHeader>
           <ListsTextarea

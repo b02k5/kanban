@@ -4,6 +4,8 @@ import { TaskType } from "../../../store/types/tasks";
 
 interface IProps {
   task: TaskType;
+  drag: (e: React.DragEvent<HTMLDivElement>, task: TaskType) => void;
+  noAllowDrop: (e: React.DragEvent<HTMLDivElement>) => void
 }
 
 const BoardTask = styled.div`
@@ -45,8 +47,8 @@ const BoardTaskLetter = styled.span`
   font-weight: 500;
 `;
 
-export default ({ task }: IProps): JSX.Element => (
-  <BoardTask>
+export default ({ task, drag, noAllowDrop }: IProps): JSX.Element => (
+  <BoardTask draggable={true} onDragStart={e => drag(e, task)} onDragOver={noAllowDrop}>
     <TaskLetterWrapper>
       <BoardTaskLetter>{task.name.charAt(0).toUpperCase()}</BoardTaskLetter>
     </TaskLetterWrapper>

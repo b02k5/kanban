@@ -81,6 +81,17 @@ class List extends PureComponent<Props, IState> {
     this.props.removeList(boardId, listId);
   };
 
+  private drop = (e: React.DragEvent<HTMLElement>, listId: number) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData('transfer');
+    const parseData = JSON.parse(data);
+    this.props.addTask(listId, parseData.id, parseData.name);
+  }
+
+  private allowDrop = (e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+  }
+
   public render(): JSX.Element {
     return (
       <ListLayout
@@ -91,6 +102,8 @@ class List extends PureComponent<Props, IState> {
         onEditNameList={this.editNameListHandle}
         onAddTask={this.addTaskHandle}
         onKeyDown={this._keyDownHandle}
+        drop={this.drop}
+        allowDrop={this.allowDrop}
       />
     );
   }
