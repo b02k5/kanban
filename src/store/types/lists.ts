@@ -1,5 +1,5 @@
 import { ADD_LIST, REMOVE_LIST, EDIT_NAME_LIST } from "../constants/lists";
-import { AddTaskAction } from "../types/tasks";
+import { AddTaskAction, RemoveTaskAction } from "../types/tasks";
 
 export type ListsState = { [listId: number]: IList };
 
@@ -38,4 +38,5 @@ export type ListsAction =
   | AddListAction
   | RemoveListAction
   | EditListNameAction
-  | AddTaskAction;
+  | AddTaskAction
+  | RemoveTaskAction;

@@ -41,6 +41,16 @@ export const lists: Reducer<ListsState, ListsAction> = (state = {}, action) => {
         }
       };
     }
+    case taskConstants.REMOVE_TASK: {
+      const { listId, taskId } = action.payload;
+      return {
+        ...state,
+        [listId]: {
+          ...state[listId],
+          tasks: state[listId].tasks.filter(task => task !== taskId)
+        }
+      };
+    }
     default:
       return {
         ...state

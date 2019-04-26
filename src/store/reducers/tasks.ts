@@ -6,13 +6,14 @@ export const tasks: Reducer<TasksState, TaskAction> = (state = {}, action) => {
   switch (action.type) {
     case taskConstants.ADD_TASK: {
       const { taskId, taskName } = action.payload;
-      return {
-        ...state,
-        [taskId]: {
-          id: taskId,
-          name: taskName
-        }
-      };
+      if (!state[taskId])
+        ({
+          ...state,
+          [taskId]: {
+            id: taskId,
+            name: taskName
+          }
+        });
     }
     default:
       return {
