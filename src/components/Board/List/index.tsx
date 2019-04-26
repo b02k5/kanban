@@ -3,7 +3,11 @@ import { connect } from "react-redux";
 import ListLayout from "./layout";
 import { IList } from "../../../store/types/lists";
 import { removeList, editListName } from "../../../store/actions/lists";
-import { addTask } from "../../../store/actions/tasks";
+import {
+  addTask,
+  removeTask,
+  addTaskMiddleware
+} from "../../../store/actions/tasks";
 import { AppState } from "../../../store";
 import { getTasks } from "../../../store/selectors/tasks";
 import { TaskType } from "../../../store/types/tasks";
@@ -21,6 +25,8 @@ interface IDispatchProps {
   removeList: (boardId: number, listId: number) => void;
   editListName: (listId: number, nameList: string) => void;
   addTask: (listId: number, taskId: number, taskName: string) => void;
+  removeTask: (listId: number, taskId: number) => void;
+  addTaskMiddleware: (...actions: any) => void;
 }
 
 interface IState {
@@ -81,16 +87,20 @@ class List extends PureComponent<Props, IState> {
     this.props.removeList(boardId, listId);
   };
 
-  private drop = (e: React.DragEvent<HTMLElement>, listId: number) => {
+  private _dropHandle = (e: React.DragEvent<HTMLElement>, listId: number) => {
     e.preventDefault();
-    const data = e.dataTransfer.getData('transfer');
+    const data = e.dataTransfer.getData("transfer");
     const parseData = JSON.parse(data);
-    this.props.addTask(listId, parseData.id, parseData.name);
-  }
 
-  private allowDrop = (e: React.DragEvent<HTMLElement>) => {
+    this.props.addTaskMiddleware(
+      addTask(listId, parseData.task.id, parseData.task.name),
+      removeTask(parseData.listIdDraggable, parseData.task.id)
+    );
+  };
+
+  private _allowDropHandle = (e: React.DragEvent<HTMLElement>) => {
     e.preventDefault();
-  }
+  };
 
   public render(): JSX.Element {
     return (
@@ -102,8 +112,8 @@ class List extends PureComponent<Props, IState> {
         onEditNameList={this.editNameListHandle}
         onAddTask={this.addTaskHandle}
         onKeyDown={this._keyDownHandle}
-        drop={this.drop}
-        allowDrop={this.allowDrop}
+        onDrop={this._dropHandle}
+        onAllowDrop={this._allowDropHandle}
       />
     );
   }
@@ -116,7 +126,9 @@ const mapStateToProps = (state: AppState, ownProps: any): IStateToProps => ({
 const mapDispatchToProps: IDispatchProps = {
   removeList,
   editListName,
-  addTask
+  addTask,
+  removeTask,
+  addTaskMiddleware
 };
 
 export default connect(

@@ -20,8 +20,8 @@ interface IProps {
   ) => void;
   onAddTask: () => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, listId: number) => void;
-  drop: (e: React.DragEvent<HTMLElement>, listId: number) => void;
-  allowDrop: (e: React.DragEvent<HTMLElement>) => void
+  onDrop: (e: React.DragEvent<HTMLElement>, listId: number) => void;
+  onAllowDrop: (e: React.DragEvent<HTMLElement>) => void;
 }
 
 const ListsItemWrapper = styled.div`
@@ -64,7 +64,8 @@ const ListsTextarea = styled.textarea`
   outline: none;
   resize: none;
   transition: 0.1s;
-  &:focus, &:hover {
+  &:focus,
+  &:hover {
     border-bottom: 1px solid rgba(18, 33, 68, 0.15);
   }
 `;
@@ -175,55 +176,59 @@ export default ({
   onKeyDown,
   onAddTask,
   isAddTaskInputOpen,
-  drop,
-  allowDrop
+  onDrop,
+  onAllowDrop
 }: IProps): JSX.Element => (
-    <ListsItem id={`${list.id}`} onDrop={e => drop(e, list.id)} onDragOver={allowDrop}>
-      <ListsItemWrapper>
-        <ListsHeader>
-          <ListsTextarea
-            onChange={e => onEditNameList(e, list.id)}
-            defaultValue={list.name}
+  <ListsItem
+    id={`${list.id}`}
+    onDrop={e => onDrop(e, list.id)}
+    onDragOver={onAllowDrop}
+  >
+    <ListsItemWrapper>
+      <ListsHeader>
+        <ListsTextarea
+          onChange={e => onEditNameList(e, list.id)}
+          defaultValue={list.name}
+        />
+        <ListsRemoveButton onClick={() => onRemoveList(list.id)}>
+          <ListsRemoveButtonCircle />
+        </ListsRemoveButton>
+      </ListsHeader>
+      <ListAddItemWrapper>
+        {isAddTaskInputOpen ? (
+          <BoardListAddItemInput
+            type="text"
+            onKeyDown={e => onKeyDown(e, list.id)}
+            onChange={onSetTaskName}
+            value={taskName}
+            autoFocus
           />
-          <ListsRemoveButton onClick={() => onRemoveList(list.id)}>
-            <ListsRemoveButtonCircle />
-          </ListsRemoveButton>
-        </ListsHeader>
-        <ListAddItemWrapper>
-          {isAddTaskInputOpen ? (
-            <BoardListAddItemInput
-              type="text"
-              onKeyDown={e => onKeyDown(e, list.id)}
-              onChange={onSetTaskName}
-              value={taskName}
-              autoFocus
+        ) : (
+          <ListsAddTaskButton onClick={onAddTask}>
+            <ReactSVG
+              src={plusCircle}
+              svgStyle={{
+                position: "absolute",
+                top: "50%",
+                left: 10,
+                transform: "translateY(-50%)",
+                width: 15,
+                height: 15,
+                fill: "#122144"
+              }}
             />
-          ) : (
-              <ListsAddTaskButton onClick={onAddTask}>
-                <ReactSVG
-                  src={plusCircle}
-                  svgStyle={{
-                    position: "absolute",
-                    top: "50%",
-                    left: 10,
-                    transform: "translateY(-50%)",
-                    width: 15,
-                    height: 15,
-                    fill: "#122144"
-                  }}
-                />
-                <ListsAddTaskButtonSpan>Add new item</ListsAddTaskButtonSpan>
-              </ListsAddTaskButton>
-            )}
-        </ListAddItemWrapper>
+            <ListsAddTaskButtonSpan>Add new item</ListsAddTaskButtonSpan>
+          </ListsAddTaskButton>
+        )}
+      </ListAddItemWrapper>
 
-        <Tasks>
-          {[...tasks].map(task => (
-            <TasksItem key={task.id}>
-              <Task task={task} />
-            </TasksItem>
-          ))}
-        </Tasks>
-      </ListsItemWrapper>
-    </ListsItem>
-  );
+      <Tasks>
+        {[...tasks].map(task => (
+          <TasksItem key={task.id}>
+            <Task task={task} listId={list.id} />
+          </TasksItem>
+        ))}
+      </Tasks>
+    </ListsItemWrapper>
+  </ListsItem>
+);
