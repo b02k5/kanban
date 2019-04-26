@@ -12,6 +12,7 @@ interface IProps {
   tasks: TaskType[];
   taskName: string;
   isAddTaskInputOpen: boolean;
+  isDraggable: boolean;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveList: (listId: number) => void;
   onEditNameList: (
@@ -22,9 +23,10 @@ interface IProps {
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, listId: number) => void;
   onDrop: (e: React.DragEvent<HTMLElement>, listId: number) => void;
   onAllowDrop: (e: React.DragEvent<HTMLElement>) => void;
+  onDragLeave: () => void;
 }
 
-const ListsItemWrapper = styled.div`
+const ListsItemWrapper = styled.div<{ isDraggable: boolean }>`
   position: relative;
   padding: 20px 30px;
   background-color: #ffffff;
@@ -37,6 +39,17 @@ const ListsItemWrapper = styled.div`
     width: 100%;
     height: 2px;
     background-color: blue;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: ${props =>
+      props.isDraggable ? "rgba(0,0,0,.4)" : "transparent"}; 
+    z-index: ${props => (props.isDraggable ? "1" : "-1")}; ;
   }
 `;
 const ListsItem = styled.li`
@@ -177,14 +190,17 @@ export default ({
   onAddTask,
   isAddTaskInputOpen,
   onDrop,
-  onAllowDrop
+  onAllowDrop,
+  isDraggable,
+  onDragLeave
 }: IProps): JSX.Element => (
   <ListsItem
     id={`${list.id}`}
     onDrop={e => onDrop(e, list.id)}
     onDragOver={onAllowDrop}
+    onDragLeave={onDragLeave}
   >
-    <ListsItemWrapper>
+    <ListsItemWrapper isDraggable={isDraggable}>
       <ListsHeader>
         <ListsTextarea
           onChange={e => onEditNameList(e, list.id)}

@@ -32,6 +32,7 @@ interface IDispatchProps {
 interface IState {
   taskName: string;
   isAddTaskInputOpen: boolean;
+  isDraggable: boolean;
 }
 
 type Props = IProps & IStateToProps & IDispatchProps;
@@ -39,7 +40,8 @@ type Props = IProps & IStateToProps & IDispatchProps;
 class List extends PureComponent<Props, IState> {
   public state = {
     taskName: "",
-    isAddTaskInputOpen: false
+    isAddTaskInputOpen: false,
+    isDraggable: false
   };
 
   public editNameListHandle = (
@@ -96,10 +98,24 @@ class List extends PureComponent<Props, IState> {
       addTask(listId, parseData.task.id, parseData.task.name),
       removeTask(parseData.listIdDraggable, parseData.task.id)
     );
+
+    this.setState({
+      isDraggable: false
+    });
   };
 
   private _allowDropHandle = (e: React.DragEvent<HTMLElement>) => {
     e.preventDefault();
+
+    this.setState({
+      isDraggable: true
+    });
+  };
+
+  private _dragLeaveHandle = () => {
+    this.setState({
+      isDraggable: false
+    });
   };
 
   public render(): JSX.Element {
@@ -114,6 +130,7 @@ class List extends PureComponent<Props, IState> {
         onKeyDown={this._keyDownHandle}
         onDrop={this._dropHandle}
         onAllowDrop={this._allowDropHandle}
+        onDragLeave={this._dragLeaveHandle}
       />
     );
   }
