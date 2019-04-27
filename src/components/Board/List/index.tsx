@@ -22,7 +22,7 @@ interface IStateToProps {
 }
 
 interface IDispatchProps {
-  removeList: (boardId: number, listId: number) => void;
+  removeList: (boardId: number, listId: number, tasks: Array<number>) => void;
   editListName: (listId: number, nameList: string) => void;
   addTask: (listId: number, taskId: number, taskName: string) => void;
   removeTask: (listId: number, taskId: number) => void;
@@ -84,9 +84,9 @@ class List extends PureComponent<Props, IState> {
     });
   };
 
-  public removeListHandle = (listId: number) => {
+  public removeListHandle = (listId: number, tasks: Array<number>) => {
     const { boardId } = this.props;
-    this.props.removeList(boardId, listId);
+    this.props.removeList(boardId, listId, tasks);
   };
 
   private _dropHandle = (e: React.DragEvent<HTMLElement>, listId: number) => {

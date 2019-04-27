@@ -1,4 +1,5 @@
 import { ADD_TASK, REMOVE_TASK } from "../constants/tasks";
+import { RemoveListAction } from "./lists";
 
 export type TasksState = { [taskId: number]: TaskType };
 
@@ -24,4 +25,4 @@ export interface RemoveTaskAction {
   };
 }
 
-export type TaskAction = AddTaskAction;
+export type TaskAction = AddTaskAction | RemoveListAction;

@@ -14,7 +14,7 @@ interface IProps {
   isAddTaskInputOpen: boolean;
   isDraggable: boolean;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onRemoveList: (listId: number) => void;
+  onRemoveList: (listId: number, tasks: Array<number>) => void;
   onEditNameList: (
     e: React.ChangeEvent<HTMLTextAreaElement>,
     listId: number
@@ -206,7 +206,7 @@ export default ({
           onChange={e => onEditNameList(e, list.id)}
           defaultValue={list.name}
         />
-        <ListsRemoveButton onClick={() => onRemoveList(list.id)}>
+        <ListsRemoveButton onClick={() => onRemoveList(list.id, list.tasks)}>
           <ListsRemoveButtonCircle />
         </ListsRemoveButton>
       </ListsHeader>

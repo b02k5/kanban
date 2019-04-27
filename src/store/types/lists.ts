@@ -23,6 +23,7 @@ export interface RemoveListAction {
   payload: {
     boardId: number;
     listId: number;
+    tasks: Array<number>;
   };
 }
 
