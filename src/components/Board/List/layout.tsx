@@ -148,7 +148,7 @@ const ListsAddTaskButton = styled.button`
   height: 30px;
   padding: 0 10px;
   border: 0;
-  border-radius: 3px;
+  border-radius: 15px;
   cursor: pointer;
   transition: 0.1s;
   &:hover {
