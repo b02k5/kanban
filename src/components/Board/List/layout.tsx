@@ -53,7 +53,7 @@ const ListsItemWrapper = styled.div<{ isDraggable: boolean }>`
   }
 `;
 const ListsItem = styled.li`
-  width: 350px;
+  width: 320px;
   margin-right: 5px;
   flex: 0 0 auto;
 `;
@@ -164,6 +164,9 @@ const Tasks = styled.ul`
 const TasksItem = styled.li`
   width: 100%;
   margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0;
+  }
 `;
 
 const BoardListAddItemInput = styled.input`
