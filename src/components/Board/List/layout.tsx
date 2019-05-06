@@ -23,7 +23,7 @@ interface IProps {
   onAddTask: () => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, listId: number) => void;
   onDrop: (e: React.DragEvent<HTMLElement>, listId: number) => void;
-  onAllowDrop: (e: React.DragEvent<HTMLElement>) => void;
+  onDragOver: (e: React.DragEvent<HTMLElement>) => void;
   onDragLeave: () => void;
 }
 
@@ -194,7 +194,7 @@ export default ({
   onAddTask,
   isAddTaskInputOpen,
   onDrop,
-  onAllowDrop,
+  onDragOver,
   isDraggable,
   onDragLeave,
   addItemInputRef
@@ -202,7 +202,7 @@ export default ({
   <ListsItem
     id={`${list.id}`}
     onDrop={e => onDrop(e, list.id)}
-    onDragOver={onAllowDrop}
+    onDragOver={onDragOver}
     onDragLeave={onDragLeave}
   >
     <ListsItemWrapper isDraggable={isDraggable}>

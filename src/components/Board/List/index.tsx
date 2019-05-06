@@ -107,21 +107,24 @@ class List extends PureComponent<Props, IState> {
   };
 
   private _dropHandle = (e: React.DragEvent<HTMLElement>, listId: number) => {
-    e.preventDefault();
     const data = e.dataTransfer.getData("transfer");
     const parseData = JSON.parse(data);
 
-    this.props.addTaskMiddleware(
-      addTask(listId, parseData.task.id, parseData.task.name),
-      removeTask(parseData.listIdDraggable, parseData.task.id)
-    );
+    if (parseData.listIdDraggable !== listId) {
+      e.preventDefault();
+
+      this.props.addTaskMiddleware(
+        addTask(listId, parseData.task.id, parseData.task.name),
+        removeTask(parseData.listIdDraggable, parseData.task.id)
+      );
+    }
 
     this.setState({
       isDraggable: false
     });
   };
 
-  private _allowDropHandle = (e: React.DragEvent<HTMLElement>) => {
+  private _dragOverHandle = (e: React.DragEvent<HTMLElement>) => {
     e.preventDefault();
 
     this.setState({
@@ -146,7 +149,7 @@ class List extends PureComponent<Props, IState> {
         onAddTask={this.addTaskHandle}
         onKeyDown={this._keyDownHandle}
         onDrop={this._dropHandle}
-        onAllowDrop={this._allowDropHandle}
+        onDragOver={this._dragOverHandle}
         onDragLeave={this._dragLeaveHandle}
         addItemInputRef={this.addItemInputRef}
       />
