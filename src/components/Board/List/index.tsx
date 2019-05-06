@@ -73,6 +73,7 @@ class List extends PureComponent<Props, IState> {
 
     if (this.state.taskName !== "") {
       this.props.addTask(listId, taskId, this.state.taskName);
+      this.createDocumentHandle();
       this.setState({
         taskName: "",
         isAddTaskInputOpen: false
@@ -80,22 +81,25 @@ class List extends PureComponent<Props, IState> {
     }
   };
 
-  private documentHandle = (e: MouseEvent) => {
+  private createDocumentHandle = () => {
+    if (!this.state.isAddTaskInputOpen) {
+      document.addEventListener("click", this._documentHandle);
+    } else {
+      document.removeEventListener("click", this._documentHandle);
+    }
+  };
+
+  private _documentHandle = (e: MouseEvent) => {
     if (
       this.addItemInputRef.current &&
       !this.addItemInputRef.current.contains(e.target as HTMLElement)
     ) {
-      this.addTaskHandle();
+      this._addTaskHandle();
     }
   };
 
-  private addTaskHandle = () => {
-    if (!this.state.isAddTaskInputOpen) {
-      document.addEventListener("click", this.documentHandle);
-    } else {
-      document.removeEventListener("click", this.documentHandle);
-    }
-
+  private _addTaskHandle = () => {
+    this.createDocumentHandle();
     this.setState(prevState => ({
       isAddTaskInputOpen: !prevState.isAddTaskInputOpen
     }));
@@ -146,7 +150,7 @@ class List extends PureComponent<Props, IState> {
         onRemoveList={this.removeListHandle}
         onSetTaskName={this.setTaskNameHandle}
         onEditNameList={this.editNameListHandle}
-        onAddTask={this.addTaskHandle}
+        onAddTask={this._addTaskHandle}
         onKeyDown={this._keyDownHandle}
         onDrop={this._dropHandle}
         onDragOver={this._dragOverHandle}
