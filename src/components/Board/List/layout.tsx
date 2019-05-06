@@ -29,9 +29,9 @@ interface IProps {
 
 const ListsItemWrapper = styled.div<{ isDraggable: boolean }>`
   position: relative;
-  padding: 20px 30px;
+  width: 300px;
+  padding: 20px 25px;
   background-color: #ffffff;
-  border: 1px solid #DAE1EC;
   &:before {
     content: '';
     position: absolute;
@@ -41,21 +41,21 @@ const ListsItemWrapper = styled.div<{ isDraggable: boolean }>`
     height: 2px;
     background-color: blue;
   }
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: ${props =>
-      props.isDraggable ? "rgba(0,0,0,.4)" : "transparent"}; 
-    z-index: ${props => (props.isDraggable ? "1" : "-1")}; ;
-  }
+  ${props =>
+    props.isDraggable &&
+    `&::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,.4);
+      z-index: 1;
+    }`}
 `;
 const ListsItem = styled.li`
-  width: 320px;
-  margin-right: 5px;
+  margin-right: 10px;
   flex: 0 0 auto;
 `;
 
