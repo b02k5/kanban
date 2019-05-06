@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react";
+import React, { PureComponent, createRef } from "react";
 import { connect } from "react-redux";
 import ListLayout from "./layout";
 import { IList } from "../../../store/types/lists";
@@ -44,6 +44,8 @@ class List extends PureComponent<Props, IState> {
     isDraggable: false
   };
 
+  private addItemInputRef = createRef<HTMLInputElement>();
+
   public editNameListHandle = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
     listId: number
@@ -78,10 +80,25 @@ class List extends PureComponent<Props, IState> {
     }
   };
 
+  private documentHandle = (e: MouseEvent) => {
+    if (
+      this.addItemInputRef.current &&
+      !this.addItemInputRef.current.contains(e.target as HTMLElement)
+    ) {
+      this.addTaskHandle();
+    }
+  };
+
   private addTaskHandle = () => {
-    this.setState({
-      isAddTaskInputOpen: true
-    });
+    if (!this.state.isAddTaskInputOpen) {
+      document.addEventListener("click", this.documentHandle);
+    } else {
+      document.removeEventListener("click", this.documentHandle);
+    }
+
+    this.setState(prevState => ({
+      isAddTaskInputOpen: !prevState.isAddTaskInputOpen
+    }));
   };
 
   public removeListHandle = (listId: number, tasks: Array<number>) => {
@@ -131,6 +148,7 @@ class List extends PureComponent<Props, IState> {
         onDrop={this._dropHandle}
         onAllowDrop={this._allowDropHandle}
         onDragLeave={this._dragLeaveHandle}
+        addItemInputRef={this.addItemInputRef}
       />
     );
   }

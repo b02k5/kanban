@@ -13,6 +13,7 @@ interface IProps {
   taskName: string;
   isAddTaskInputOpen: boolean;
   isDraggable: boolean;
+  addItemInputRef: React.RefObject<HTMLInputElement>;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveList: (listId: number, tasks: Array<number>) => void;
   onEditNameList: (
@@ -195,7 +196,8 @@ export default ({
   onDrop,
   onAllowDrop,
   isDraggable,
-  onDragLeave
+  onDragLeave,
+  addItemInputRef
 }: IProps): JSX.Element => (
   <ListsItem
     id={`${list.id}`}
@@ -221,6 +223,7 @@ export default ({
             onChange={onSetTaskName}
             value={taskName}
             autoFocus
+            ref={addItemInputRef}
           />
         ) : (
           <ListsAddTaskButton onClick={onAddTask}>
