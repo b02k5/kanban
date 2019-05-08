@@ -7,7 +7,15 @@ interface IProps {
   listId: number;
 }
 
-export default class Task extends PureComponent<IProps, {}> {
+interface IState {
+  isModalOpen: boolean;
+}
+
+export default class Task extends PureComponent<IProps, IState> {
+  public state = {
+    isModalOpen: false
+  };
+
   private _dragHandle = (
     e: React.DragEvent<HTMLDivElement>,
     task: TaskType,
@@ -23,12 +31,20 @@ export default class Task extends PureComponent<IProps, {}> {
     e.stopPropagation();
   };
 
+  public taskHandle = () => {
+    this.setState(prevState => ({
+      isModalOpen: !prevState.isModalOpen
+    }));
+  };
+
   render(): JSX.Element {
     return (
       <TaskLayout
         {...this.props}
+        {...this.state}
         onDrag={this._dragHandle}
         onNoAllowDrop={this._noAllowDropHandle}
+        onTask={this.taskHandle}
       />
     );
   }
