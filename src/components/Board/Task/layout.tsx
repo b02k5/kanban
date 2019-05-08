@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 import { TaskType } from "../../../store/types/tasks";
 import Modal from "../../Modal";
+import TextareaAutosize from 'react-textarea-autosize';
 
 interface IProps {
   task: TaskType;
@@ -72,20 +73,9 @@ const ModalTitle = styled.textarea`
   }
 `;
 
-const ModalDescription = styled.textarea`
-  color: #122144;
-  font-size: 14px;
-  line-height: 19px;
-  font-weight: 400;
+const ModalDescription = styled.div`
   width: 100%;
-  max-height: 300px;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  border: 0;
   border-bottom: 1px solid transparent;
-  outline: none;
-  resize: none;
   transition: 0.1s;
   &:focus,
   &:hover {
@@ -101,25 +91,34 @@ export default ({
   isModalOpen,
   onTask
 }: IProps): JSX.Element => (
-  <Fragment>
-    <BoardTask
-      draggable={true}
-      onDragStart={e => onDrag(e, task, listId)}
-      onDragOver={onNoAllowDrop}
-      onClick={onTask}
-    >
-      <BoardTaskName>{task.name}</BoardTaskName>
-    </BoardTask>
+    <Fragment>
+      <BoardTask
+        draggable={true}
+        onDragStart={e => onDrag(e, task, listId)}
+        onDragOver={onNoAllowDrop}
+        onClick={onTask}
+      >
+        <BoardTaskName>{task.name}</BoardTaskName>
+      </BoardTask>
 
-    <Modal modalClick={onTask} containerStyles={ContainerStyles}>
-      <ModalHeader>
-        <ModalTime>04:00 PM</ModalTime>
-        <ModalTitle>{task.name}</ModalTitle>
-      </ModalHeader>
-      <ModalDescription />
-    </Modal>
+      <Modal modalClick={onTask} containerStyles={ContainerStyles}>
+        <ModalHeader>
+          <ModalTime>04:00 PM</ModalTime>
+          <ModalTitle>{task.name}</ModalTitle>
+        </ModalHeader>
+        <ModalDescription>
+          <TextareaAutosize style={{
+            border: 0, color: '#122144',
+            fontSize: '14px',
+            lineHeight: '19px',
+            resize: 'none',
+            width: '100%',
+            outline: 'none'
+          }} />
+        </ModalDescription>
+      </Modal>
 
-    {/* {isModalOpen && (
+      {/* {isModalOpen && (
       <Modal modalClick={onTask}>
         <ModalContainer>
           <ModalWrapper>
@@ -131,5 +130,5 @@ export default ({
         </ModalContainer>
       </Modal>
     )} */}
-  </Fragment>
-);
+    </Fragment>
+  );
