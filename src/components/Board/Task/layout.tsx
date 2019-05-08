@@ -41,17 +41,14 @@ const ContainerStyles = styled.div`
   transform: translate(-50%, -50%);
   width: 510px;
   background-color: #ffffff;
-  border-radius: 7px;
+  border-radius: 10px;
 `;
-const ModalHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  margin-bottom: 25px;
-`;
+
 const ModalTime = styled.time`
-  font-size: 13px;
-  margin-bottom: 7px;
+  color: #a0aab0;
+  font-size: 12px;
+  margin-bottom: 5px;
+  display: inline-block;
 `;
 const ModalTitle = styled.textarea`
   color: #122144;
@@ -67,6 +64,8 @@ const ModalTitle = styled.textarea`
   outline: none;
   resize: none;
   transition: 0.1s;
+  margin-bottom: 18px;
+  display: block;
   &:focus,
   &:hover {
     border-bottom: 1px solid rgba(18, 33, 68, 0.15);
@@ -102,10 +101,8 @@ export default ({
       </BoardTask>
 
       <Modal modalClick={onTask} containerStyles={ContainerStyles}>
-        <ModalHeader>
-          <ModalTime>04:00 PM</ModalTime>
-          <ModalTitle>{task.name}</ModalTitle>
-        </ModalHeader>
+        <ModalTime>04:00 PM</ModalTime>
+        <ModalTitle>{task.name}</ModalTitle>
         <ModalDescription>
           <TextareaAutosize style={{
             border: 0, color: '#122144',
