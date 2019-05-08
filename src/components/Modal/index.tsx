@@ -63,26 +63,14 @@ const CloseButton = styled.button`
 
 const refOverlay = createRef<HTMLDivElement>();
 
-export default class Modal extends PureComponent<IProps, IState> {
-  public render(): JSX.Element {
-    const { containerStyles, children } = this.props;
-
-    return portal(
-      <Overlay
-        onClick={e =>
-          refOverlay.current === e.target && this.props.modalClick()
-        }
-        ref={refOverlay}
-      >
-        <Container as={containerStyles}>
-          <ModalWrapper>{children}</ModalWrapper>
-          <CloseButton
-            onClick={e =>
-              refOverlay.current === e.target && this.props.modalClick()
-            }
-          />
-        </Container>
-      </Overlay>
-    );
-  }
-}
+export default ({ containerStyles, children, modalClick }: IProps) => (
+  <Overlay
+    onClick={e => refOverlay.current === e.target && modalClick()}
+    ref={refOverlay}
+  >
+    <Container as={containerStyles}>
+      <ModalWrapper>{children}</ModalWrapper>
+      <CloseButton onClick={modalClick} />
+    </Container>
+  </Overlay>
+);
