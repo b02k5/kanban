@@ -27,20 +27,9 @@ interface IProps {
   onDragLeave: () => void;
 }
 
-const ListsItemWrapper = styled.div<{ isDraggable: boolean }>`
+const ListItemWrapper = styled.div<{ isDraggable: boolean }>`
   position: relative;
-  width: 300px;
-  padding: 20px 25px;
-  background-color: #ffffff;
-  &:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0
-    width: 100%;
-    height: 2px;
-    background-color: blue;
-  }
+  width: 280px;
   ${props =>
     props.isDraggable &&
     `&::after {
@@ -54,18 +43,22 @@ const ListsItemWrapper = styled.div<{ isDraggable: boolean }>`
       z-index: 1;
     }`}
 `;
-const ListsItem = styled.li`
-  margin-right: 10px;
+const ListItem = styled.li`
+  margin-right: 40px;
   flex: 0 0 auto;
 `;
 
-const ListsHeader = styled.div`
+const ListHeader = styled.div`
   position: relative;
   height: 30px;
   margin-bottom: 13px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
-const ListsTextarea = styled.textarea`
-  color: #122144;
+const ListName = styled.textarea`
+  color: #36373a;
   font-size: 22px;
   line-height: 27px;
   font-weight: bold;
@@ -75,6 +68,7 @@ const ListsTextarea = styled.textarea`
   padding: 0 20px 0 0;
   border: 0;
   border-bottom: 1px solid transparent;
+  background-color: transparent;
   outline: none;
   resize: none;
   transition: 0.1s;
@@ -83,11 +77,7 @@ const ListsTextarea = styled.textarea`
     border-bottom: 1px solid rgba(18, 33, 68, 0.15);
   }
 `;
-const ListsRemoveButton = styled.button`
-  position: absolute;
-  top: 50%;
-  right: -10px;
-  transform: translateY(-50%);
+const ListRemoveButton = styled.button`
   margin: 0;
   padding: 0;
   width: 20px;
@@ -98,9 +88,10 @@ const ListsRemoveButton = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  background-color: transparent;
 `;
 
-const ListsRemoveButtonCircle = styled.span`
+const ListRemoveButtonCircle = styled.span`
   position: relative;
   display: block;
   width: 4px;
@@ -132,7 +123,7 @@ const ListAddItemWrapper = styled.div`
   margin-bottom: 10px;
 `;
 
-const ListsAddTaskButtonSpan = styled.span`
+const ListAddTaskButtonSpan = styled.span`
   color: #122144;
   display: block;
   padding-left: 22px;
@@ -141,7 +132,7 @@ const ListsAddTaskButtonSpan = styled.span`
   font-weight: 500;
 `;
 
-const ListsAddTaskButton = styled.button`
+const ListAddTaskButton = styled.button`
   position: relative;
   display: flex;
   flex-direction: row;
@@ -152,8 +143,9 @@ const ListsAddTaskButton = styled.button`
   border-radius: 15px;
   cursor: pointer;
   transition: 0.1s;
+  background-color: transparent;
   &:hover {
-    background-color: rgba(18, 33, 68, 0.05);
+    background-color: white;
   }
 `;
 
@@ -199,22 +191,22 @@ export default ({
   onDragLeave,
   addItemInputRef
 }: IProps): JSX.Element => (
-  <ListsItem
+  <ListItem
     id={`${list.id}`}
     onDrop={e => onDrop(e, list.id)}
     onDragOver={onDragOver}
     onDragLeave={onDragLeave}
   >
-    <ListsItemWrapper isDraggable={isDraggable}>
-      <ListsHeader>
-        <ListsTextarea
+    <ListItemWrapper isDraggable={isDraggable}>
+      <ListHeader>
+        <ListName
           onChange={e => onEditNameList(e, list.id)}
           defaultValue={list.name}
         />
-        <ListsRemoveButton onClick={() => onRemoveList(list.id, list.tasks)}>
-          <ListsRemoveButtonCircle />
-        </ListsRemoveButton>
-      </ListsHeader>
+        <ListRemoveButton onClick={() => onRemoveList(list.id, list.tasks)}>
+          <ListRemoveButtonCircle />
+        </ListRemoveButton>
+      </ListHeader>
       <ListAddItemWrapper>
         {isAddTaskInputOpen ? (
           <BoardListAddItemInput
@@ -226,7 +218,7 @@ export default ({
             ref={addItemInputRef}
           />
         ) : (
-          <ListsAddTaskButton onClick={onAddTask}>
+          <ListAddTaskButton onClick={onAddTask}>
             <ReactSVG
               src={plusCircle}
               svgStyle={{
@@ -239,8 +231,8 @@ export default ({
                 fill: "#122144"
               }}
             />
-            <ListsAddTaskButtonSpan>Add new item</ListsAddTaskButtonSpan>
-          </ListsAddTaskButton>
+            <ListAddTaskButtonSpan>Add new item</ListAddTaskButtonSpan>
+          </ListAddTaskButton>
         )}
       </ListAddItemWrapper>
 
@@ -251,6 +243,6 @@ export default ({
           </TasksItem>
         ))}
       </Tasks>
-    </ListsItemWrapper>
-  </ListsItem>
+    </ListItemWrapper>
+  </ListItem>
 );
