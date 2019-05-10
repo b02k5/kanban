@@ -37,7 +37,7 @@ export default class Task extends PureComponent<IProps, IState> {
     }));
   };
 
-  render(): JSX.Element {
+  render() {
     return (
       <TaskLayout
         {...this.props}

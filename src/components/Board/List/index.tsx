@@ -33,6 +33,7 @@ interface IState {
   taskName: string;
   isAddTaskInputOpen: boolean;
   isDraggable: boolean;
+  isModalOpen: boolean;
 }
 
 type Props = IProps & IStateToProps & IDispatchProps;
@@ -41,7 +42,8 @@ class List extends PureComponent<Props, IState> {
   public state = {
     taskName: "",
     isAddTaskInputOpen: false,
-    isDraggable: false
+    isDraggable: false,
+    isModalOpen: false
   };
 
   private addItemInputRef = createRef<HTMLInputElement>();
@@ -78,37 +80,12 @@ class List extends PureComponent<Props, IState> {
       description: "hello"
     };
 
-    if (this.state.taskName !== "") {
-      this.props.addTask(taskArguments);
-      this.createDocumentHandle();
-      this.setState({
-        taskName: "",
-        isAddTaskInputOpen: false
-      });
-    }
+    this.props.addTask(taskArguments);
   };
 
-  private createDocumentHandle = () => {
-    if (!this.state.isAddTaskInputOpen) {
-      document.addEventListener("click", this._documentHandle);
-    } else {
-      document.removeEventListener("click", this._documentHandle);
-    }
-  };
-
-  private _documentHandle = (e: MouseEvent) => {
-    if (
-      this.addItemInputRef.current &&
-      !this.addItemInputRef.current.contains(e.target as HTMLElement)
-    ) {
-      this._addTaskHandle();
-    }
-  };
-
-  private _addTaskHandle = () => {
-    this.createDocumentHandle();
+  private modalToggleHandle = () => {
     this.setState(prevState => ({
-      isAddTaskInputOpen: !prevState.isAddTaskInputOpen
+      isModalOpen: !prevState.isModalOpen
     }));
   };
 
@@ -164,12 +141,12 @@ class List extends PureComponent<Props, IState> {
         onRemoveList={this.removeListHandle}
         onSetTaskName={this.setTaskNameHandle}
         onEditNameList={this.editNameListHandle}
-        onAddTask={this._addTaskHandle}
         onKeyDown={this._keyDownHandle}
         onDrop={this._dropHandle}
         onDragOver={this._dragOverHandle}
         onDragLeave={this._dragLeaveHandle}
         addItemInputRef={this.addItemInputRef}
+        onModalToggle={this.modalToggleHandle}
       />
     );
   }

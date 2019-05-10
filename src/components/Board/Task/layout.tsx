@@ -121,7 +121,7 @@ export default ({
   listId,
   isModalOpen,
   onTask
-}: IProps): JSX.Element => (
+}: IProps) => (
   <Fragment>
     <BoardTask
       draggable={true}
@@ -131,9 +131,7 @@ export default ({
     >
       <BoardTime as={ModalTime}>03 July 2019</BoardTime>
       <BoardTaskName>{task.name}</BoardTaskName>
-      <BoardDescription>
-        Fresh new onboarding, width 3 screens that should
-      </BoardDescription>
+      <BoardDescription>{task.description}</BoardDescription>
       <BoardFooter>
         <BoardTagList>
           <BoardTagItem>

@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import ReactSVG from "react-svg";
+
 import { IList } from "../../../store/types/lists";
 import Task from "../Task";
 import { TaskType } from "../../../store/types/tasks";
-import ReactSVG from "react-svg";
+import TaskDetails from "../../Modal/TaskDetails/index";
 
 import plusCircle from "../../../assets/images/svg/plus-circle.svg";
 
@@ -14,17 +16,18 @@ interface IProps {
   isAddTaskInputOpen: boolean;
   isDraggable: boolean;
   addItemInputRef: React.RefObject<HTMLInputElement>;
+  isModalOpen: boolean;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveList: (listId: number, tasks: Array<number>) => void;
   onEditNameList: (
     e: React.ChangeEvent<HTMLTextAreaElement>,
     listId: number
   ) => void;
-  onAddTask: () => void;
   onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, listId: number) => void;
   onDrop: (e: React.DragEvent<HTMLElement>, listId: number) => void;
   onDragOver: (e: React.DragEvent<HTMLElement>) => void;
   onDragLeave: () => void;
+  onModalToggle: () => void;
 }
 
 const ListItemWrapper = styled.div<{ isDraggable: boolean }>`
@@ -183,13 +186,14 @@ export default ({
   onEditNameList,
   tasks,
   onKeyDown,
-  onAddTask,
+  onModalToggle,
   isAddTaskInputOpen,
   onDrop,
   onDragOver,
   isDraggable,
   onDragLeave,
-  addItemInputRef
+  addItemInputRef,
+  isModalOpen
 }: IProps): JSX.Element => (
   <ListItem
     id={`${list.id}`}
@@ -218,7 +222,7 @@ export default ({
             ref={addItemInputRef}
           />
         ) : (
-          <ListAddTaskButton onClick={onAddTask}>
+          <ListAddTaskButton onClick={onModalToggle}>
             <ReactSVG
               src={plusCircle}
               svgStyle={{
@@ -244,5 +248,8 @@ export default ({
         ))}
       </Tasks>
     </ListItemWrapper>
+    {isModalOpen && (
+      <TaskDetails listId={list.id} onModalToggle={onModalToggle} />
+    )}
   </ListItem>
 );

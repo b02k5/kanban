@@ -1,4 +1,4 @@
-import React, { ReactNode, createRef, PureComponent } from "react";
+import React, { ReactNode, createRef } from "react";
 import styled from "styled-components";
 import portal from "./portal";
 
@@ -6,10 +6,6 @@ interface IProps {
   children: ReactNode;
   modalClick: () => void;
   containerStyles: any;
-}
-
-interface IState {
-  isModalOpen: boolean;
 }
 
 const Overlay = styled.div`
@@ -63,14 +59,15 @@ const CloseButton = styled.button`
 
 const refOverlay = createRef<HTMLDivElement>();
 
-export default ({ containerStyles, children, modalClick }: IProps) => (
-  <Overlay
-    onClick={e => refOverlay.current === e.target && modalClick()}
-    ref={refOverlay}
-  >
-    <Container as={containerStyles}>
-      <ModalWrapper>{children}</ModalWrapper>
-      <CloseButton onClick={modalClick} />
-    </Container>
-  </Overlay>
-);
+export default ({ containerStyles, children, modalClick }: IProps) =>
+  portal(
+    <Overlay
+      onClick={e => refOverlay.current === e.target && modalClick()}
+      ref={refOverlay}
+    >
+      <Container as={containerStyles}>
+        <ModalWrapper>{children}</ModalWrapper>
+        <CloseButton onClick={modalClick} />
+      </Container>
+    </Overlay>
+  );
