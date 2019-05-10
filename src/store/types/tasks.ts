@@ -6,14 +6,23 @@ export type TasksState = { [taskId: number]: TaskType };
 export interface TaskType {
   id: number;
   name: string;
+  description: string;
 }
+
+export type TaskArguments = {
+  listId: number;
+  id: number;
+  name: string;
+  description: string;
+};
 
 export interface AddTaskAction {
   type: ADD_TASK;
   payload: {
     listId: number;
-    taskId: number;
-    taskName: string;
+    id: number;
+    name: string;
+    description: string;
   };
 }
 

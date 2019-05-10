@@ -32,12 +32,12 @@ export const lists: Reducer<ListsState, ListsAction> = (state = {}, action) => {
       };
     }
     case taskConstants.ADD_TASK: {
-      const { listId, taskId } = action.payload;
+      const { listId, id } = action.payload;
       return {
         ...state,
         [listId]: {
           ...state[listId],
-          tasks: [...state[listId].tasks, taskId]
+          tasks: [...state[listId].tasks, id]
         }
       };
     }

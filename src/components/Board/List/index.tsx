@@ -10,7 +10,7 @@ import {
 } from "../../../store/actions/tasks";
 import { AppState } from "../../../store";
 import { getTasks } from "../../../store/selectors/tasks";
-import { TaskType } from "../../../store/types/tasks";
+import { TaskType, TaskArguments } from "../../../store/types/tasks";
 
 interface IProps {
   list: IList;
@@ -24,7 +24,7 @@ interface IStateToProps {
 interface IDispatchProps {
   removeList: (boardId: number, listId: number, tasks: Array<number>) => void;
   editListName: (listId: number, nameList: string) => void;
-  addTask: (listId: number, taskId: number, taskName: string) => void;
+  addTask: ({  }: TaskArguments) => void;
   removeTask: (listId: number, taskId: number) => void;
   addTaskMiddleware: (...actions: any) => void;
 }
@@ -71,8 +71,15 @@ class List extends PureComponent<Props, IState> {
   public addTask = (listId: number) => {
     const taskId: number = new Date().getTime();
 
+    const taskArguments = {
+      listId,
+      id: taskId,
+      name: this.state.taskName,
+      description: "hello"
+    };
+
     if (this.state.taskName !== "") {
-      this.props.addTask(listId, taskId, this.state.taskName);
+      this.props.addTask(taskArguments);
       this.createDocumentHandle();
       this.setState({
         taskName: "",
@@ -117,8 +124,15 @@ class List extends PureComponent<Props, IState> {
     if (parseData.listIdDraggable !== listId) {
       e.preventDefault();
 
+      const taskArguments = {
+        listId,
+        id: parseData.task.id,
+        name: parseData.task.name,
+        description: "hello"
+      };
+
       this.props.addTaskMiddleware(
-        addTask(listId, parseData.task.id, parseData.task.name),
+        addTask(taskArguments),
         removeTask(parseData.listIdDraggable, parseData.task.id)
       );
     }
