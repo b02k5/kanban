@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import Modal from "../index";
 import Field from "./Filed";
+import Button from "./Button";
 
 interface IProps {
   taskName: string;
@@ -95,10 +96,8 @@ export default ({
         />
       </ModalField>
       <ModalFooter>
-        <CancelTaskButton as={AddTaskButton} onClick={onModalToggle}>
-          Cancel
-        </CancelTaskButton>
-        <AddTaskButton onClick={onAddTask}>Create</AddTaskButton>
+        <Button name="Cancel" onClick={onModalToggle} />
+        <Button name="Create" onClick={onAddTask} />
       </ModalFooter>
     </ModalForm>
   </Modal>
