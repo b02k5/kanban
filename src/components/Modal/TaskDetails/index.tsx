@@ -67,7 +67,6 @@ class TaskDetails extends PureComponent<Props, IState> {
         onSubmitForm={this.submitFormHandle}
         onTextareaName={this.textareaNameHandle}
         onTextareaDesc={this.textareaDescHandle}
-        onAddTask={this.addTaskHandle}
       />
     );
   }

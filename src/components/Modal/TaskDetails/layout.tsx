@@ -11,7 +11,6 @@ interface IProps {
   onSubmitForm: () => void;
   onTextareaName: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onTextareaDesc: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  onAddTask: () => void;
   onModalToggle: () => void;
 }
 
@@ -48,30 +47,11 @@ const ModalFooter = styled.div`
   box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.1);
   padding: 0 35px;
 `;
-const AddTaskButton = styled.button`
-  color: #36373a;
-  border: 0;
-  text-transform: uppercase;
-  font-size: 15px;
-  line-height: 20px;
-  font-weight: 500;
-  padding: 20px 10px;
-  cursor: pointer;
-  &:hover,
-  &:focus {
-    background-color: #eeeeee;
-  }
-`;
-const CancelTaskButton = styled.button`
-  color: #9ba8b0;
-  margin-right: 3px;
-`;
 
 export default ({
   onSubmitForm,
   onTextareaDesc,
   onTextareaName,
-  onAddTask,
   onModalToggle,
   taskName,
   taskDesc
