@@ -42,6 +42,7 @@ const ContainerStyles = styled.div`
   width: 510px;
   background-color: #ffffff;
   border-radius: 10px;
+  padding: 30px;
 `;
 
 const ModalTime = styled.time`

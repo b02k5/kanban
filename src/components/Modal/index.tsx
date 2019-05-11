@@ -21,9 +21,7 @@ const Overlay = styled.div`
 const Container = styled.div`
   position: relative;
 `;
-const ModalWrapper = styled.div`
-  padding: 30px;
-`;
+const ModalWrapper = styled.div``;
 
 const CloseButton = styled.button`
   position: absolute;
