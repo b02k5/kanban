@@ -46,6 +46,7 @@ export default ({ name, onChange, value, autoFocus }: IProps): JSX.Element => (
         zIndex: 2
       }}
       autoFocus={autoFocus}
+      required
     />
   </Fragment>
 );

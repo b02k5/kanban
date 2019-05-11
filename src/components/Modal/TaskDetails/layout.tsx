@@ -8,7 +8,7 @@ import Button from "./Button";
 interface IProps {
   taskName: string;
   taskDesc: string;
-  onSubmitForm: (e: any) => void;
+  onSubmitForm: () => void;
   onTextareaName: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onTextareaDesc: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onAddTask: () => void;
@@ -97,7 +97,7 @@ export default ({
       </ModalField>
       <ModalFooter>
         <Button name="Cancel" onClick={onModalToggle} />
-        <Button name="Create" onClick={onAddTask} />
+        <Button name="Create" onClick={onSubmitForm} />
       </ModalFooter>
     </ModalForm>
   </Modal>

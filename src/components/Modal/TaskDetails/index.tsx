@@ -27,8 +27,10 @@ class TaskDetails extends PureComponent<Props, IState> {
     taskDesc: ""
   };
 
-  public submitFormHandle = (e: any) => {
-    e.preventDefault();
+  public submitFormHandle = () => {
+    if (this.state.taskName && this.state.taskDesc !== "") {
+      this.addTaskHandle();
+    }
   };
 
   public textareaNameHandle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
