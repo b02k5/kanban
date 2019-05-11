@@ -248,8 +248,8 @@ export default ({
         ))}
       </Tasks>
     </ListItemWrapper>
-    <TaskDetails listId={list.id} onModalToggle={onModalToggle} />
-    {/* {isModalOpen && (
-    )} */}
+    {isModalOpen && (
+      <TaskDetails listId={list.id} onModalToggle={onModalToggle} />
+    )}
   </ListItem>
 );

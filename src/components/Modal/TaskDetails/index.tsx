@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 
 import { TaskArguments } from "../../../store/types/tasks";
@@ -17,7 +17,6 @@ interface IProps {
 interface IState {
   taskName: string;
   taskDesc: string;
-  isNameFocused: boolean;
 }
 
 type Props = IProps & IDispatchProps;
@@ -25,8 +24,7 @@ type Props = IProps & IDispatchProps;
 class TaskDetails extends PureComponent<Props, IState> {
   public state = {
     taskName: "",
-    taskDesc: "",
-    isNameFocused: false
+    taskDesc: ""
   };
 
   public submitFormHandle = (e: any) => {
@@ -59,40 +57,6 @@ class TaskDetails extends PureComponent<Props, IState> {
     this.props.onModalToggle();
   };
 
-  public inputFocusHandle = () => {
-    this.setState({
-      isNameFocused: true
-    });
-  };
-
-  public inputBlurHandle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    if (this.state.taskName || this.state.taskDesc === "") {
-      this.setState({
-        isNameFocused: false
-      });
-    }
-  };
-
-  // public inputChangeHandle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   window.console.log(e.target.value);
-  // };
-
-  // public disableFocus = e => {
-  //   if (e.target.value === "") {
-  //     this.setState({
-  //       isFieldActivate: false
-  //     });
-  //   }
-  // };
-
-  // public updateInputValue = e => {
-  //   this.setState({
-  //     inputValue: e.target.value
-  //   });
-  //   this.activateField(e);
-  //   e.preventDefault();
-  // };
-
   public render() {
     return (
       <TaskDetailsLayout
@@ -102,8 +66,6 @@ class TaskDetails extends PureComponent<Props, IState> {
         onTextareaName={this.textareaNameHandle}
         onTextareaDesc={this.textareaDescHandle}
         onAddTask={this.addTaskHandle}
-        onInputFocus={this.inputFocusHandle}
-        onInputBlur={this.inputBlurHandle}
       />
     );
   }

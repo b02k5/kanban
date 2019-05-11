@@ -1,18 +1,17 @@
 import React from "react";
-import TextareaAutosize from "react-textarea-autosize";
 import styled from "styled-components";
 
 import Modal from "../index";
+import Field from "./Filed";
 
 interface IProps {
-  isNameFocused: boolean;
+  taskName: string;
+  taskDesc: string;
   onSubmitForm: (e: any) => void;
   onTextareaName: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onTextareaDesc: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onAddTask: () => void;
   onModalToggle: () => void;
-  onInputFocus: () => void;
-  onInputBlur: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 const ContainerStyles = styled.div`
@@ -31,35 +30,11 @@ const ModalTitle = styled.h1`
   margin: 0 0 90px 0;
   color: #36373a;
 `;
+const ModalForm = styled.form``;
 const ModalField = styled.div`
   position: relative;
   margin-bottom: 25px;
 `;
-
-const ModalLabel = styled.label<{ isNameFocused: boolean }>`
-  position: absolute;
-  top: 7px;
-  left: 7px;
-  color: #36373a;
-  display: block;
-  transition: 0.2s;
-`;
-
-const ModalName = styled.textarea`
-  width: 100%;
-  height: 30px;
-  font-size: 15px;
-  padding: 5px 7px;
-  outline: none;
-  border: 0;
-  border-bottom: 1px solid rgba(9, 45, 66, 0.4);
-  transition: 0.1s;
-  resize: none;
-  &:focus {
-    border-color: rgba(9, 45, 66, 0.8);
-  }
-`;
-const ModalForm = styled.form``;
 const ModalFooter = styled.div`
   position: absolute;
   right: 0;
@@ -88,6 +63,7 @@ const AddTaskButton = styled.button`
 `;
 const CancelTaskButton = styled.button`
   color: #9ba8b0;
+  margin-right: 3px;
 `;
 
 export default ({
@@ -96,38 +72,26 @@ export default ({
   onTextareaName,
   onAddTask,
   onModalToggle,
-  onInputFocus,
-  onInputBlur,
-  isNameFocused
+  taskName,
+  taskDesc
 }: IProps) => (
   <Modal modalClick={onModalToggle} containerStyles={ContainerStyles}>
-    <ModalTitle>Hello</ModalTitle>
+    <ModalTitle>New task</ModalTitle>
     <ModalForm onSubmit={onSubmitForm}>
       <ModalField>
-        <ModalLabel isNameFocused={isNameFocused}>Name</ModalLabel>
-        <ModalName
-          onFocus={onInputFocus}
-          onBlur={onInputBlur}
+        <Field
+          name="Name"
           onChange={onTextareaName}
+          value={taskName}
+          autoFocus={true}
         />
       </ModalField>
       <ModalField>
-        <TextareaAutosize
+        <Field
+          name="Description"
           onChange={onTextareaDesc}
-          style={{
-            border: 0,
-            borderBottom: "1px solid rgba(9, 45, 66, 0.4)",
-            color: "#122144",
-            fontSize: "15px",
-            lineHeight: "20px",
-            resize: "none",
-            width: "100%",
-            minHeight: "30px",
-            padding: "5px 7px",
-            outline: "none"
-          }}
-          onFocus={onInputFocus}
-          onBlur={onInputBlur}
+          value={taskDesc}
+          autoFocus={false}
         />
       </ModalField>
       <ModalFooter>
