@@ -130,7 +130,7 @@ export default ({
       onDragOver={onNoAllowDrop}
       onClick={onTask}
     >
-      <BoardTime as={ModalTime}>03 July 2019</BoardTime>
+      <BoardTime as={ModalTime}>{task.date}</BoardTime>
       <BoardTaskName>{task.name}</BoardTaskName>
       <BoardDescription>{task.description}</BoardDescription>
       <BoardFooter>

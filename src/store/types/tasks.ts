@@ -7,6 +7,7 @@ export interface TaskType {
   id: number;
   name: string;
   description: string;
+  date: string;
 }
 
 export type TaskArguments = {

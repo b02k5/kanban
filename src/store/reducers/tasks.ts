@@ -1,4 +1,6 @@
 import { Reducer } from "redux";
+import moment from "moment";
+
 import { TaskAction, TasksState } from "../types/tasks";
 import { taskConstants } from "../constants/tasks";
 import { listConstants } from "../constants/lists";
@@ -19,13 +21,16 @@ export const tasks: Reducer<TasksState, TaskAction> = (state = {}, action) => {
     }
     case taskConstants.ADD_TASK: {
       const { id, name, description } = action.payload;
+      const date = moment().format("D MMM YYYY");
+
       if (!state[id]) {
         return {
           ...state,
           [id]: {
             id,
             name,
-            description
+            description,
+            date
           }
         };
       }
