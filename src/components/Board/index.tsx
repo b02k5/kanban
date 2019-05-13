@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
-import Layout from "./layout";
 import { connect } from "react-redux";
+
+import Layout from "./layout";
 import { AppState } from "../../store";
 import { getActiveBoard } from "../../store/selectors/boards";
 import { BoardType } from "../../store/types/boards";
@@ -29,14 +30,10 @@ class Board extends PureComponent<Props, IState> {
   };
 
   public addListHandle = ({ name }: { name: string }) => {
-    window.console.log(name);
-
-    const boardId: number = this.props.activeBoard
-      ? this.props.activeBoard.id
-      : 0;
+    const activeBoard: BoardType = this.props.activeBoard!;
     const listId: number = new Date().getTime();
 
-    this.props.addList(boardId, listId, name);
+    this.props.addList(activeBoard.id, listId, name);
     this.setState(prevState => ({
       isModalOpen: !prevState.isModalOpen
     }));
