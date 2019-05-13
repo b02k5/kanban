@@ -61,26 +61,18 @@ class List extends PureComponent<Props, IState> {
     });
   };
 
-  private _keyDownHandle = (
-    e: React.KeyboardEvent<HTMLInputElement>,
-    listId: number
-  ) => {
-    if (e.key === "Enter") {
-      this.addTask(listId);
-    }
-  };
-
-  public addTask = (listId: number) => {
+  private addTaskHandle = ({ listId, name, description }: any) => {
     const taskId: number = new Date().getTime();
 
     const taskArguments = {
       listId,
       id: taskId,
-      name: this.state.taskName,
-      description: "hello"
+      name,
+      description
     };
 
     this.props.addTask(taskArguments);
+    this.modalToggleHandle();
   };
 
   private modalToggleHandle = () => {
@@ -141,12 +133,12 @@ class List extends PureComponent<Props, IState> {
         onRemoveList={this.removeListHandle}
         onSetTaskName={this.setTaskNameHandle}
         onEditNameList={this.editNameListHandle}
-        onKeyDown={this._keyDownHandle}
         onDrop={this._dropHandle}
         onDragOver={this._dragOverHandle}
         onDragLeave={this._dragLeaveHandle}
         addItemInputRef={this.addItemInputRef}
         onModalToggle={this.modalToggleHandle}
+        onAddTask={this.addTaskHandle}
       />
     );
   }

@@ -23,11 +23,11 @@ interface IProps {
     e: React.ChangeEvent<HTMLTextAreaElement>,
     listId: number
   ) => void;
-  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>, listId: number) => void;
   onDrop: (e: React.DragEvent<HTMLElement>, listId: number) => void;
   onDragOver: (e: React.DragEvent<HTMLElement>) => void;
   onDragLeave: () => void;
   onModalToggle: () => void;
+  onAddTask: ({  }: any) => void;
 }
 
 const ListItemWrapper = styled.div<{ isDraggable: boolean }>`
@@ -165,35 +165,18 @@ const TasksItem = styled.li`
   }
 `;
 
-const BoardListAddItemInput = styled.input`
-  width: 65%;
-  font-size: 15px;
-  padding: 5px 7px;
-  outline: none;
-  border: 1px solid rgba(9, 45, 66, 0.4);
-  border-radius: 3px;
-  transition: 0.1s;
-  &:focus {
-    border-color: rgba(9, 45, 66, 0.8);
-  }
-`;
-
 export default ({
   list,
-  taskName,
-  onSetTaskName,
   onRemoveList,
   onEditNameList,
   tasks,
-  onKeyDown,
   onModalToggle,
-  isAddTaskInputOpen,
   onDrop,
   onDragOver,
   isDraggable,
   onDragLeave,
-  addItemInputRef,
-  isModalOpen
+  isModalOpen,
+  onAddTask
 }: IProps): JSX.Element => (
   <ListItem
     id={`${list.id}`}
@@ -212,32 +195,21 @@ export default ({
         </ListRemoveButton>
       </ListHeader>
       <ListAddItemWrapper>
-        {isAddTaskInputOpen ? (
-          <BoardListAddItemInput
-            type="text"
-            onKeyDown={e => onKeyDown(e, list.id)}
-            onChange={onSetTaskName}
-            value={taskName}
-            autoFocus
-            ref={addItemInputRef}
+        <ListAddTaskButton onClick={onModalToggle}>
+          <ReactSVG
+            src={plusCircle}
+            svgStyle={{
+              position: "absolute",
+              top: "50%",
+              left: 10,
+              transform: "translateY(-50%)",
+              width: 15,
+              height: 15,
+              fill: "#122144"
+            }}
           />
-        ) : (
-          <ListAddTaskButton onClick={onModalToggle}>
-            <ReactSVG
-              src={plusCircle}
-              svgStyle={{
-                position: "absolute",
-                top: "50%",
-                left: 10,
-                transform: "translateY(-50%)",
-                width: 15,
-                height: 15,
-                fill: "#122144"
-              }}
-            />
-            <ListAddTaskButtonSpan>Add new item</ListAddTaskButtonSpan>
-          </ListAddTaskButton>
-        )}
+          <ListAddTaskButtonSpan>Add new item</ListAddTaskButtonSpan>
+        </ListAddTaskButton>
       </ListAddItemWrapper>
 
       <Tasks>
@@ -249,7 +221,12 @@ export default ({
       </Tasks>
     </ListItemWrapper>
     {isModalOpen && (
-      <TaskDetails listId={list.id} onModalToggle={onModalToggle} />
+      <TaskDetails
+        modalName="task"
+        action={onAddTask}
+        listId={list.id}
+        onModalToggle={onModalToggle}
+      />
     )}
   </ListItem>
 );

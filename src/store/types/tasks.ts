@@ -3,19 +3,25 @@ import { RemoveListAction } from "./lists";
 
 export type TasksState = { [taskId: number]: TaskType };
 
-export interface TaskType {
-  id: number;
-  name: string;
-  description: string;
-  date: string;
-}
-
 export type TaskArguments = {
   listId: number;
   id: number;
   name: string;
   description: string;
 };
+
+export type AddTaskArguments = {
+  listId: number;
+  name: string;
+  description: string;
+};
+
+export interface TaskType {
+  id: number;
+  name: string;
+  description: string;
+  date: string;
+}
 
 export interface AddTaskAction {
   type: ADD_TASK;

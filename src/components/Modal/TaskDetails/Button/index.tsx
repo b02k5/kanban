@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface IProps {
   name: string;
-  onClick: () => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Button = styled.button<{ name: string }>`

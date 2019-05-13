@@ -9,8 +9,7 @@ import { getLists } from "../../store/selectors/lists";
 import { IList } from "../../store/types/lists";
 
 interface IState {
-  listName: string;
-  isOpenInputList: boolean;
+  isModalOpen: boolean;
 }
 
 interface IStateToProps {
@@ -26,41 +25,27 @@ type Props = IStateToProps & IDispatchToProps;
 
 class Board extends PureComponent<Props, IState> {
   public state = {
-    listName: "",
-    isOpenInputList: false
+    isModalOpen: false
   };
 
-  public setListNameHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      listName: e.target.value
-    });
-  };
+  public addListHandle = ({ name }: { name: string }) => {
+    window.console.log(name);
 
-  public addListHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      this.addList();
-    }
-  };
-
-  private addList = () => {
     const boardId: number = this.props.activeBoard
       ? this.props.activeBoard.id
       : 0;
     const listId: number = new Date().getTime();
 
-    if (this.state.listName !== "") {
-      this.props.addList(boardId, listId, this.state.listName);
-      this.setState({
-        listName: "",
-        isOpenInputList: false
-      });
-    }
+    this.props.addList(boardId, listId, name);
+    this.setState(prevState => ({
+      isModalOpen: !prevState.isModalOpen
+    }));
   };
 
-  private visibleInputHandle = () => {
-    this.setState({
-      isOpenInputList: true
-    });
+  private modalToggleHandle = () => {
+    this.setState(prevState => ({
+      isModalOpen: !prevState.isModalOpen
+    }));
   };
 
   render(): JSX.Element {
@@ -68,9 +53,8 @@ class Board extends PureComponent<Props, IState> {
       <Layout
         {...this.props}
         {...this.state}
-        onSetListName={this.setListNameHandle}
-        onAddList={this.addListHandler}
-        onVisibleInput={this.visibleInputHandle}
+        onAddList={this.addListHandle}
+        onModalToggle={this.modalToggleHandle}
       />
     );
   }

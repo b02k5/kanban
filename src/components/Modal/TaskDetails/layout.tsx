@@ -8,7 +8,9 @@ import Button from "./Button";
 interface IProps {
   taskName: string;
   taskDesc: string;
-  onSubmitForm: () => void;
+  modalName: string;
+  listId?: number;
+  onSubmitForm: (e: any) => void;
   onTextareaName: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onTextareaDesc: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   onModalToggle: () => void;
@@ -54,11 +56,13 @@ export default ({
   onTextareaName,
   onModalToggle,
   taskName,
-  taskDesc
+  taskDesc,
+  modalName,
+  listId
 }: IProps) => (
   <Modal modalClick={onModalToggle} containerStyles={ContainerStyles}>
-    <ModalTitle>New task</ModalTitle>
-    <ModalForm onSubmit={onSubmitForm}>
+    <ModalTitle>{`New ${modalName}`}</ModalTitle>
+    <ModalForm>
       <ModalField>
         <Field
           name="Name"
@@ -67,14 +71,16 @@ export default ({
           autoFocus={true}
         />
       </ModalField>
-      <ModalField>
-        <Field
-          name="Description"
-          onChange={onTextareaDesc}
-          value={taskDesc}
-          autoFocus={false}
-        />
-      </ModalField>
+      {listId && (
+        <ModalField>
+          <Field
+            name="Description"
+            onChange={onTextareaDesc}
+            value={taskDesc}
+            autoFocus={false}
+          />
+        </ModalField>
+      )}
       <ModalFooter>
         <Button name="Cancel" onClick={onModalToggle} />
         <Button name="Create" onClick={onSubmitForm} />

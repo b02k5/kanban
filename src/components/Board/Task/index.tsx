@@ -1,6 +1,14 @@
 import React, { PureComponent } from "react";
+import { connect } from "react-redux";
+
+import { TaskArguments } from "../../../store/types/tasks";
+import { addTask } from "../../../store/actions/tasks";
 import TaskLayout from "./layout";
 import { TaskType } from "../../../store/types/tasks";
+
+interface IDispatchProps {
+  addTask: ({  }: TaskArguments) => void;
+}
 
 interface IProps {
   task: TaskType;
@@ -11,7 +19,9 @@ interface IState {
   isModalOpen: boolean;
 }
 
-export default class Task extends PureComponent<IProps, IState> {
+type Props = IDispatchProps & IProps;
+
+class Task extends PureComponent<Props, IState> {
   public state = {
     isModalOpen: false
   };
@@ -29,6 +39,12 @@ export default class Task extends PureComponent<IProps, IState> {
 
   private _noAllowDropHandle = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation();
+  };
+
+  private modalToggleHandle = () => {
+    this.setState(prevState => ({
+      isModalOpen: !prevState.isModalOpen
+    }));
   };
 
   public taskHandle = () => {
@@ -49,3 +65,11 @@ export default class Task extends PureComponent<IProps, IState> {
     );
   }
 }
+const mapDispatchToProps: IDispatchProps = {
+  addTask
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Task);

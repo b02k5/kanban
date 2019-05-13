@@ -1,17 +1,11 @@
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
-
-import { TaskArguments } from "../../../store/types/tasks";
-import { addTask } from "../../../store/actions/tasks";
 import TaskDetailsLayout from "./layout";
 
-interface IDispatchProps {
-  addTask: ({  }: TaskArguments) => void;
-}
-
 interface IProps {
-  listId: number;
+  listId?: number;
+  modalName: string;
   onModalToggle: () => void;
+  action: ({  }: any) => void;
 }
 
 interface IState {
@@ -19,17 +13,29 @@ interface IState {
   taskDesc: string;
 }
 
-type Props = IProps & IDispatchProps;
-
-class TaskDetails extends PureComponent<Props, IState> {
+export default class TaskDetails extends PureComponent<IProps, IState> {
   public state = {
     taskName: "",
     taskDesc: ""
   };
 
-  public submitFormHandle = () => {
-    if (this.state.taskName && this.state.taskDesc !== "") {
-      this.addTaskHandle();
+  public submitFormHandle = (e: any) => {
+    if (this.props.listId) {
+      if (this.state.taskName && this.state.taskDesc !== "") {
+        e.preventDefault();
+        const addTaskArguments = {
+          listId: this.props.listId,
+          name: this.state.taskName,
+          description: this.state.taskDesc
+        };
+
+        this.props.action(addTaskArguments);
+      }
+    } else {
+      if (this.state.taskName !== "") {
+        e.preventDefault();
+        this.props.action({ name: this.state.taskName });
+      }
     }
   };
 
@@ -45,20 +51,6 @@ class TaskDetails extends PureComponent<Props, IState> {
     });
   };
 
-  public addTaskHandle = () => {
-    const taskId: number = new Date().getTime();
-
-    const taskArguments = {
-      listId: this.props.listId,
-      id: taskId,
-      name: this.state.taskName,
-      description: this.state.taskDesc
-    };
-
-    this.props.addTask(taskArguments);
-    this.props.onModalToggle();
-  };
-
   public render() {
     return (
       <TaskDetailsLayout
@@ -71,12 +63,3 @@ class TaskDetails extends PureComponent<Props, IState> {
     );
   }
 }
-
-const mapDispatchToProps: IDispatchProps = {
-  addTask
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(TaskDetails);
