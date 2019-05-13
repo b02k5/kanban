@@ -5,7 +5,7 @@ import ReactSVG from "react-svg";
 import { IList } from "../../../store/types/lists";
 import Task from "../Task";
 import { TaskType } from "../../../store/types/tasks";
-import TaskDetails from "../../Modal/TaskDetails/index";
+import AddModal from "../../Modal/AddModal/index";
 
 import plusCircle from "../../../assets/images/svg/plus-circle.svg";
 
@@ -221,7 +221,7 @@ export default ({
       </Tasks>
     </ListItemWrapper>
     {isModalOpen && (
-      <TaskDetails
+      <AddModal
         modalName="task"
         action={onAddTask}
         listId={list.id}

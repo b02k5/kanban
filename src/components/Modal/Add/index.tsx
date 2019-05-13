@@ -13,7 +13,7 @@ interface IState {
   taskDesc: string;
 }
 
-export default class TaskDetails extends PureComponent<IProps, IState> {
+export default class AddModal extends PureComponent<IProps, IState> {
   public state = {
     taskName: "",
     taskDesc: ""

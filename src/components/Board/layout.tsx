@@ -6,7 +6,7 @@ import { BoardType } from "../../store/types/boards";
 import List from "./List";
 import { IList } from "../../store/types/lists";
 import plusCircle from "../../assets/images/svg/plus-bg.svg";
-import TaskDetails from "../Modal/TaskDetails/index";
+import TaskDetails from "../Modal/AddModal/index";
 
 interface IProps {
   activeBoard: BoardType | undefined;
