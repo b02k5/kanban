@@ -47,12 +47,6 @@ class Task extends PureComponent<Props, IState> {
     }));
   };
 
-  public taskHandle = () => {
-    this.setState(prevState => ({
-      isModalOpen: !prevState.isModalOpen
-    }));
-  };
-
   render() {
     return (
       <TaskLayout
@@ -60,7 +54,7 @@ class Task extends PureComponent<Props, IState> {
         {...this.state}
         onDrag={this._dragHandle}
         onNoAllowDrop={this._noAllowDropHandle}
-        onTask={this.taskHandle}
+        onModalToggle={this.modalToggleHandle}
       />
     );
   }
