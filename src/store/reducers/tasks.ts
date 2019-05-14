@@ -35,6 +35,26 @@ export const tasks: Reducer<TasksState, TaskAction> = (state = {}, action) => {
         };
       }
     }
+    case taskConstants.EDIT_TASK_NAME: {
+      const { id, name } = action.payload;
+      return {
+        ...state,
+        [id]: {
+          ...state[id],
+          name
+        }
+      };
+    }
+    case taskConstants.EDIT_TASK_DESCRIPTION: {
+      const { id, description } = action.payload;
+      return {
+        ...state,
+        [id]: {
+          ...state[id],
+          description
+        }
+      };
+    }
     default:
       return {
         ...state

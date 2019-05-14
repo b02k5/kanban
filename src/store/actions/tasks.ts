@@ -1,4 +1,10 @@
-import { AddTaskAction, RemoveTaskAction, TaskArguments } from "../types/tasks";
+import {
+  AddTaskAction,
+  RemoveTaskAction,
+  TaskArguments,
+  EditTaskNameAction,
+  EditTaskDescriptionAction
+} from "../types/tasks";
 import { taskConstants } from "../constants/tasks";
 
 export const addTask = ({
@@ -30,3 +36,22 @@ export const removeTask = (
 export const addTaskMiddleware = (...actions: any) => (dispatch: any) => {
   [...actions].map(action => dispatch(action));
 };
+
+export const editTaskName = (id: number, name: string): EditTaskNameAction => ({
+  type: taskConstants.EDIT_TASK_NAME,
+  payload: {
+    id,
+    name
+  }
+});
+
+export const editTaskDescription = (
+  id: number,
+  description: string
+): EditTaskDescriptionAction => ({
+  type: taskConstants.EDIT_TASK_DESCRIPTION,
+  payload: {
+    id,
+    description
+  }
+});
