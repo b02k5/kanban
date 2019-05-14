@@ -5,7 +5,7 @@ import ReactSVG from "react-svg";
 import { IList } from "../../../store/types/lists";
 import Task from "../Task";
 import { TaskType } from "../../../store/types/tasks";
-import AddModal from "../../Modal/AddModal/index";
+import AddModal from "../../Modal/Add/index";
 
 import plusCircle from "../../../assets/images/svg/plus-circle.svg";
 

@@ -6,7 +6,7 @@ import { BoardType } from "../../store/types/boards";
 import List from "./List";
 import { IList } from "../../store/types/lists";
 import plusCircle from "../../assets/images/svg/plus-bg.svg";
-import TaskDetails from "../Modal/AddModal/index";
+import AddModal from "../Modal/Add";
 
 interface IProps {
   activeBoard: BoardType | undefined;
@@ -76,7 +76,7 @@ export default ({
               />
             </BoardAddListButton>
             {isModalOpen && (
-              <TaskDetails
+              <AddModal
                 modalName="list"
                 action={onAddList}
                 onModalToggle={onModalToggle}
