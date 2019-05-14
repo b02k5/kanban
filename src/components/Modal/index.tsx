@@ -25,11 +25,11 @@ const ModalWrapper = styled.div``;
 
 const CloseButton = styled.button`
   position: absolute;
-  top: -40px;
-  right: -40px;
+  top: 0;
+  right: 0;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
+  border-radius: 0 10px 0 10px;
   background-color: #ffffff;
   border: 0;
   padding: 0;
@@ -38,6 +38,8 @@ const CloseButton = styled.button`
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  background-color: rgb(78, 79, 83);
+  transition: 0.15s;
   &::before,
   &::after {
     content: "";
@@ -45,7 +47,7 @@ const CloseButton = styled.button`
     width: 17px;
     height: 2px;
     border-radius: 7px;
-    background-color: #77787a;
+    background-color: white;
   }
   &::before {
     transform: rotate(45deg);
