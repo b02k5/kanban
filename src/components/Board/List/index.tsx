@@ -32,7 +32,6 @@ interface IDispatchProps {
 interface IState {
   taskName: string;
   isAddTaskInputOpen: boolean;
-  isDraggable: boolean;
   isModalOpen: boolean;
 }
 
@@ -42,7 +41,6 @@ class List extends PureComponent<Props, IState> {
   public state = {
     taskName: "",
     isAddTaskInputOpen: false,
-    isDraggable: false,
     isModalOpen: false
   };
 
@@ -86,45 +84,6 @@ class List extends PureComponent<Props, IState> {
     this.props.removeList(boardId, listId, tasks);
   };
 
-  private _dropHandle = (e: React.DragEvent<HTMLElement>, listId: number) => {
-    const data = e.dataTransfer.getData("transfer");
-    const parseData = JSON.parse(data);
-
-    if (parseData.listIdDraggable !== listId) {
-      e.preventDefault();
-
-      const taskArguments = {
-        listId,
-        id: parseData.task.id,
-        name: parseData.task.name,
-        description: "hello"
-      };
-
-      this.props.addTaskMiddleware(
-        addTask(taskArguments),
-        removeTask(parseData.listIdDraggable, parseData.task.id)
-      );
-    }
-
-    this.setState({
-      isDraggable: false
-    });
-  };
-
-  private _dragOverHandle = (e: React.DragEvent<HTMLElement>) => {
-    e.preventDefault();
-
-    this.setState({
-      isDraggable: true
-    });
-  };
-
-  private _dragLeaveHandle = () => {
-    this.setState({
-      isDraggable: false
-    });
-  };
-
   public render(): JSX.Element {
     return (
       <ListLayout
@@ -133,9 +92,6 @@ class List extends PureComponent<Props, IState> {
         onRemoveList={this.removeListHandle}
         onSetTaskName={this.setTaskNameHandle}
         onEditNameList={this.editNameListHandle}
-        onDrop={this._dropHandle}
-        onDragOver={this._dragOverHandle}
-        onDragLeave={this._dragLeaveHandle}
         addItemInputRef={this.addItemInputRef}
         onModalToggle={this.modalToggleHandle}
         onAddTask={this.addTaskHandle}

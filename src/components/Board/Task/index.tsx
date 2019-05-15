@@ -13,6 +13,7 @@ interface IDispatchProps {
 interface IProps {
   task: TaskType;
   listId: number;
+  index: number;
 }
 
 interface IState {

@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
+import { Draggable } from "react-beautiful-dnd";
 
 import { TaskType } from "../../../store/types/tasks";
 import TaskDetails from "../../Modal/TaskDetails";
@@ -8,6 +9,7 @@ interface IProps {
   task: TaskType;
   listId: number;
   isModalOpen: boolean;
+  index: number;
   onDrag: (
     e: React.DragEvent<HTMLDivElement>,
     task: TaskType,
@@ -73,27 +75,34 @@ export default ({
   onNoAllowDrop,
   listId,
   isModalOpen,
-  onModalToggle
+  onModalToggle,
+  index
 }: IProps) => (
   <Fragment>
-    <BoardTask
-      draggable={true}
-      onDragStart={e => onDrag(e, task, listId)}
-      onDragOver={onNoAllowDrop}
-      onClick={onModalToggle}
-    >
-      <BoardTime>{task.date}</BoardTime>
-      <BoardTaskName>{task.name}</BoardTaskName>
-      <BoardDescription>{task.description}</BoardDescription>
-      <BoardFooter>
-        <BoardTagList>
-          <BoardTagItem>
-            <BoardTag>UI</BoardTag>
-          </BoardTagItem>
-        </BoardTagList>
-      </BoardFooter>
-    </BoardTask>
-
+    <Draggable draggableId={`${task.id}`} index={index}>
+      {(provided: any) => (
+        <BoardTask
+          draggable={true}
+          onDragStart={e => onDrag(e, task, listId)}
+          onDragOver={onNoAllowDrop}
+          onClick={onModalToggle}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          ref={provided.innerRef}
+        >
+          <BoardTime>{task.date}</BoardTime>
+          <BoardTaskName>{task.name}</BoardTaskName>
+          <BoardDescription>{task.description}</BoardDescription>
+          <BoardFooter>
+            <BoardTagList>
+              <BoardTagItem>
+                <BoardTag>UI</BoardTag>
+              </BoardTagItem>
+            </BoardTagList>
+          </BoardFooter>
+        </BoardTask>
+      )}
+    </Draggable>
     {isModalOpen && <TaskDetails task={task} modalClick={onModalToggle} />}
   </Fragment>
 );

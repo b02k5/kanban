@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ReactSVG from "react-svg";
+import { Droppable } from "react-beautiful-dnd";
 
 import { IList } from "../../../store/types/lists";
 import Task from "../Task";
@@ -14,7 +15,6 @@ interface IProps {
   tasks: TaskType[];
   taskName: string;
   isAddTaskInputOpen: boolean;
-  isDraggable: boolean;
   addItemInputRef: React.RefObject<HTMLInputElement>;
   isModalOpen: boolean;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -23,28 +23,13 @@ interface IProps {
     e: React.ChangeEvent<HTMLTextAreaElement>,
     listId: number
   ) => void;
-  onDrop: (e: React.DragEvent<HTMLElement>, listId: number) => void;
-  onDragOver: (e: React.DragEvent<HTMLElement>) => void;
-  onDragLeave: () => void;
   onModalToggle: () => void;
   onAddTask: ({  }: any) => void;
 }
 
-const ListItemWrapper = styled.div<{ isDraggable: boolean }>`
+const ListItemWrapper = styled.div`
   position: relative;
   width: 280px;
-  ${props =>
-    props.isDraggable &&
-    `&::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,.4);
-      z-index: 1;
-    }`}
 `;
 const ListItem = styled.li`
   margin-right: 40px;
@@ -171,20 +156,11 @@ export default ({
   onEditNameList,
   tasks,
   onModalToggle,
-  onDrop,
-  onDragOver,
-  isDraggable,
-  onDragLeave,
   isModalOpen,
   onAddTask
 }: IProps): JSX.Element => (
-  <ListItem
-    id={`${list.id}`}
-    onDrop={e => onDrop(e, list.id)}
-    onDragOver={onDragOver}
-    onDragLeave={onDragLeave}
-  >
-    <ListItemWrapper isDraggable={isDraggable}>
+  <ListItem id={`${list.id}`}>
+    <ListItemWrapper>
       <ListHeader>
         <ListName
           onChange={e => onEditNameList(e, list.id)}
@@ -211,14 +187,18 @@ export default ({
           <ListAddTaskButtonSpan>Add new item</ListAddTaskButtonSpan>
         </ListAddTaskButton>
       </ListAddItemWrapper>
-
-      <Tasks>
-        {[...tasks].map(task => (
-          <TasksItem key={task.id}>
-            <Task task={task} listId={list.id} />
-          </TasksItem>
-        ))}
-      </Tasks>
+      <Droppable key={list.id} droppableId={`${list.id}`}>
+        {(provided: any) => (
+          <Tasks {...provided.droppableProps} ref={provided.innerRef}>
+            {[...tasks].map((task, index) => (
+              <TasksItem key={task.id}>
+                <Task task={task} listId={list.id} index={index} />
+              </TasksItem>
+            ))}
+            {provided.placeholder}
+          </Tasks>
+        )}
+      </Droppable>
     </ListItemWrapper>
     {isModalOpen && (
       <AddModal
