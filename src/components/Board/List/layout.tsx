@@ -191,7 +191,7 @@ export default ({
           <Tasks {...provided.droppableProps} ref={provided.innerRef}>
             {[...tasks].map((task, index) => (
               <TasksItem key={task.id}>
-                <Task task={task} listId={list.id} index={index} />
+                <Task task={task} index={index} />
               </TasksItem>
             ))}
             {provided.placeholder}

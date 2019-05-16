@@ -7,15 +7,8 @@ import TaskDetails from "../../Modal/TaskDetails";
 
 interface IProps {
   task: TaskType;
-  listId: number;
   isModalOpen: boolean;
   index: number;
-  onDrag: (
-    e: React.DragEvent<HTMLDivElement>,
-    task: TaskType,
-    listId: number
-  ) => void;
-  onNoAllowDrop: (e: React.DragEvent<HTMLDivElement>) => void;
   onModalToggle: () => void;
 }
 
@@ -70,22 +63,12 @@ const BoardTag = styled.span`
   border-radius: 20px;
 `;
 
-export default ({
-  task,
-  onDrag,
-  onNoAllowDrop,
-  listId,
-  isModalOpen,
-  onModalToggle,
-  index
-}: IProps) => (
+export default ({ task, isModalOpen, onModalToggle, index }: IProps) => (
   <Fragment>
     <Draggable draggableId={`${task.id}`} index={index}>
       {(provided: any) => (
         <BoardTask
           draggable={true}
-          onDragStart={e => onDrag(e, task, listId)}
-          onDragOver={onNoAllowDrop}
           onClick={onModalToggle}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
