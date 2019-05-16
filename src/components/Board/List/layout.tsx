@@ -111,36 +111,25 @@ const RemoveListCircle = styled.span`
   }
 `;
 
-const AddTaskWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-bottom: 10px;
-`;
-
-const AddTaskSpan = styled.span`
-  color: #122144;
-  display: block;
-  padding-left: 22px;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 500;
-`;
-
 const AddTask = styled.button`
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 30px;
-  padding: 0 10px;
+  color: #9ba8b0;
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+  width: 100%;
+  padding: 15px 47px;
   border: 0;
-  border-radius: 15px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: 0.1s;
-  background-color: transparent;
+  transition: 0.15s;
+  background-color: rgba(255, 255, 255, 0.5);
   &:hover {
-    background-color: white;
+    color: #3d3f43;
+    background-color: #dde1e7;
   }
 `;
 
@@ -176,23 +165,6 @@ export default ({
           <RemoveListCircle />
         </RemoveList>
       </Header>
-      <AddTaskWrapper>
-        <AddTask onClick={onModalToggle}>
-          <ReactSVG
-            src={plusCircle}
-            svgStyle={{
-              position: "absolute",
-              top: "50%",
-              left: 10,
-              transform: "translateY(-50%)",
-              width: 15,
-              height: 15,
-              fill: "#122144"
-            }}
-          />
-          <AddTaskSpan>Add new item</AddTaskSpan>
-        </AddTask>
-      </AddTaskWrapper>
       <Droppable key={list.id} droppableId={`${list.id}`}>
         {(provided: any) => (
           <Tasks {...provided.droppableProps} ref={provided.innerRef}>
@@ -205,6 +177,21 @@ export default ({
           </Tasks>
         )}
       </Droppable>
+      <AddTask onClick={onModalToggle}>
+        <ReactSVG
+          src={plusCircle}
+          svgStyle={{
+            position: "absolute",
+            top: "50%",
+            left: 25,
+            transform: "translateY(-50%)",
+            width: 15,
+            height: 15,
+            fill: "#9ba8b0"
+          }}
+        />
+        Add new item
+      </AddTask>
     </Wrapper>
     {isModalOpen && (
       <AddModal
