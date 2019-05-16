@@ -41,13 +41,28 @@ export const lists: Reducer<ListsState, ListsAction> = (state = {}, action) => {
         }
       };
     }
-    case taskConstants.REMOVE_TASK: {
-      const { listId, taskId } = action.payload;
+    case taskConstants.MOVE_TASK: {
+      const {
+        sourceListId,
+        taskId,
+        targetListId,
+        destinationIndex
+      } = action.payload;
       return {
         ...state,
-        [listId]: {
-          ...state[listId],
-          tasks: state[listId].tasks.filter(task => task !== taskId)
+        [sourceListId]: {
+          ...state[sourceListId],
+          tasks: state[sourceListId].tasks.filter(
+            task => task !== Number(taskId)
+          )
+        },
+        [targetListId]: {
+          ...state[targetListId],
+          ...state[targetListId].tasks.splice(
+            destinationIndex,
+            0,
+            Number(taskId)
+          )
         }
       };
     }
@@ -56,7 +71,7 @@ export const lists: Reducer<ListsState, ListsAction> = (state = {}, action) => {
       const currentList = state[listId];
       const newTasks = [...currentList.tasks];
       newTasks.splice(sourceIndex, 1);
-      newTasks.splice(destinationIndex, 0, taskId);
+      newTasks.splice(destinationIndex, 0, Number(taskId));
 
       return {
         ...state,

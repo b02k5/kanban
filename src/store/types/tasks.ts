@@ -1,6 +1,6 @@
 import {
   ADD_TASK,
-  REMOVE_TASK,
+  MOVE_TASK,
   EDIT_TASK_NAME,
   EDIT_TASK_DESCRIPTION
 } from "../constants/tasks";
@@ -38,11 +38,13 @@ export interface AddTaskAction {
   };
 }
 
-export interface RemoveTaskAction {
-  type: REMOVE_TASK;
+export interface MoveTaskAction {
+  type: MOVE_TASK;
   payload: {
-    listId: number;
+    sourceListId: number;
     taskId: number;
+    targetListId: number;
+    destinationIndex: number;
   };
 }
 

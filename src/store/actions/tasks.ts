@@ -1,6 +1,6 @@
 import {
   AddTaskAction,
-  RemoveTaskAction,
+  MoveTaskAction,
   TaskArguments,
   EditTaskNameAction,
   EditTaskDescriptionAction
@@ -23,13 +23,17 @@ export const addTask = ({
 });
 
 export const removeTask = (
-  listId: number,
-  taskId: number
-): RemoveTaskAction => ({
-  type: taskConstants.REMOVE_TASK,
+  sourceListId: number,
+  taskId: number,
+  targetListId: number,
+  destinationIndex: number
+): MoveTaskAction => ({
+  type: taskConstants.MOVE_TASK,
   payload: {
-    listId,
-    taskId
+    sourceListId,
+    taskId,
+    targetListId,
+    destinationIndex
   }
 });
 
