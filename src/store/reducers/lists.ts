@@ -51,6 +51,21 @@ export const lists: Reducer<ListsState, ListsAction> = (state = {}, action) => {
         }
       };
     }
+    case listConstants.CHANGE_POSITION_TASKS: {
+      const { listId, taskId, sourceIndex, destinationIndex } = action.payload;
+      const currentList = state[listId];
+      const newTasks = [...currentList.tasks];
+      newTasks.splice(sourceIndex, 1);
+      newTasks.splice(destinationIndex, 0, taskId);
+
+      return {
+        ...state,
+        [listId]: {
+          ...state[listId],
+          tasks: newTasks
+        }
+      };
+    }
     default:
       return {
         ...state

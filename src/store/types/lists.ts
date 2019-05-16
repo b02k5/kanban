@@ -1,4 +1,9 @@
-import { ADD_LIST, REMOVE_LIST, EDIT_NAME_LIST } from "../constants/lists";
+import {
+  ADD_LIST,
+  REMOVE_LIST,
+  EDIT_NAME_LIST,
+  CHANGE_POSITION_TASKS
+} from "../constants/lists";
 import { AddTaskAction, RemoveTaskAction } from "../types/tasks";
 
 export type ListsState = { [listId: number]: IList };
@@ -35,9 +40,22 @@ export interface EditListNameAction {
   };
 }
 
+export interface ChangePositionTasks {
+  type: CHANGE_POSITION_TASKS;
+  payload: ChangePositionTasksArgs;
+}
+
+export interface ChangePositionTasksArgs {
+  listId: number;
+  taskId: number;
+  sourceIndex: number;
+  destinationIndex: number;
+}
+
 export type ListsAction =
   | AddListAction
   | RemoveListAction
   | EditListNameAction
   | AddTaskAction
-  | RemoveTaskAction;
+  | RemoveTaskAction
+  | ChangePositionTasks;
