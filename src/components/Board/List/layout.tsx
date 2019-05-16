@@ -27,25 +27,27 @@ interface IProps {
   onAddTask: ({  }: any) => void;
 }
 
-const ListItemWrapper = styled.div`
-  position: relative;
-  width: 280px;
-`;
-const ListItem = styled.li`
-  margin-right: 40px;
+const List = styled.li`
+  margin-right: 25px;
   flex: 0 0 auto;
 `;
 
-const ListHeader = styled.div`
+const Wrapper = styled.div`
+  position: relative;
+  width: 280px;
+`;
+
+const Header = styled.div`
   position: relative;
   height: 30px;
+  padding-left: 10px;
   margin-bottom: 13px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 `;
-const ListName = styled.textarea`
+const Name = styled.textarea`
   color: #36373a;
   font-size: 22px;
   line-height: 27px;
@@ -53,7 +55,7 @@ const ListName = styled.textarea`
   width: 100%;
   height: 30px;
   margin: 0;
-  padding: 0 20px 0 0;
+  padding: 0;
   border: 0;
   border-bottom: 1px solid transparent;
   background-color: transparent;
@@ -65,21 +67,26 @@ const ListName = styled.textarea`
     border-bottom: 1px solid rgba(18, 33, 68, 0.15);
   }
 `;
-const ListRemoveButton = styled.button`
+const RemoveList = styled.button`
   margin: 0;
   padding: 0;
-  width: 20px;
+  width: 25px;
   height: 30px;
   border: 0;
+  border-radius: 3px;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   background-color: transparent;
+  transition: 0.15s;
+  &:hover {
+    background-color: rgba(78, 79, 83, 0.1);
+  }
 `;
 
-const ListRemoveButtonCircle = styled.span`
+const RemoveListCircle = styled.span`
   position: relative;
   display: block;
   width: 4px;
@@ -104,14 +111,14 @@ const ListRemoveButtonCircle = styled.span`
   }
 `;
 
-const ListAddItemWrapper = styled.div`
+const AddTaskWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
   margin-bottom: 10px;
 `;
 
-const ListAddTaskButtonSpan = styled.span`
+const AddTaskSpan = styled.span`
   color: #122144;
   display: block;
   padding-left: 22px;
@@ -120,7 +127,7 @@ const ListAddTaskButtonSpan = styled.span`
   font-weight: 500;
 `;
 
-const ListAddTaskButton = styled.button`
+const AddTask = styled.button`
   position: relative;
   display: flex;
   flex-direction: row;
@@ -158,19 +165,19 @@ export default ({
   isModalOpen,
   onAddTask
 }: IProps): JSX.Element => (
-  <ListItem id={`${list.id}`}>
-    <ListItemWrapper>
-      <ListHeader>
-        <ListName
+  <List id={`${list.id}`}>
+    <Wrapper>
+      <Header>
+        <Name
           onChange={e => onEditNameList(e, list.id)}
           defaultValue={list.name}
         />
-        <ListRemoveButton onClick={() => onRemoveList(list.id, list.tasks)}>
-          <ListRemoveButtonCircle />
-        </ListRemoveButton>
-      </ListHeader>
-      <ListAddItemWrapper>
-        <ListAddTaskButton onClick={onModalToggle}>
+        <RemoveList onClick={() => onRemoveList(list.id, list.tasks)}>
+          <RemoveListCircle />
+        </RemoveList>
+      </Header>
+      <AddTaskWrapper>
+        <AddTask onClick={onModalToggle}>
           <ReactSVG
             src={plusCircle}
             svgStyle={{
@@ -183,9 +190,9 @@ export default ({
               fill: "#122144"
             }}
           />
-          <ListAddTaskButtonSpan>Add new item</ListAddTaskButtonSpan>
-        </ListAddTaskButton>
-      </ListAddItemWrapper>
+          <AddTaskSpan>Add new item</AddTaskSpan>
+        </AddTask>
+      </AddTaskWrapper>
       <Droppable key={list.id} droppableId={`${list.id}`}>
         {(provided: any) => (
           <Tasks {...provided.droppableProps} ref={provided.innerRef}>
@@ -198,7 +205,7 @@ export default ({
           </Tasks>
         )}
       </Droppable>
-    </ListItemWrapper>
+    </Wrapper>
     {isModalOpen && (
       <AddModal
         modalName="task"
@@ -207,5 +214,5 @@ export default ({
         onModalToggle={onModalToggle}
       />
     )}
-  </ListItem>
+  </List>
 );
