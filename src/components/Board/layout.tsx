@@ -17,20 +17,34 @@ interface IProps {
 }
 
 const Board = styled.div``;
-const BoardName = styled.h1``;
-const BoardList = styled.ul`
+const Header = styled.header`
+  padding: 10px 30px;
+  background-color: #fdfdfd;
+  border-bottom: 1px solid #d9d8da;
+`;
+const Name = styled.h1`
+  color: #3d3f43;
+  font-size: 20px;
+  line-height: 33px;
+  font-weight: 700;
+  margin: 0;
+`;
+
+const Content = styled.div`
+  padding: 20px;
+`;
+const Lists = styled.ul`
   list-style-type: none;
   margin: 0;
   padding: 0;
   display: flex;
 `;
 
-const AddList = styled.div`
+const AddListWrapper = styled.div`
   flex: 0 0 auto;
-  margin-left: 10px;
 `;
 
-const BoardAddListButton = styled.button`
+const AddListButton = styled.button`
   width: 30px;
   height: 30px;
   display: flex;
@@ -59,31 +73,35 @@ export default ({
   <Board>
     {activeBoard && (
       <Fragment>
-        <BoardName>{activeBoard.name}</BoardName>
-        <BoardList>
-          {[...lists].map(list => (
-            <List key={list.id} list={list} boardId={activeBoard.id} />
-          ))}
-          <AddList>
-            <BoardAddListButton onClick={onModalToggle}>
-              <ReactSVG
-                src={plusCircle}
-                svgStyle={{
-                  width: 35,
-                  height: 35,
-                  fill: "#122144"
-                }}
-              />
-            </BoardAddListButton>
-            {isModalOpen && (
-              <AddModal
-                modalName="list"
-                action={onAddList}
-                onModalToggle={onModalToggle}
-              />
-            )}
-          </AddList>
-        </BoardList>
+        <Header>
+          <Name>{activeBoard.name}</Name>
+        </Header>
+        <Content>
+          <Lists>
+            {[...lists].map(list => (
+              <List key={list.id} list={list} boardId={activeBoard.id} />
+            ))}
+            <AddListWrapper>
+              <AddListButton onClick={onModalToggle}>
+                <ReactSVG
+                  src={plusCircle}
+                  svgStyle={{
+                    width: 35,
+                    height: 35,
+                    fill: "#122144"
+                  }}
+                />
+              </AddListButton>
+              {isModalOpen && (
+                <AddModal
+                  modalName="list"
+                  action={onAddList}
+                  onModalToggle={onModalToggle}
+                />
+              )}
+            </AddListWrapper>
+          </Lists>
+        </Content>
       </Fragment>
     )}
   </Board>
