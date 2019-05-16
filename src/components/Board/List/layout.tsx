@@ -144,7 +144,6 @@ const Tasks = styled.ul`
 `;
 const TasksItem = styled.li`
   width: 100%;
-  margin-bottom: 10px;
   &:last-child {
     margin-bottom: 0;
   }

@@ -25,6 +25,7 @@ const BoardTask = styled.div`
   border-radius: 5px;
   background-color: white;
   cursor: pointer;
+  margin-bottom: 10px;
 `;
 
 const BoardTaskName = styled.h3`
