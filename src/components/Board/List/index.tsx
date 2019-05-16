@@ -3,11 +3,7 @@ import { connect } from "react-redux";
 import ListLayout from "./layout";
 import { IList } from "../../../store/types/lists";
 import { removeList, editListName } from "../../../store/actions/lists";
-import {
-  addTask,
-  removeTask,
-  addTaskMiddleware
-} from "../../../store/actions/tasks";
+import { addTask } from "../../../store/actions/tasks";
 import { AppState } from "../../../store";
 import { getTasks } from "../../../store/selectors/tasks";
 import { TaskType, TaskArguments } from "../../../store/types/tasks";
@@ -25,8 +21,6 @@ interface IDispatchProps {
   removeList: (boardId: number, listId: number, tasks: Array<number>) => void;
   editListName: (listId: number, nameList: string) => void;
   addTask: ({  }: TaskArguments) => void;
-  removeTask: (listId: number, taskId: number) => void;
-  addTaskMiddleware: (...actions: any) => void;
 }
 
 interface IState {
@@ -107,9 +101,7 @@ const mapStateToProps = (state: AppState, ownProps: any): IStateToProps => ({
 const mapDispatchToProps: IDispatchProps = {
   removeList,
   editListName,
-  addTask,
-  removeTask,
-  addTaskMiddleware
+  addTask
 };
 
 export default connect(

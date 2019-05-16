@@ -37,10 +37,6 @@ export const removeTask = (
   }
 });
 
-export const addTaskMiddleware = (...actions: any) => (dispatch: any) => {
-  [...actions].map(action => dispatch(action));
-};
-
 export const editTaskName = (id: number, name: string): EditTaskNameAction => ({
   type: taskConstants.EDIT_TASK_NAME,
   payload: {
