@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ReactSVG from "react-svg";
-import { Droppable } from "react-beautiful-dnd";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 
 import { IList } from "../../../store/types/lists";
 import Task from "../Task";
@@ -17,6 +17,7 @@ interface IProps {
   isAddTaskInputOpen: boolean;
   addItemInputRef: React.RefObject<HTMLInputElement>;
   isModalOpen: boolean;
+  index: number;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveList: (listId: number, tasks: Array<number>) => void;
   onEditNameList: (
@@ -46,6 +47,7 @@ const Header = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  background-color: red;
 `;
 const Name = styled.textarea`
   color: #36373a;
@@ -152,54 +154,63 @@ export default ({
   tasks,
   onModalToggle,
   isModalOpen,
-  onAddTask
+  onAddTask,
+  index
 }: IProps): JSX.Element => (
-  <List id={`${list.id}`}>
-    <Wrapper>
-      <Header>
-        <Name
-          onChange={e => onEditNameList(e, list.id)}
-          defaultValue={list.name}
-        />
-        <RemoveList onClick={() => onRemoveList(list.id, list.tasks)}>
-          <RemoveListCircle />
-        </RemoveList>
-      </Header>
-      <Droppable key={list.id} droppableId={`${list.id}`}>
-        {(provided: any) => (
-          <Tasks {...provided.droppableProps} ref={provided.innerRef}>
-            {[...tasks].map((task, index) => (
-              <TasksItem key={task.id}>
-                <Task task={task} index={index} />
-              </TasksItem>
-            ))}
-            {provided.placeholder}
-          </Tasks>
+  <Draggable draggableId={`${list.id}`} index={index}>
+    {(provided: any) => (
+      <List
+        id={`${list.id}`}
+        {...provided.draggableProps}
+        ref={provided.innerRef}
+      >
+        <Wrapper>
+          <Header {...provided.dragHandleProps}>
+            <Name
+              onChange={e => onEditNameList(e, list.id)}
+              defaultValue={list.name}
+            />
+            <RemoveList onClick={() => onRemoveList(list.id, list.tasks)}>
+              <RemoveListCircle />
+            </RemoveList>
+          </Header>
+          <Droppable key={list.id} droppableId={`${list.id}`} type="task">
+            {(provided: any) => (
+              <Tasks {...provided.droppableProps} ref={provided.innerRef}>
+                {[...tasks].map((task, index) => (
+                  <TasksItem key={task.id}>
+                    <Task task={task} index={index} />
+                  </TasksItem>
+                ))}
+                {provided.placeholder}
+              </Tasks>
+            )}
+          </Droppable>
+          <AddTask onClick={onModalToggle}>
+            <ReactSVG
+              src={plusCircle}
+              svgStyle={{
+                position: "absolute",
+                top: "50%",
+                left: 30,
+                transform: "translateY(-50%)",
+                width: 15,
+                height: 15,
+                fill: "#9ba8b0"
+              }}
+            />
+            Add new item
+          </AddTask>
+        </Wrapper>
+        {isModalOpen && (
+          <AddModal
+            modalName="task"
+            action={onAddTask}
+            listId={list.id}
+            onModalToggle={onModalToggle}
+          />
         )}
-      </Droppable>
-      <AddTask onClick={onModalToggle}>
-        <ReactSVG
-          src={plusCircle}
-          svgStyle={{
-            position: "absolute",
-            top: "50%",
-            left: 30,
-            transform: "translateY(-50%)",
-            width: 15,
-            height: 15,
-            fill: "#9ba8b0"
-          }}
-        />
-        Add new item
-      </AddTask>
-    </Wrapper>
-    {isModalOpen && (
-      <AddModal
-        modalName="task"
-        action={onAddTask}
-        listId={list.id}
-        onModalToggle={onModalToggle}
-      />
+      </List>
     )}
-  </List>
+  </Draggable>
 );

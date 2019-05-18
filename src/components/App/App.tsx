@@ -5,8 +5,14 @@ import { connect } from "react-redux";
 
 import Main from "../Main";
 import Board from "../Board";
-import { changePositionTasks } from "../../store/actions/lists";
-import { ChangePositionTasksArgs } from "../../store/types/lists";
+import {
+  changePositionTasks,
+  changePositionList
+} from "../../store/actions/lists";
+import {
+  ChangePositionTasksArgs,
+  ChangePositionListArgs
+} from "../../store/types/lists";
 import { removeTask } from "../../store/actions/tasks";
 import "./App.css";
 
@@ -18,13 +24,14 @@ interface IDispatchToProps {
     taskId: number,
     destinationIndex: number
   ) => void;
+  changePositionList: ({  }: ChangePositionListArgs) => void;
 }
 
 type Props = IDispatchToProps;
 
 const onDragEnd = (result: any, props: any) => {
-  const { source, destination, draggableId } = result;
-  const { removeTask, changePositionTasks } = props;
+  const { source, destination, draggableId, type } = result;
+  const { removeTask, changePositionTasks, changePositionList } = props;
   if (!destination) {
     return;
   }
@@ -33,6 +40,17 @@ const onDragEnd = (result: any, props: any) => {
     destination.droppableId === source.droppableId &&
     destination.index === source.index
   ) {
+    return;
+  }
+
+  if (type === "list") {
+    const changePositionListArgs = {
+      boardId: source.droppableId,
+      listId: Number(draggableId),
+      sourceIndex: source.index,
+      destinationIndex: destination.index
+    };
+    changePositionList(changePositionListArgs);
     return;
   }
 
@@ -45,14 +63,14 @@ const onDragEnd = (result: any, props: any) => {
     };
     changePositionTasks(changePositionTasksArgs);
     return;
+  } else {
+    removeTask(
+      source.droppableId,
+      draggableId,
+      destination.droppableId,
+      destination.index
+    );
   }
-
-  removeTask(
-    source.droppableId,
-    draggableId,
-    destination.droppableId,
-    destination.index
-  );
 };
 
 const App: React.FunctionComponent<Props> = props => (
@@ -68,7 +86,8 @@ const App: React.FunctionComponent<Props> = props => (
 
 const mapDispatchToProps: IDispatchToProps = {
   changePositionTasks,
-  removeTask
+  removeTask,
+  changePositionList
 };
 
 export default connect(

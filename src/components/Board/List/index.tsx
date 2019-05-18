@@ -11,6 +11,7 @@ import { TaskType, TaskArguments } from "../../../store/types/tasks";
 interface IProps {
   list: IList;
   boardId: number;
+  index: number;
 }
 
 interface IStateToProps {

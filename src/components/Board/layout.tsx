@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import ReactSVG from "react-svg";
 import styled from "styled-components";
+import { Droppable } from "react-beautiful-dnd";
 
 import { BoardType } from "../../store/types/boards";
 import List from "./List";
@@ -77,30 +78,44 @@ export default ({
           <Name>{activeBoard.name}</Name>
         </Header>
         <Content>
-          <Lists>
-            {[...lists].map(list => (
-              <List key={list.id} list={list} boardId={activeBoard.id} />
-            ))}
-            <AddListWrapper>
-              <AddListButton onClick={onModalToggle}>
-                <ReactSVG
-                  src={plusCircle}
-                  svgStyle={{
-                    width: 35,
-                    height: 35,
-                    fill: "#122144"
-                  }}
-                />
-              </AddListButton>
-              {isModalOpen && (
-                <AddModal
-                  modalName="list"
-                  action={onAddList}
-                  onModalToggle={onModalToggle}
-                />
-              )}
-            </AddListWrapper>
-          </Lists>
+          <Droppable
+            droppableId={`${activeBoard.id}`}
+            direction="horizontal"
+            type="list"
+          >
+            {(provided: any) => (
+              <Lists {...provided.droppableProps} ref={provided.innerRef}>
+                {[...lists].map((list, index) => (
+                  <List
+                    key={list.id}
+                    index={index}
+                    list={list}
+                    boardId={activeBoard.id}
+                  />
+                ))}
+                <AddListWrapper>
+                  <AddListButton onClick={onModalToggle}>
+                    <ReactSVG
+                      src={plusCircle}
+                      svgStyle={{
+                        width: 35,
+                        height: 35,
+                        fill: "#122144"
+                      }}
+                    />
+                  </AddListButton>
+                  {isModalOpen && (
+                    <AddModal
+                      modalName="list"
+                      action={onAddList}
+                      onModalToggle={onModalToggle}
+                    />
+                  )}
+                </AddListWrapper>
+                {provided.placeholder}
+              </Lists>
+            )}
+          </Droppable>
         </Content>
       </Fragment>
     )}
