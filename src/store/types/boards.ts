@@ -1,5 +1,5 @@
 import { ADD_BOARD, ACTIVE_BOARD } from "../constants/boards";
-import { AddListAction, RemoveListAction } from "./lists";
+import { AddListAction, RemoveListAction, ChangePositionList } from "./lists";
 
 export type BoardsState = { [id: string]: BoardType };
 
@@ -7,8 +7,8 @@ export interface BoardType {
   id: number;
   name: string;
   isOpen: boolean;
-  lists: [];
-  tasks: [];
+  lists: Array<number>;
+  tasks: Array<number>;
 }
 
 export interface AddBoardAction {
@@ -28,4 +28,5 @@ export type BoardAction =
   | AddBoardAction
   | ActiveBoardAction
   | AddListAction
-  | RemoveListAction;
+  | RemoveListAction
+  | ChangePositionList;

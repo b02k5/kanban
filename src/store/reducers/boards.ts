@@ -54,6 +54,21 @@ export const boards: Reducer<BoardsState, BoardAction> = (
         }
       };
     }
+    case listConstants.CHANGE_POSITION_LIST: {
+      const { boardId, listId, sourceIndex, destinationIndex } = action.payload;
+      const currentBoard = state[boardId];
+      const newLists = [...currentBoard.lists];
+      newLists.splice(sourceIndex, 1);
+      newLists.splice(destinationIndex, 0, listId);
+
+      return {
+        ...state,
+        [boardId]: {
+          ...state[boardId],
+          lists: newLists
+        }
+      };
+    }
     default:
       return {
         ...state

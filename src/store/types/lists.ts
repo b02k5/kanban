@@ -2,7 +2,8 @@ import {
   ADD_LIST,
   REMOVE_LIST,
   EDIT_NAME_LIST,
-  CHANGE_POSITION_TASKS
+  CHANGE_POSITION_TASKS,
+  CHANGE_POSITION_LIST
 } from "../constants/lists";
 import { AddTaskAction, MoveTaskAction } from "../types/tasks";
 
@@ -48,6 +49,18 @@ export interface ChangePositionTasks {
 export interface ChangePositionTasksArgs {
   listId: number;
   taskId: number;
+  sourceIndex: number;
+  destinationIndex: number;
+}
+
+export interface ChangePositionList {
+  type: CHANGE_POSITION_LIST;
+  payload: ChangePositionListArgs;
+}
+
+export interface ChangePositionListArgs {
+  boardId: number;
+  listId: number;
   sourceIndex: number;
   destinationIndex: number;
 }
