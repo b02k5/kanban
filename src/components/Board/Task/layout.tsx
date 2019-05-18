@@ -14,7 +14,7 @@ interface IProps {
 
 const BoardTask = styled.div`
   width: 100%;
-  padding: 35px 30px 15px;
+  padding: 20px 30px;
   border-radius: 5px;
   background-color: white;
   cursor: pointer;
@@ -27,20 +27,22 @@ const BoardTaskName = styled.h3`
   line-height: 22px;
   font-weight: 500;
   display: block;
-  margin: 0 0 15px 0;
+  margin: 0 0 10px 0;
 `;
 
 const BoardTime = styled.time`
+  display: block;
   color: #9ba8b0;
   font-size: 11px;
   line-height: 16px;
+  margin-bottom: 2px;
 `;
 
 const BoardDescription = styled.p`
   color: #4e4f53;
   font-size: 13px;
   line-height: 18px;
-  margin: 0 0 30px 0;
+  margin: 0 0 20px 0;
 `;
 
 const BoardFooter = styled.div`
