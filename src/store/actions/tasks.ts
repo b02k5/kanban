@@ -24,7 +24,7 @@ export const addTask = ({
   }
 });
 
-export const removeTask = (
+export const moveTask = (
   sourceListId: number,
   taskId: number,
   targetListId: number,

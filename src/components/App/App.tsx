@@ -7,13 +7,13 @@ import Main from "../Main";
 import Board from "../Board";
 import { changePositionList } from "../../store/actions/lists";
 import { ChangePositionListArgs } from "../../store/types/lists";
-import { removeTask, changePositionTasks } from "../../store/actions/tasks";
+import { moveTask, changePositionTasks } from "../../store/actions/tasks";
 import { ChangePositionTaskArgs } from "../../store/types/tasks";
 import "./App.css";
 
 interface IDispatchToProps {
   changePositionTasks: ({  }: ChangePositionTaskArgs) => void;
-  removeTask: (
+  moveTask: (
     sourceListId: number,
     targetListId: number,
     taskId: number,
@@ -26,7 +26,7 @@ type Props = IDispatchToProps;
 
 const onDragEnd = (result: DropResult, props: Props) => {
   const { source, destination, draggableId, type } = result;
-  const { removeTask, changePositionTasks, changePositionList } = props;
+  const { moveTask, changePositionTasks, changePositionList } = props;
   if (!destination) {
     return;
   }
@@ -59,7 +59,7 @@ const onDragEnd = (result: DropResult, props: Props) => {
     changePositionTasks(changePositionTasksArgs);
     return;
   } else {
-    removeTask(
+    moveTask(
       Number(source.droppableId),
       Number(draggableId),
       Number(destination.droppableId),
@@ -81,7 +81,7 @@ const App: React.FunctionComponent<Props> = props => (
 
 const mapDispatchToProps: IDispatchToProps = {
   changePositionTasks,
-  removeTask,
+  moveTask,
   changePositionList
 };
 
