@@ -32,6 +32,7 @@ const Name = styled.h1`
 `;
 
 const Content = styled.div`
+  display: flex;
   padding: 20px;
 `;
 const Lists = styled.ul`
@@ -93,29 +94,29 @@ export default ({
                     boardId={activeBoard.id}
                   />
                 ))}
-                <AddListWrapper>
-                  <AddListButton onClick={onModalToggle}>
-                    <ReactSVG
-                      src={plusCircle}
-                      svgStyle={{
-                        width: 35,
-                        height: 35,
-                        fill: "#122144"
-                      }}
-                    />
-                  </AddListButton>
-                  {isModalOpen && (
-                    <AddModal
-                      modalName="list"
-                      action={onAddList}
-                      onModalToggle={onModalToggle}
-                    />
-                  )}
-                </AddListWrapper>
                 {provided.placeholder}
               </Lists>
             )}
           </Droppable>
+          <AddListWrapper>
+            <AddListButton onClick={onModalToggle}>
+              <ReactSVG
+                src={plusCircle}
+                svgStyle={{
+                  width: 35,
+                  height: 35,
+                  fill: "#122144"
+                }}
+              />
+            </AddListButton>
+            {isModalOpen && (
+              <AddModal
+                modalName="list"
+                action={onAddList}
+                onModalToggle={onModalToggle}
+              />
+            )}
+          </AddListWrapper>
         </Content>
       </Fragment>
     )}
