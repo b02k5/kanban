@@ -2,8 +2,6 @@ import {
   AddListAction,
   RemoveListAction,
   EditListNameAction,
-  ChangePositionTasks,
-  ChangePositionTasksArgs,
   ChangePositionList,
   ChangePositionListArgs
 } from "../types/lists";
@@ -43,21 +41,6 @@ export const editListName = (
   payload: {
     listId,
     listName
-  }
-});
-
-export const changePositionTasks = ({
-  listId,
-  taskId,
-  sourceIndex,
-  destinationIndex
-}: ChangePositionTasksArgs): ChangePositionTasks => ({
-  type: listConstants.CHANGE_POSITION_TASKS,
-  payload: {
-    listId,
-    taskId,
-    sourceIndex,
-    destinationIndex
   }
 });
 

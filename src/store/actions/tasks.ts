@@ -3,7 +3,9 @@ import {
   MoveTaskAction,
   TaskArguments,
   EditTaskNameAction,
-  EditTaskDescriptionAction
+  EditTaskDescriptionAction,
+  ChangePositionTasks,
+  ChangePositionTaskArgs
 } from "../types/tasks";
 import { taskConstants } from "../constants/tasks";
 
@@ -53,5 +55,20 @@ export const editTaskDescription = (
   payload: {
     id,
     description
+  }
+});
+
+export const changePositionTasks = ({
+  listId,
+  taskId,
+  sourceIndex,
+  destinationIndex
+}: ChangePositionTaskArgs): ChangePositionTasks => ({
+  type: taskConstants.CHANGE_POSITION_TASK,
+  payload: {
+    listId,
+    taskId,
+    sourceIndex,
+    destinationIndex
   }
 });

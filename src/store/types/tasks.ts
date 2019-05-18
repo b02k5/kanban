@@ -2,7 +2,8 @@ import {
   ADD_TASK,
   MOVE_TASK,
   EDIT_TASK_NAME,
-  EDIT_TASK_DESCRIPTION
+  EDIT_TASK_DESCRIPTION,
+  CHANGE_POSITION_TASK
 } from "../constants/tasks";
 import { RemoveListAction } from "./lists";
 
@@ -62,6 +63,18 @@ export interface EditTaskDescriptionAction {
     id: number;
     description: string;
   };
+}
+
+export interface ChangePositionTasks {
+  type: CHANGE_POSITION_TASK;
+  payload: ChangePositionTaskArgs;
+}
+
+export interface ChangePositionTaskArgs {
+  listId: number;
+  taskId: number;
+  sourceIndex: number;
+  destinationIndex: number;
 }
 
 export type TaskAction =

@@ -5,19 +5,14 @@ import { connect } from "react-redux";
 
 import Main from "../Main";
 import Board from "../Board";
-import {
-  changePositionTasks,
-  changePositionList
-} from "../../store/actions/lists";
-import {
-  ChangePositionTasksArgs,
-  ChangePositionListArgs
-} from "../../store/types/lists";
-import { removeTask } from "../../store/actions/tasks";
+import { changePositionList } from "../../store/actions/lists";
+import { ChangePositionListArgs } from "../../store/types/lists";
+import { removeTask, changePositionTasks } from "../../store/actions/tasks";
+import { ChangePositionTaskArgs } from "../../store/types/tasks";
 import "./App.css";
 
 interface IDispatchToProps {
-  changePositionTasks: ({  }: ChangePositionTasksArgs) => void;
+  changePositionTasks: ({  }: ChangePositionTaskArgs) => void;
   removeTask: (
     sourceListId: number,
     targetListId: number,
@@ -57,7 +52,7 @@ const onDragEnd = (result: any, props: any) => {
   if (source.droppableId === destination.droppableId) {
     const changePositionTasksArgs = {
       listId: source.droppableId,
-      taskId: draggableId,
+      taskId: Number(draggableId),
       sourceIndex: source.index,
       destinationIndex: destination.index
     };
