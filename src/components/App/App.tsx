@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { connect } from "react-redux";
 
 import Main from "../Main";
@@ -24,7 +24,7 @@ interface IDispatchToProps {
 
 type Props = IDispatchToProps;
 
-const onDragEnd = (result: any, props: any) => {
+const onDragEnd = (result: DropResult, props: Props) => {
   const { source, destination, draggableId, type } = result;
   const { removeTask, changePositionTasks, changePositionList } = props;
   if (!destination) {
@@ -40,7 +40,7 @@ const onDragEnd = (result: any, props: any) => {
 
   if (type === "list") {
     const changePositionListArgs = {
-      boardId: source.droppableId,
+      boardId: Number(source.droppableId),
       listId: Number(draggableId),
       sourceIndex: source.index,
       destinationIndex: destination.index
@@ -51,7 +51,7 @@ const onDragEnd = (result: any, props: any) => {
 
   if (source.droppableId === destination.droppableId) {
     const changePositionTasksArgs = {
-      listId: source.droppableId,
+      listId: Number(source.droppableId),
       taskId: Number(draggableId),
       sourceIndex: source.index,
       destinationIndex: destination.index
@@ -60,9 +60,9 @@ const onDragEnd = (result: any, props: any) => {
     return;
   } else {
     removeTask(
-      source.droppableId,
-      draggableId,
-      destination.droppableId,
+      Number(source.droppableId),
+      Number(draggableId),
+      Number(destination.droppableId),
       destination.index
     );
   }
