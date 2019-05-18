@@ -5,7 +5,8 @@ import {
   EditTaskNameAction,
   EditTaskDescriptionAction,
   ChangePositionTasks,
-  ChangePositionTaskArgs
+  ChangePositionTaskArgs,
+  MoveTaskActionArgs
 } from "../types/tasks";
 import { taskConstants } from "../constants/tasks";
 
@@ -24,12 +25,12 @@ export const addTask = ({
   }
 });
 
-export const moveTask = (
-  sourceListId: number,
-  taskId: number,
-  targetListId: number,
-  destinationIndex: number
-): MoveTaskAction => ({
+export const moveTask = ({
+  sourceListId,
+  taskId,
+  targetListId,
+  destinationIndex
+}: MoveTaskActionArgs): MoveTaskAction => ({
   type: taskConstants.MOVE_TASK,
   payload: {
     sourceListId,

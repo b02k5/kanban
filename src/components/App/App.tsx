@@ -8,17 +8,15 @@ import Board from "../Board";
 import { changePositionList } from "../../store/actions/lists";
 import { ChangePositionListArgs } from "../../store/types/lists";
 import { moveTask, changePositionTasks } from "../../store/actions/tasks";
-import { ChangePositionTaskArgs } from "../../store/types/tasks";
+import {
+  ChangePositionTaskArgs,
+  MoveTaskActionArgs
+} from "../../store/types/tasks";
 import "./App.css";
 
 interface IDispatchToProps {
   changePositionTasks: ({  }: ChangePositionTaskArgs) => void;
-  moveTask: (
-    sourceListId: number,
-    targetListId: number,
-    taskId: number,
-    destinationIndex: number
-  ) => void;
+  moveTask: ({  }: MoveTaskActionArgs) => void;
   changePositionList: ({  }: ChangePositionListArgs) => void;
 }
 
@@ -59,12 +57,13 @@ const onDragEnd = (result: DropResult, props: Props) => {
     changePositionTasks(changePositionTasksArgs);
     return;
   } else {
-    moveTask(
-      Number(source.droppableId),
-      Number(draggableId),
-      Number(destination.droppableId),
-      destination.index
-    );
+    const moveTaskArgs = {
+      sourceListId: Number(source.droppableId),
+      taskId: Number(draggableId),
+      targetListId: Number(destination.droppableId),
+      destinationIndex: destination.index
+    };
+    moveTask(moveTaskArgs);
   }
 };
 

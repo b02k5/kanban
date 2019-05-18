@@ -41,13 +41,15 @@ export interface AddTaskAction {
 
 export interface MoveTaskAction {
   type: MOVE_TASK;
-  payload: {
-    sourceListId: number;
-    taskId: number;
-    targetListId: number;
-    destinationIndex: number;
-  };
+  payload: MoveTaskActionArgs;
 }
+
+export type MoveTaskActionArgs = {
+  sourceListId: number;
+  taskId: number;
+  targetListId: number;
+  destinationIndex: number;
+};
 
 export interface EditTaskNameAction {
   type: EDIT_TASK_NAME;
