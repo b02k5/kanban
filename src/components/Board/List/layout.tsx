@@ -121,7 +121,7 @@ const AddTask = styled.button`
   line-height: 18px;
   font-weight: 500;
   width: 100%;
-  padding: 15px 47px;
+  padding: 15px 53px;
   border: 0;
   border-radius: 5px;
   cursor: pointer;
@@ -183,7 +183,7 @@ export default ({
           svgStyle={{
             position: "absolute",
             top: "50%",
-            left: 25,
+            left: 30,
             transform: "translateY(-50%)",
             width: 15,
             height: 15,
