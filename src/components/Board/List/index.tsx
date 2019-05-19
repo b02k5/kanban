@@ -54,7 +54,7 @@ class List extends PureComponent<Props, IState> {
     });
   };
 
-  private addTaskHandle = ({ listId, name, description }: any) => {
+  private addTaskHandle = ({ listId, name, description }: TaskArguments) => {
     const taskId: number = new Date().getTime();
 
     const taskArguments = {
