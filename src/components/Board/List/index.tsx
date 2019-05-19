@@ -26,7 +26,6 @@ interface IDispatchProps {
 
 interface IState {
   taskName: string;
-  isAddTaskInputOpen: boolean;
   isModalOpen: boolean;
   isVisibleName: boolean;
 }
@@ -36,14 +35,11 @@ type Props = IProps & IStateToProps & IDispatchProps;
 class List extends PureComponent<Props, IState> {
   public state = {
     taskName: "",
-    isAddTaskInputOpen: false,
     isModalOpen: false,
     isVisibleName: false
   };
 
   private listNameRef = createRef<HTMLTextAreaElement>();
-
-  private addItemInputRef = createRef<HTMLInputElement>();
 
   public editNameListHandle = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
@@ -111,7 +107,6 @@ class List extends PureComponent<Props, IState> {
         onRemoveList={this.removeListHandle}
         onSetTaskName={this.setTaskNameHandle}
         onEditNameList={this.editNameListHandle}
-        addItemInputRef={this.addItemInputRef}
         onModalToggle={this.modalToggleHandle}
         onAddTask={this.addTaskHandle}
         onVisibleName={this.visibleNameHandle}

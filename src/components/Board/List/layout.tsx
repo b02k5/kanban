@@ -14,8 +14,6 @@ interface IProps {
   list: IList;
   tasks: TaskType[];
   taskName: string;
-  isAddTaskInputOpen: boolean;
-  addItemInputRef: React.RefObject<HTMLInputElement>;
   isModalOpen: boolean;
   index: number;
   isVisibleName: boolean;
