@@ -12,7 +12,7 @@ interface IProps {
   onModalToggle: () => void;
 }
 
-const BoardTask = styled.div`
+const Task = styled.div`
   width: 100%;
   padding: 15px 20px;
   border-radius: 5px;
@@ -21,7 +21,7 @@ const BoardTask = styled.div`
   margin-bottom: 10px;
 `;
 
-const BoardTaskName = styled.h3`
+const Name = styled.h3`
   color: #212225;
   font-size: 17px;
   line-height: 22px;
@@ -30,7 +30,7 @@ const BoardTaskName = styled.h3`
   margin: 0;
 `;
 
-const BoardTime = styled.time`
+const Time = styled.time`
   display: block;
   color: #a4afb6;
   font-size: 11px;
@@ -38,25 +38,25 @@ const BoardTime = styled.time`
   margin-bottom: 2px;
 `;
 
-const BoardDescription = styled.p`
+const Description = styled.p`
   color: #4e4f53;
   font-size: 13px;
   line-height: 18px;
   margin: 10px 0 0 0;
 `;
 
-const BoardFooter = styled.div`
+const Footer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   margin-top: 15px;
 `;
-const BoardTagList = styled.ul`
+const TagLists = styled.ul`
   list-style: none;
   padding: 0;
 `;
-const BoardTagItem = styled.li``;
-const BoardTag = styled.span`
+const TagItem = styled.li``;
+const Tag = styled.span`
   color: white;
   font-size: 13px;
   line-height: 19px;
@@ -70,24 +70,24 @@ export default ({ task, isModalOpen, onModalToggle, index }: IProps) => (
   <Fragment>
     <Draggable draggableId={`${task.id}`} index={index}>
       {(provided: any) => (
-        <BoardTask
+        <Task
           draggable={true}
           onClick={onModalToggle}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
         >
-          <BoardTime>{task.date}</BoardTime>
-          <BoardTaskName>{task.name}</BoardTaskName>
-          <BoardDescription>{task.description}</BoardDescription>
-          <BoardFooter>
-            <BoardTagList>
-              <BoardTagItem>
-                <BoardTag>UI</BoardTag>
-              </BoardTagItem>
-            </BoardTagList>
-          </BoardFooter>
-        </BoardTask>
+          <Time>{task.date}</Time>
+          <Name>{task.name}</Name>
+          <Description>{task.description}</Description>
+          <Footer>
+            <TagLists>
+              <TagItem>
+                <Tag>UI</Tag>
+              </TagItem>
+            </TagLists>
+          </Footer>
+        </Task>
       )}
     </Draggable>
     {isModalOpen && <TaskDetails task={task} modalClick={onModalToggle} />}
