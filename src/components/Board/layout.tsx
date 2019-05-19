@@ -19,6 +19,7 @@ interface IProps {
 
 const Board = styled.div``;
 const Header = styled.header`
+  margin-bottom: 15px;
   padding: 10px 30px;
   background-color: #fdfdfd;
   border-bottom: 1px solid #d9d8da;
@@ -33,7 +34,6 @@ const Name = styled.h1`
 
 const Content = styled.div`
   display: flex;
-  padding: 15px;
 `;
 const Lists = styled.ul`
   list-style-type: none;
