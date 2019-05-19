@@ -28,6 +28,7 @@ interface IState {
   taskName: string;
   isAddTaskInputOpen: boolean;
   isModalOpen: boolean;
+  isVisibleName: boolean;
 }
 
 type Props = IProps & IStateToProps & IDispatchProps;
@@ -36,8 +37,11 @@ class List extends PureComponent<Props, IState> {
   public state = {
     taskName: "",
     isAddTaskInputOpen: false,
-    isModalOpen: false
+    isModalOpen: false,
+    isVisibleName: false
   };
+
+  private listNameRef = createRef<HTMLTextAreaElement>();
 
   private addItemInputRef = createRef<HTMLInputElement>();
 
@@ -79,6 +83,26 @@ class List extends PureComponent<Props, IState> {
     this.props.removeList(boardId, listId, tasks);
   };
 
+  public visibleNameHandle = () => {
+    if (!this.state.isVisibleName) {
+      const node = this.listNameRef.current!;
+      node.focus()!;
+      document.addEventListener("click", this.onDocument);
+    } else {
+      document.removeEventListener("click", this.onDocument);
+    }
+
+    this.setState(prevState => ({
+      isVisibleName: !prevState.isVisibleName
+    }));
+  };
+
+  private onDocument = (e: MouseEvent) => {
+    if (this.listNameRef.current !== e.target) {
+      this.visibleNameHandle();
+    }
+  };
+
   public render(): JSX.Element {
     return (
       <ListLayout
@@ -90,6 +114,8 @@ class List extends PureComponent<Props, IState> {
         addItemInputRef={this.addItemInputRef}
         onModalToggle={this.modalToggleHandle}
         onAddTask={this.addTaskHandle}
+        onVisibleName={this.visibleNameHandle}
+        listNameRef={this.listNameRef}
       />
     );
   }

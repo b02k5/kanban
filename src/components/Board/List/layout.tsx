@@ -18,6 +18,8 @@ interface IProps {
   addItemInputRef: React.RefObject<HTMLInputElement>;
   isModalOpen: boolean;
   index: number;
+  isVisibleName: boolean;
+  listNameRef: React.RefObject<HTMLTextAreaElement>;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveList: (listId: number, tasks: Array<number>) => void;
   onEditNameList: (
@@ -26,6 +28,7 @@ interface IProps {
   ) => void;
   onModalToggle: () => void;
   onAddTask: ({  }: any) => void;
+  onVisibleName: () => void;
 }
 
 const List = styled.li`
@@ -40,15 +43,22 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
   position: relative;
-  height: 30px;
-  padding-left: 10px;
-  margin-bottom: 13px;
+  padding: 0 0 13px 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: red;
 `;
+
+const HeaderTarget = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: grab;
+`;
+
 const Name = styled.textarea`
   color: #36373a;
   font-size: 22px;
@@ -56,12 +66,11 @@ const Name = styled.textarea`
   font-weight: bold;
   width: 100%;
   height: 30px;
-  margin: 0;
-  padding: 0;
+  margin: 0 25px 0 0;
+  padding: 0 0 0 10px;
   border: 0;
   border-bottom: 1px solid transparent;
   background-color: transparent;
-  outline: none;
   resize: none;
   transition: 0.1s;
   &:focus,
@@ -70,6 +79,9 @@ const Name = styled.textarea`
   }
 `;
 const RemoveList = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
   margin: 0;
   padding: 0;
   width: 25px;
@@ -155,7 +167,10 @@ export default ({
   onModalToggle,
   isModalOpen,
   onAddTask,
-  index
+  index,
+  onVisibleName,
+  isVisibleName,
+  listNameRef
 }: IProps): JSX.Element => (
   <Draggable draggableId={`${list.id}`} index={index}>
     {(provided: any) => (
@@ -165,10 +180,17 @@ export default ({
         ref={provided.innerRef}
       >
         <Wrapper>
-          <Header {...provided.dragHandleProps}>
+          <Header>
+            {!isVisibleName && (
+              <HeaderTarget
+                onClick={onVisibleName}
+                {...provided.dragHandleProps}
+              />
+            )}
             <Name
               onChange={e => onEditNameList(e, list.id)}
               defaultValue={list.name}
+              ref={listNameRef}
             />
             <RemoveList onClick={() => onRemoveList(list.id, list.tasks)}>
               <RemoveListCircle />
