@@ -30,7 +30,7 @@ interface IProps {
 }
 
 const List = styled.li`
-  margin-right: 25px;
+  margin-right: 15px;
   flex: 0 0 auto;
 `;
 
