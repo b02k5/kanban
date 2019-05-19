@@ -30,7 +30,7 @@ interface IProps {
 }
 
 const List = styled.li`
-  margin-right: 15px;
+  margin-left: 15px;
   flex: 0 0 auto;
 `;
 
@@ -41,11 +41,13 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
   position: relative;
-  padding: 0 0 13px 0;
+  padding: 10px 15px;
+  border-radius: 5px 5px 0 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  background-color: #f0f4fa;
 `;
 
 const HeaderTarget = styled.div`
@@ -59,8 +61,8 @@ const HeaderTarget = styled.div`
 
 const Name = styled.textarea`
   color: #36373a;
-  font-size: 22px;
-  line-height: 27px;
+  font-size: 20px;
+  line-height: 25px;
   font-weight: bold;
   width: 100%;
   height: 30px;
@@ -78,8 +80,8 @@ const Name = styled.textarea`
 `;
 const RemoveList = styled.button`
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 10px;
+  right: 10px;
   margin: 0;
   padding: 0;
   width: 25px;
@@ -146,14 +148,20 @@ const AddTask = styled.button`
 `;
 
 const Content = styled.div`
-  height: 100vh;
+  height: calc(100vh - 119px);
+`;
+
+const TasksWrapper = styled.div`
+  background-color: #f0f4fa;
+  border-radius: 0 0 5px 5px;
 `;
 
 const Tasks = styled.ul<{ isDraggingOver: boolean }>`
   list-style-type: none;
   margin: 0;
-  padding: 0;
-  border-radius: 5px;
+  padding: 0 15px;
+  max-height: calc(100vh - 182px);
+  overflow-y: scroll;
   transition: background-color 0.15s ease;
   background-color: ${props =>
     props.isDraggingOver ? "rgba(0,0,0,.24)" : "transparent"};
@@ -206,29 +214,31 @@ export default ({
           <Droppable key={list.id} droppableId={`${list.id}`} type="task">
             {(provided, snapshot) => (
               <Content {...provided.droppableProps} ref={provided.innerRef}>
-                <Tasks isDraggingOver={snapshot.isDraggingOver}>
-                  {[...tasks].map((task, index) => (
-                    <TasksItem key={task.id}>
-                      <Task task={task} index={index} />
-                    </TasksItem>
-                  ))}
-                  {provided.placeholder}
-                </Tasks>
-                <AddTask onClick={onModalToggle}>
-                  <ReactSVG
-                    src={plusCircle}
-                    svgStyle={{
-                      position: "absolute",
-                      top: "50%",
-                      left: 30,
-                      transform: "translateY(-50%)",
-                      width: 15,
-                      height: 15,
-                      fill: "#9ba8b0"
-                    }}
-                  />
-                  Add new item
-                </AddTask>
+                <TasksWrapper>
+                  <Tasks isDraggingOver={snapshot.isDraggingOver}>
+                    {[...tasks].map((task, index) => (
+                      <TasksItem key={task.id}>
+                        <Task task={task} index={index} />
+                      </TasksItem>
+                    ))}
+                    {provided.placeholder}
+                  </Tasks>
+                  <AddTask onClick={onModalToggle}>
+                    <ReactSVG
+                      src={plusCircle}
+                      svgStyle={{
+                        position: "absolute",
+                        top: "50%",
+                        left: 30,
+                        transform: "translateY(-50%)",
+                        width: 15,
+                        height: 15,
+                        fill: "#9ba8b0"
+                      }}
+                    />
+                    Add new item
+                  </AddTask>
+                </TasksWrapper>
               </Content>
             )}
           </Droppable>
