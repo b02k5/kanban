@@ -145,11 +145,20 @@ const AddTask = styled.button`
   }
 `;
 
-const Tasks = styled.ul`
+const Content = styled.div`
+  height: 100vh;
+`;
+
+const Tasks = styled.ul<{ isDraggingOver: boolean }>`
   list-style-type: none;
   margin: 0;
   padding: 0;
+  border-radius: 5px;
+  transition: background-color 0.15s ease;
+  background-color: ${props =>
+    props.isDraggingOver ? "rgba(0,0,0,.24)" : "transparent"};
 `;
+
 const TasksItem = styled.li`
   width: 100%;
   &:last-child {
@@ -171,7 +180,7 @@ export default ({
   listNameRef
 }: IProps): JSX.Element => (
   <Draggable draggableId={`${list.id}`} index={index}>
-    {(provided: any) => (
+    {provided => (
       <List
         id={`${list.id}`}
         {...provided.draggableProps}
@@ -195,32 +204,34 @@ export default ({
             </RemoveList>
           </Header>
           <Droppable key={list.id} droppableId={`${list.id}`} type="task">
-            {(provided: any) => (
-              <Tasks {...provided.droppableProps} ref={provided.innerRef}>
-                {[...tasks].map((task, index) => (
-                  <TasksItem key={task.id}>
-                    <Task task={task} index={index} />
-                  </TasksItem>
-                ))}
-                {provided.placeholder}
-              </Tasks>
+            {(provided, snapshot) => (
+              <Content {...provided.droppableProps} ref={provided.innerRef}>
+                <Tasks isDraggingOver={snapshot.isDraggingOver}>
+                  {[...tasks].map((task, index) => (
+                    <TasksItem key={task.id}>
+                      <Task task={task} index={index} />
+                    </TasksItem>
+                  ))}
+                  {provided.placeholder}
+                </Tasks>
+                <AddTask onClick={onModalToggle}>
+                  <ReactSVG
+                    src={plusCircle}
+                    svgStyle={{
+                      position: "absolute",
+                      top: "50%",
+                      left: 30,
+                      transform: "translateY(-50%)",
+                      width: 15,
+                      height: 15,
+                      fill: "#9ba8b0"
+                    }}
+                  />
+                  Add new item
+                </AddTask>
+              </Content>
             )}
           </Droppable>
-          <AddTask onClick={onModalToggle}>
-            <ReactSVG
-              src={plusCircle}
-              svgStyle={{
-                position: "absolute",
-                top: "50%",
-                left: 30,
-                transform: "translateY(-50%)",
-                width: 15,
-                height: 15,
-                fill: "#9ba8b0"
-              }}
-            />
-            Add new item
-          </AddTask>
         </Wrapper>
         {isModalOpen && (
           <AddModal
