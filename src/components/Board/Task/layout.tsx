@@ -12,17 +12,18 @@ interface IProps {
   onModalToggle: () => void;
 }
 
-const Task = styled.div`
+const Task = styled.div<{ isDragging: boolean }>`
   width: 100%;
   padding: 15px 20px;
   border-radius: 5px;
-  background-color: white;
   cursor: pointer;
   margin-bottom: 10px;
+  transition: background-color 0.15s ease;
+  background-color: ${props => (props.isDragging ? "#67686d" : "white")};
 `;
 
-const Name = styled.h3`
-  color: #212225;
+const Name = styled.h3<{ isDragging: boolean }>`
+  color: ${props => (props.isDragging ? "white" : "#212225")};
   font-size: 17px;
   line-height: 22px;
   font-weight: 500;
@@ -69,16 +70,17 @@ const Tag = styled.span`
 export default ({ task, isModalOpen, onModalToggle, index }: IProps) => (
   <Fragment>
     <Draggable draggableId={`${task.id}`} index={index}>
-      {(provided: any) => (
+      {(provided, snapshot) => (
         <Task
           draggable={true}
           onClick={onModalToggle}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
+          isDragging={snapshot.isDragging}
         >
           <Time>{task.date}</Time>
-          <Name>{task.name}</Name>
+          <Name isDragging={snapshot.isDragging}>{task.name}</Name>
           <Description>{task.description}</Description>
           <Footer>
             <TagLists>
