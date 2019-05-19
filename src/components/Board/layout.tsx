@@ -33,7 +33,7 @@ const Name = styled.h1`
 
 const Content = styled.div`
   display: flex;
-  padding: 20px;
+  padding: 15px;
 `;
 const Lists = styled.ul`
   list-style-type: none;
