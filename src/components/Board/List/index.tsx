@@ -25,6 +25,8 @@ interface IDispatchProps {
 }
 
 interface IState {
+  listId: number;
+  listName: string;
   taskName: string;
   isModalOpen: boolean;
   isVisibleName: boolean;
@@ -34,6 +36,8 @@ type Props = IProps & IStateToProps & IDispatchProps;
 
 class List extends PureComponent<Props, IState> {
   public state = {
+    listId: 0,
+    listName: "",
     taskName: "",
     isModalOpen: false,
     isVisibleName: false
@@ -45,7 +49,10 @@ class List extends PureComponent<Props, IState> {
     e: React.ChangeEvent<HTMLTextAreaElement>,
     listId: number
   ) => {
-    this.props.editListName(listId, e.target.value);
+    this.setState({
+      listId,
+      listName: e.target.value
+    });
   };
 
   private setTaskNameHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +93,7 @@ class List extends PureComponent<Props, IState> {
       document.addEventListener("click", this.onDocument);
     } else {
       document.removeEventListener("click", this.onDocument);
+      this.sendEditedListName();
     }
 
     this.setState(prevState => ({
@@ -97,6 +105,11 @@ class List extends PureComponent<Props, IState> {
     if (this.listNameRef.current !== e.target) {
       this.visibleNameHandle();
     }
+  };
+
+  private sendEditedListName = () => {
+    this.state.listName != "" &&
+      this.props.editListName(this.state.listId, this.state.listName);
   };
 
   public render(): JSX.Element {
