@@ -164,7 +164,7 @@ const Tasks = styled.ul<{ isDraggingOver: boolean }>`
   overflow-y: scroll;
   transition: background-color 0.15s ease;
   background-color: ${props =>
-    props.isDraggingOver ? "rgba(0,0,0,.24)" : "transparent"};
+    props.isDraggingOver ? "#d3d9e1" : "transparent"};
 `;
 
 const TasksItem = styled.li`
