@@ -39,8 +39,8 @@ const Time = styled.time`
   margin-bottom: 2px;
 `;
 
-const Description = styled.p`
-  color: #4e4f53;
+const Description = styled.p<{ isDragging: boolean }>`
+  color: ${props => (props.isDragging ? "white" : "#4e4f53")};
   font-size: 13px;
   line-height: 18px;
   margin: 10px 0 0 0;
@@ -81,7 +81,9 @@ export default ({ task, isModalOpen, onModalToggle, index }: IProps) => (
         >
           <Time>{task.date}</Time>
           <Name isDragging={snapshot.isDragging}>{task.name}</Name>
-          <Description>{task.description}</Description>
+          <Description isDragging={snapshot.isDragging}>
+            {task.description}
+          </Description>
           <Footer>
             <TagLists>
               <TagItem>
