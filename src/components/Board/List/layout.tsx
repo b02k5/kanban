@@ -6,6 +6,7 @@ import { IList } from "../../../store/types/lists";
 import Task from "../Task";
 import { TaskType } from "../../../store/types/tasks";
 import AddModal from "../../Modal/Add/index";
+import { AddButton } from "../../Buttons";
 
 interface IProps {
   list: IList;
@@ -122,55 +123,6 @@ const RemoveListCircle = styled.span`
   }
 `;
 
-const Plus = styled.span`
-  position: relative;
-  width: 8px;
-  height: 2px;
-  background-color: #777a80;
-  margin-right: 5px;
-  transition: 0.15s;
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 8px;
-    height: 2px;
-    background-color: #777a80;
-    transform: rotate(90deg);
-    transition: 0.15s;
-  }
-`;
-
-const AddTask = styled.button`
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  color: #777a80;
-  font-size: 12px;
-  line-height: 18px;
-  font-weight: 500;
-  width: 100%;
-  padding: 15px;
-  border: 0;
-  border-radius: 0 0 5px 5px;
-  cursor: pointer;
-  transition: 0.15s;
-  background-color: #e9edf4;
-  &:hover {
-    color: #3d3f43;
-    background-color: #d3d9e1;
-  }
-
-  &:hover ${Plus} {
-    background-color: #3d3f43;
-    &::before {
-      background-color: #3d3f43;
-    }
-  }
-`;
-
 const Content = styled.div`
   height: calc(100vh - 119px);
 `;
@@ -247,10 +199,11 @@ export default ({
                     ))}
                     {provided.placeholder}
                   </Tasks>
-                  <AddTask onClick={onModalToggle}>
-                    <Plus />
-                    Add new task
-                  </AddTask>
+                  <AddButton
+                    name="Add new task"
+                    action="task"
+                    click={onModalToggle}
+                  />
                 </TasksWrapper>
               </Content>
             )}
