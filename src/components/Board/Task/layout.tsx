@@ -36,7 +36,7 @@ const Time = styled.time`
   color: #a4afb6;
   font-size: 11px;
   line-height: 16px;
-  margin-bottom: 2px;
+  margin-bottom: 1px;
 `;
 
 const Description = styled.p<{ isDragging: boolean }>`
