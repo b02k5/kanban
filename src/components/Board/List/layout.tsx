@@ -30,6 +30,9 @@ interface IProps {
 const List = styled.li`
   margin-left: 15px;
   flex: 0 0 auto;
+  &:last-child {
+    margin-right: 15px;
+  }
 `;
 
 const Wrapper = styled.div`
