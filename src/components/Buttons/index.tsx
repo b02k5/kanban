@@ -38,10 +38,10 @@ const Button = styled.button<{ action: string }>`
   line-height: 19px;
   font-weight: 500;
   width: ${props => (props.action === "task" ? "100%" : "280px")}
-  max-width: 280px;
+  border-radius: ${props => (props.action === "task" ? "0 0 5px 5px;" : "5px")};
   padding: 15px;
   border: 0;
-  border-radius: 0 0 5px 5px;
+  border-radius: 
   cursor: pointer;
   transition: 0.15s;
   background-color: ${props =>
