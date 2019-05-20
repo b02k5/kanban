@@ -41,6 +41,10 @@ const Lists = styled.ul`
   display: flex;
 `;
 
+const ListItem = styled.li`
+  flex: 0 0 auto;
+`;
+
 const AddListWrapper = styled.div`
   flex: 0 0 auto;
 `;
@@ -67,12 +71,9 @@ export default ({
             {(provided: any) => (
               <Lists {...provided.droppableProps} ref={provided.innerRef}>
                 {[...lists].map((list, index) => (
-                  <List
-                    key={list.id}
-                    index={index}
-                    list={list}
-                    boardId={activeBoard.id}
-                  />
+                  <ListItem key={list.id}>
+                    <List index={index} list={list} boardId={activeBoard.id} />
+                  </ListItem>
                 ))}
                 {provided.placeholder}
               </Lists>

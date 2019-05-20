@@ -27,17 +27,10 @@ interface IProps {
   onVisibleName: () => void;
 }
 
-const List = styled.li`
-  margin-left: 15px;
-  flex: 0 0 auto;
-  &:last-child {
-    margin-right: 15px;
-  }
-`;
-
-const Wrapper = styled.div`
+const List = styled.div`
   position: relative;
   width: 280px;
+  margin-left: 15px;
 `;
 
 const Header = styled.div`
@@ -173,45 +166,43 @@ export default ({
         {...provided.draggableProps}
         ref={provided.innerRef}
       >
-        <Wrapper>
-          <Header>
-            {!isVisibleName && (
-              <HeaderTarget
-                onClick={onVisibleName}
-                {...provided.dragHandleProps}
-              />
-            )}
-            <Name
-              onChange={e => onEditNameList(e, list.id)}
-              defaultValue={list.name}
-              ref={listNameRef}
+        <Header>
+          {!isVisibleName && (
+            <HeaderTarget
+              onClick={onVisibleName}
+              {...provided.dragHandleProps}
             />
-            <RemoveList onClick={() => onRemoveList(list.id, list.tasks)}>
-              <RemoveListCircle />
-            </RemoveList>
-          </Header>
-          <Droppable key={list.id} droppableId={`${list.id}`} type="task">
-            {(provided, snapshot) => (
-              <Content {...provided.droppableProps} ref={provided.innerRef}>
-                <TasksWrapper>
-                  <Tasks isDraggingOver={snapshot.isDraggingOver}>
-                    {[...tasks].map((task, index) => (
-                      <TasksItem key={task.id}>
-                        <Task task={task} index={index} />
-                      </TasksItem>
-                    ))}
-                    {provided.placeholder}
-                  </Tasks>
-                  <AddButton
-                    name="Add new task"
-                    action="task"
-                    click={onModalToggle}
-                  />
-                </TasksWrapper>
-              </Content>
-            )}
-          </Droppable>
-        </Wrapper>
+          )}
+          <Name
+            onChange={e => onEditNameList(e, list.id)}
+            defaultValue={list.name}
+            ref={listNameRef}
+          />
+          <RemoveList onClick={() => onRemoveList(list.id, list.tasks)}>
+            <RemoveListCircle />
+          </RemoveList>
+        </Header>
+        <Droppable key={list.id} droppableId={`${list.id}`} type="task">
+          {(provided, snapshot) => (
+            <Content {...provided.droppableProps} ref={provided.innerRef}>
+              <TasksWrapper>
+                <Tasks isDraggingOver={snapshot.isDraggingOver}>
+                  {[...tasks].map((task, index) => (
+                    <TasksItem key={task.id}>
+                      <Task task={task} index={index} />
+                    </TasksItem>
+                  ))}
+                  {provided.placeholder}
+                </Tasks>
+                <AddButton
+                  name="Add new task"
+                  action="task"
+                  click={onModalToggle}
+                />
+              </TasksWrapper>
+            </Content>
+          )}
+        </Droppable>
         {isModalOpen && (
           <AddModal
             modalName="task"
