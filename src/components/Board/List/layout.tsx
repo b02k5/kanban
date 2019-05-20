@@ -75,7 +75,7 @@ const Name = styled.textarea`
 const RemoveList = styled.button`
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 15px;
   margin: 0;
   padding: 0;
   width: 25px;
