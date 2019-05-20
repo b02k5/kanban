@@ -1,14 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import ReactSVG from "react-svg";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
 import { IList } from "../../../store/types/lists";
 import Task from "../Task";
 import { TaskType } from "../../../store/types/tasks";
 import AddModal from "../../Modal/Add/index";
-
-import plusCircle from "../../../assets/images/svg/plus-circle.svg";
 
 interface IProps {
   list: IList;
@@ -125,25 +122,52 @@ const RemoveListCircle = styled.span`
   }
 `;
 
+const Plus = styled.span`
+  position: relative;
+  width: 8px;
+  height: 2px;
+  background-color: #777a80;
+  margin-right: 5px;
+  transition: 0.15s;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 2px;
+    background-color: #777a80;
+    transform: rotate(90deg);
+    transition: 0.15s;
+  }
+`;
+
 const AddTask = styled.button`
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
-  color: #9ba8b0;
+  color: #777a80;
   font-size: 12px;
   line-height: 18px;
   font-weight: 500;
   width: 100%;
-  padding: 15px 53px;
+  padding: 15px;
   border: 0;
-  border-radius: 5px;
+  border-radius: 0 0 5px 5px;
   cursor: pointer;
   transition: 0.15s;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: #e9edf4;
   &:hover {
     color: #3d3f43;
-    background-color: #dde1e7;
+    background-color: #d3d9e1;
+  }
+
+  &:hover ${Plus} {
+    background-color: #3d3f43;
+    &::before {
+      background-color: #3d3f43;
+    }
   }
 `;
 
@@ -224,19 +248,8 @@ export default ({
                     {provided.placeholder}
                   </Tasks>
                   <AddTask onClick={onModalToggle}>
-                    <ReactSVG
-                      src={plusCircle}
-                      svgStyle={{
-                        position: "absolute",
-                        top: "50%",
-                        left: 30,
-                        transform: "translateY(-50%)",
-                        width: 15,
-                        height: 15,
-                        fill: "#9ba8b0"
-                      }}
-                    />
-                    Add new item
+                    <Plus />
+                    Add new task
                   </AddTask>
                 </TasksWrapper>
               </Content>
