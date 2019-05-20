@@ -41,8 +41,8 @@ const Button = styled.button<{ action: string }>`
   border-radius: ${props => (props.action === "task" ? "0 0 5px 5px;" : "5px")};
   padding: 15px;
   border: 0;
-  border-radius: 
   cursor: pointer;
+  margin-left: ${props => props.action === "list" && "15px"};
   transition: 0.15s;
   background-color: ${props =>
     props.action === "task" ? "#e9edf4" : "rgba(0, 0, 0, 0.24)"};
