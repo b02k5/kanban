@@ -47,7 +47,7 @@ const Header = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: #f0f4fa;
+  background-color: #e9edf4;
 `;
 
 const HeaderTarget = styled.div`
@@ -152,7 +152,7 @@ const Content = styled.div`
 `;
 
 const TasksWrapper = styled.div`
-  background-color: #f0f4fa;
+  background-color: #e9edf4;
   border-radius: 0 0 5px 5px;
 `;
 
