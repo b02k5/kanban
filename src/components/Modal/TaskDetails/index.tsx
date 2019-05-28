@@ -73,6 +73,7 @@ const TaskDetails: React.FunctionComponent<Props> = ({
       }}
       defaultValue={description}
       onChange={e => editTaskDescription(id, e.target.value)}
+      placeholder="Add description"
     />
   </Modal>
 );
