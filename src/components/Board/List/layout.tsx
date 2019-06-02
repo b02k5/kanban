@@ -1,12 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import TextareaAutosize from "react-textarea-autosize";
 
 import { IList } from "../../../store/types/lists";
 import Task from "../Task";
 import { TaskType } from "../../../store/types/tasks";
 import AddModal from "../../Modal/Add/index";
 import { AddButton } from "../../Buttons";
+import ResizableTextarea from "../../ResizableTextarea";
 
 interface IProps {
   list: IList;
@@ -16,6 +18,7 @@ interface IProps {
   index: number;
   isVisibleName: boolean;
   listNameRef: React.RefObject<HTMLTextAreaElement>;
+  listName: string;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveList: (listId: number, tasks: Array<number>) => void;
   onEditNameList: (
@@ -35,7 +38,7 @@ const List = styled.div`
 
 const Header = styled.div`
   position: relative;
-  padding: 10px 15px;
+  padding: 10px 40px 10px 15px;
   border-radius: 5px 5px 0 0;
   display: flex;
   flex-direction: row;
@@ -59,8 +62,7 @@ const Name = styled.textarea`
   line-height: 25px;
   font-weight: bold;
   width: 100%;
-  height: 30px;
-  margin: 0 25px 0 0;
+  margin: 0;
   padding: 0 0 0 10px;
   border: 0;
   border-bottom: 1px solid transparent;
@@ -157,7 +159,8 @@ export default ({
   index,
   onVisibleName,
   isVisibleName,
-  listNameRef
+  listNameRef,
+  listName
 }: IProps): JSX.Element => (
   <Draggable draggableId={`${list.id}`} index={index}>
     {provided => (
@@ -173,10 +176,15 @@ export default ({
               {...provided.dragHandleProps}
             />
           )}
-          <Name
-            onChange={e => onEditNameList(e, list.id)}
-            defaultValue={list.name}
-            ref={listNameRef}
+          <ResizableTextarea
+            maxRows={4}
+            lineHeight={25}
+            onChange={onEditNameList}
+            value={listName}
+            elementId={list.id}
+            style={Name}
+            placeholder="Add list name"
+            refTextarea={listNameRef}
           />
           <RemoveList onClick={() => onRemoveList(list.id, list.tasks)}>
             <RemoveListCircle />
