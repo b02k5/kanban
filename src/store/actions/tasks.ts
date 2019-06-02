@@ -40,11 +40,11 @@ export const moveTask = ({
   }
 });
 
-export const editTaskName = (id: number, name: string): EditTaskNameAction => ({
+export const editTaskName = (name: string, id: number): EditTaskNameAction => ({
   type: taskConstants.EDIT_TASK_NAME,
   payload: {
-    id,
-    name
+    name,
+    id
   }
 });
 
