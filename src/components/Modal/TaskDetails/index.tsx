@@ -13,7 +13,7 @@ import {
 
 interface IDispatchToProps {
   editTaskName: (name: string, id: number) => void;
-  editTaskDescription: (id: number, description: string) => void;
+  editTaskDescription: (description: string, id: number) => void;
 }
 
 interface IProps {
@@ -52,6 +52,15 @@ const Name = styled.textarea`
   margin-bottom: 18px;
 `;
 
+const Description = styled.textarea`
+  border: 0;
+  color: #4e4f53;
+  font-size: 14px;
+  line-height: 19px;
+  resize: none;
+  width: 100%;
+`;
+
 const TaskDetails: React.FunctionComponent<Props> = ({
   modalClick,
   task: { id, date, name, description },
@@ -63,6 +72,13 @@ const TaskDetails: React.FunctionComponent<Props> = ({
     id: number
   ) => {
     editTaskName(e.target.value, id);
+  };
+
+  const handleEditTaskDesc = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+    id: number
+  ) => {
+    editTaskDescription(e.target.value, id);
   };
 
   return (
@@ -77,18 +93,14 @@ const TaskDetails: React.FunctionComponent<Props> = ({
         style={Name}
         placeholder="Task name"
       />
-      <TextareaAutosize
-        style={{
-          border: 0,
-          color: "#4e4f53",
-          fontSize: "14px",
-          lineHeight: "19px",
-          resize: "none",
-          width: "100%"
-        }}
-        defaultValue={description}
-        onChange={e => editTaskDescription(id, e.target.value)}
-        placeholder="Add description"
+      <ResizableTextarea
+        maxRows={10}
+        lineHeight={19}
+        onChange={handleEditTaskDesc}
+        value={description}
+        elementId={id}
+        style={Description}
+        placeholder="Add description..."
       />
     </Modal>
   );
