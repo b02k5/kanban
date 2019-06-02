@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import styled from "styled-components";
 import TextareaAutosize from "react-textarea-autosize";
+import ResizableTextarea from "../../ResizableTextarea";
 
 import Modal from "../../Modal";
 import { TaskType } from "../../../store/types/tasks";
@@ -11,7 +12,7 @@ import {
 } from "../../../store/actions/tasks";
 
 interface IDispatchToProps {
-  editTaskName: (id: number, name: string) => void;
+  editTaskName: (name: string, id: number) => void;
   editTaskDescription: (id: number, description: string) => void;
 }
 
@@ -40,44 +41,58 @@ const ContainerStyles = styled.div`
   padding: 30px;
 `;
 
+const Name = styled.textarea`
+  border: 0;
+  color: #212225;
+  font-size: 20px;
+  line-height: 25px;
+  font-weight: 500;
+  resize: none;
+  width: 100%;
+  margin-bottom: 18px;
+`;
+
 const TaskDetails: React.FunctionComponent<Props> = ({
   modalClick,
   task: { id, date, name, description },
   editTaskName,
   editTaskDescription
-}): JSX.Element => (
-  <Modal modalClick={modalClick} containerStyles={ContainerStyles}>
-    <ModalTime>{date}</ModalTime>
-    <TextareaAutosize
-      style={{
-        border: 0,
-        color: "#212225",
-        fontSize: "20px",
-        lineHeight: "25px",
-        fontWeight: 500,
-        resize: "none",
-        width: "100%",
-        marginBottom: "18px"
-      }}
-      defaultValue={name}
-      onChange={e => editTaskName(id, e.target.value)}
-    />
-    <TextareaAutosize
-      style={{
-        border: 0,
-        color: "#4e4f53",
-        fontSize: "14px",
-        lineHeight: "19px",
-        resize: "none",
-        width: "100%"
-      }}
-      defaultValue={description}
-      onChange={e => editTaskDescription(id, e.target.value)}
-      placeholder="Add description"
-    />
-  </Modal>
-);
+}) => {
+  const handleEditTaskName = (
+    e: React.ChangeEvent<HTMLTextAreaElement>,
+    id: number
+  ) => {
+    editTaskName(e.target.value, id);
+  };
 
+  return (
+    <Modal modalClick={modalClick} containerStyles={ContainerStyles}>
+      <ModalTime>{date}</ModalTime>
+      <ResizableTextarea
+        maxRows={4}
+        lineHeight={25}
+        onChange={handleEditTaskName}
+        value={name}
+        elementId={id}
+        style={Name}
+        placeholder="Task name"
+      />
+      <TextareaAutosize
+        style={{
+          border: 0,
+          color: "#4e4f53",
+          fontSize: "14px",
+          lineHeight: "19px",
+          resize: "none",
+          width: "100%"
+        }}
+        defaultValue={description}
+        onChange={e => editTaskDescription(id, e.target.value)}
+        placeholder="Add description"
+      />
+    </Modal>
+  );
+};
 const mapDispatchToProps: IDispatchToProps = {
   editTaskName,
   editTaskDescription
