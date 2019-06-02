@@ -49,8 +49,8 @@ export const editTaskName = (name: string, id: number): EditTaskNameAction => ({
 });
 
 export const editTaskDescription = (
-  id: number,
-  description: string
+  description: string,
+  id: number
 ): EditTaskDescriptionAction => ({
   type: taskConstants.EDIT_TASK_DESCRIPTION,
   payload: {
