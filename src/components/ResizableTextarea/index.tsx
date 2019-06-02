@@ -6,7 +6,7 @@ const Textarea = styled.textarea``;
 interface IProps {
   maxRows: number;
   lineHeight: number;
-  refTextarea: React.RefObject<HTMLTextAreaElement>;
+  refTextarea?: React.RefObject<HTMLTextAreaElement>;
   value: string;
   elementId: number;
   style: any;
