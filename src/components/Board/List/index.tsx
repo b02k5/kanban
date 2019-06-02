@@ -89,6 +89,7 @@ class List extends PureComponent<Props, IState> {
 
   public visibleNameHandle = () => {
     if (!this.state.isVisibleName) {
+      this.setStateListName();
       this.setFocusToName();
       document.addEventListener("click", this.onDocument);
     } else {
@@ -113,9 +114,16 @@ class List extends PureComponent<Props, IState> {
     }
   };
 
+  private setStateListName = () => {
+    this.setState({
+      listName: this.props.list.name
+    });
+  };
+
   private sendEditedListName = () => {
-    this.state.listName != "" &&
-      this.props.editListName(this.state.listId, this.state.listName);
+    this.state.listName != ""
+      ? this.props.editListName(this.state.listId, this.state.listName)
+      : (this.state.listName = this.props.list.name);
   };
 
   public render(): JSX.Element {
