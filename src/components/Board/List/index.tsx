@@ -1,5 +1,6 @@
 import React, { PureComponent, createRef } from "react";
 import { connect } from "react-redux";
+
 import ListLayout from "./layout";
 import { IList } from "../../../store/types/lists";
 import { removeList, editListName } from "../../../store/actions/lists";
@@ -37,7 +38,7 @@ type Props = IProps & IStateToProps & IDispatchProps;
 class List extends PureComponent<Props, IState> {
   public state = {
     listId: 0,
-    listName: "",
+    listName: this.props.list.name,
     taskName: "",
     isModalOpen: false,
     isVisibleName: false
@@ -88,8 +89,7 @@ class List extends PureComponent<Props, IState> {
 
   public visibleNameHandle = () => {
     if (!this.state.isVisibleName) {
-      const node = this.listNameRef.current!;
-      node.focus()!;
+      this.setFocusToName();
       document.addEventListener("click", this.onDocument);
     } else {
       document.removeEventListener("click", this.onDocument);
@@ -99,6 +99,12 @@ class List extends PureComponent<Props, IState> {
     this.setState(prevState => ({
       isVisibleName: !prevState.isVisibleName
     }));
+  };
+
+  private setFocusToName = () => {
+    const node = this.listNameRef.current!;
+    node.focus();
+    node.setSelectionRange(0, node.value.length);
   };
 
   private onDocument = (e: MouseEvent) => {
