@@ -54,8 +54,8 @@ export type MoveTaskActionArgs = {
 export interface EditTaskNameAction {
   type: EDIT_TASK_NAME;
   payload: {
-    id: number;
     name: string;
+    id: number;
   };
 }
 
