@@ -31,6 +31,7 @@ interface IState {
   taskName: string;
   isModalOpen: boolean;
   isVisibleName: boolean;
+  isTooltipOpen: boolean;
 }
 
 type Props = IProps & IStateToProps & IDispatchProps;
@@ -41,10 +42,12 @@ class List extends PureComponent<Props, IState> {
     listName: this.props.list.name,
     taskName: "",
     isModalOpen: false,
-    isVisibleName: false
+    isVisibleName: false,
+    isTooltipOpen: false
   };
 
   private listNameRef = createRef<HTMLTextAreaElement>();
+  private tooltipRef = createRef<HTMLDivElement>();
 
   public editNameListHandle = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
@@ -102,6 +105,18 @@ class List extends PureComponent<Props, IState> {
     }));
   };
 
+  public visibleTooltipHandle = () => {
+    if (!this.state.isTooltipOpen) {
+      document.addEventListener("click", this.onDocument);
+    } else {
+      document.removeEventListener("click", this.onDocument);
+    }
+
+    this.setState(prevState => ({
+      isTooltipOpen: !prevState.isTooltipOpen
+    }));
+  };
+
   private setFocusToName = () => {
     const node = this.listNameRef.current!;
     node.focus();
@@ -109,8 +124,15 @@ class List extends PureComponent<Props, IState> {
   };
 
   private onDocument = (e: MouseEvent) => {
-    if (this.listNameRef.current !== e.target) {
+    if (this.listNameRef.current !== e.target && this.state.isVisibleName) {
       this.visibleNameHandle();
+    }
+    if (
+      this.tooltipRef.current !== null &&
+      !this.tooltipRef.current.contains(e.target as Node) &&
+      this.state.isTooltipOpen
+    ) {
+      this.visibleTooltipHandle();
     }
   };
 
@@ -138,6 +160,8 @@ class List extends PureComponent<Props, IState> {
         onAddTask={this.addTaskHandle}
         onVisibleName={this.visibleNameHandle}
         listNameRef={this.listNameRef}
+        tooltipRef={this.tooltipRef}
+        onVisibleTooltip={this.visibleTooltipHandle}
       />
     );
   }

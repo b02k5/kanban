@@ -19,6 +19,8 @@ interface IProps {
   isVisibleName: boolean;
   listNameRef: React.RefObject<HTMLTextAreaElement>;
   listName: string;
+  isTooltipOpen: boolean;
+  tooltipRef: React.RefObject<HTMLDivElement>;
   onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onRemoveList: (listId: number, tasks: Array<number>) => void;
   onEditNameList: (
@@ -28,6 +30,7 @@ interface IProps {
   onModalToggle: () => void;
   onAddTask: ({  }: any) => void;
   onVisibleName: () => void;
+  onVisibleTooltip: () => void;
 }
 
 const List = styled.div`
@@ -74,52 +77,7 @@ const Name = styled.textarea`
     border-bottom: 1px solid rgba(18, 33, 68, 0.15);
   }
 `;
-const RemoveList = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  margin: 0;
-  padding: 0;
-  width: 25px;
-  height: 30px;
-  border: 0;
-  border-radius: 3px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  background-color: transparent;
-  transition: 0.15s;
-  &:hover {
-    background-color: rgba(78, 79, 83, 0.1);
-  }
-`;
-
-const RemoveListCircle = styled.span`
-  position: relative;
-  display: block;
-  width: 4px;
-  height: 4px;
-  background-color: #9d9d9f;
-  border-radius: 50%;
-  &::before,
-  &::after {
-    content: "";
-    left: 0;
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background-color: #9d9d9f;
-    border-radius: 50%;
-  }
-  &::before {
-    top: -6px;
-  }
-  &::after {
-    top: 6px;
-  }
-`;
+const RemoveList = styled.button``;
 
 const Content = styled.div`
   height: calc(100vh - 119px);
@@ -148,6 +106,94 @@ const TasksItem = styled.li`
   }
 `;
 
+const More = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  margin: 0;
+  padding: 0;
+  width: 25px;
+  height: 30px;
+  border: 0;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: transparent;
+  transition: 0.15s;
+  &:hover {
+    background-color: rgba(78, 79, 83, 0.1);
+  }
+`;
+
+const MoreCircle = styled.span`
+  position: relative;
+  display: block;
+  width: 4px;
+  height: 4px;
+  background-color: #9d9d9f;
+  border-radius: 50%;
+  &::before,
+  &::after {
+    content: "";
+    left: 0;
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: #9d9d9f;
+    border-radius: 50%;
+  }
+  &::before {
+    top: -6px;
+  }
+  &::after {
+    top: 6px;
+  }
+`;
+
+const Tooltip = styled.div`
+  position: absolute;
+  top: 45px;
+  right: -200px;
+  width: 250px;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.08);
+  background-color: white;
+  z-index: 3;
+`;
+
+const TooltipName = styled.span`
+  color: #a4afb6;
+  display: block;
+  font-size: 14px;
+  line-height: 19px;
+  text-align: center;
+  border-bottom: 1px solid rgba(9, 30, 66, 0.13);
+  padding: 10px 0;
+  margin: 0 15px 10px 15px;
+`;
+
+const RemoveListButton = styled.button`
+  color: #36373a;
+  width: 100%;
+  text-align: left;
+  margin: 0;
+  padding: 10px 15px;
+  border: 0;
+  font-size: 14px;
+  line-height: 19px;
+  font-weight: 500;
+  background-color: transparent;
+  cursor: pointer;
+  &:hover {
+    background-color: #e9edf4;
+  }
+`;
+
 export default ({
   list,
   onRemoveList,
@@ -160,7 +206,10 @@ export default ({
   onVisibleName,
   isVisibleName,
   listNameRef,
-  listName
+  listName,
+  isTooltipOpen,
+  tooltipRef,
+  onVisibleTooltip
 }: IProps): JSX.Element => (
   <Draggable draggableId={`${list.id}`} index={index}>
     {provided => (
@@ -186,9 +235,19 @@ export default ({
             placeholder="Add list name"
             refTextarea={listNameRef}
           />
-          <RemoveList onClick={() => onRemoveList(list.id, list.tasks)}>
-            <RemoveListCircle />
-          </RemoveList>
+          <More onClick={onVisibleTooltip}>
+            <MoreCircle />
+          </More>
+          {isTooltipOpen && (
+            <Tooltip ref={tooltipRef}>
+              <TooltipName>List Actions</TooltipName>
+              <RemoveListButton
+                onClick={() => onRemoveList(list.id, list.tasks)}
+              >
+                Remove list
+              </RemoveListButton>
+            </Tooltip>
+          )}
         </Header>
         <Droppable key={list.id} droppableId={`${list.id}`} type="task">
           {(provided, snapshot) => (
