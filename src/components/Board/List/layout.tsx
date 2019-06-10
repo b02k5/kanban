@@ -5,7 +5,7 @@ import TextareaAutosize from "react-textarea-autosize";
 
 import { IList } from "../../../store/types/lists";
 import Task from "../Task";
-import { TaskType } from "../../../store/types/tasks";
+import { TaskType, TaskArguments } from "../../../store/types/tasks";
 import AddModal from "../../Modal/Add/index";
 import { AddButton } from "../../Buttons";
 import ResizableTextarea from "../../ResizableTextarea";
@@ -28,7 +28,7 @@ interface IProps {
     listId: number
   ) => void;
   onModalToggle: () => void;
-  onAddTask: ({  }: any) => void;
+  onAddTask: ({  }: TaskArguments) => void;
   onVisibleName: () => void;
   onVisibleTooltip: () => void;
 }
