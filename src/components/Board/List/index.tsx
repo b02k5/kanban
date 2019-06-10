@@ -97,7 +97,7 @@ class List extends PureComponent<Props, IState> {
       document.addEventListener("click", this.onDocument);
     } else {
       document.removeEventListener("click", this.onDocument);
-      this.sendEditedListName();
+      this.state.listName !== this.props.list.name && this.sendEditedListName();
     }
 
     this.setState(prevState => ({
