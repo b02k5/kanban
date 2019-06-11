@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
+import Truncate from "react-truncate";
 
 import { TaskType } from "../../../store/types/tasks";
 import TaskDetails from "../../Modal/TaskDetails";
@@ -82,7 +83,9 @@ export default ({ task, isModalOpen, onModalToggle, index }: IProps) => (
           <Time>{task.date}</Time>
           <Name isDragging={snapshot.isDragging}>{task.name}</Name>
           <Description isDragging={snapshot.isDragging}>
-            {task.description}
+            <Truncate lines={4} ellipsis="..." width="210">
+              {task.description}
+            </Truncate>
           </Description>
           <Footer>
             <TagLists>
