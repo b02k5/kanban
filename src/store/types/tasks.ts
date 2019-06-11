@@ -3,7 +3,8 @@ import {
   MOVE_TASK,
   EDIT_TASK_NAME,
   EDIT_TASK_DESCRIPTION,
-  CHANGE_POSITION_TASK
+  CHANGE_POSITION_TASK,
+  REMOVE_TASKS
 } from "../constants/tasks";
 import { RemoveListAction } from "./lists";
 
@@ -79,8 +80,17 @@ export interface ChangePositionTaskArgs {
   destinationIndex: number;
 }
 
+export interface RemoveTasksAction {
+  type: REMOVE_TASKS;
+  payload: {
+    listId: number;
+    tasks: Array<number>;
+  };
+}
+
 export type TaskAction =
   | AddTaskAction
   | RemoveListAction
   | EditTaskNameAction
-  | EditTaskDescriptionAction;
+  | EditTaskDescriptionAction
+  | RemoveTasksAction;

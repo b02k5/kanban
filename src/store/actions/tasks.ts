@@ -73,3 +73,11 @@ export const changePositionTasks = ({
     destinationIndex
   }
 });
+
+export const removeTasks = (listId: number, tasks: Array<number>) => ({
+  type: taskConstants.REMOVE_TASKS,
+  payload: {
+    listId,
+    tasks
+  }
+});
