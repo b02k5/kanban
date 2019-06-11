@@ -31,6 +31,7 @@ interface IProps {
   onAddTask: ({  }: TaskArguments) => void;
   onVisibleName: () => void;
   onVisibleTooltip: () => void;
+  removeTasks: (listId: number, tasks: Array<number>) => void;
 }
 
 const List = styled.div`
@@ -173,7 +174,15 @@ const TooltipName = styled.span`
   margin: 0 15px 10px 15px;
 `;
 
-const RemoveListButton = styled.button`
+const TooltipList = styled.ul`
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+`;
+
+const TooltipItem = styled.li``;
+
+const TooltipButton = styled.button`
   color: #36373a;
   width: 100%;
   text-align: left;
@@ -205,7 +214,8 @@ export default ({
   listName,
   isTooltipOpen,
   tooltipRef,
-  onVisibleTooltip
+  onVisibleTooltip,
+  removeTasks
 }: IProps): JSX.Element => (
   <Draggable draggableId={`${list.id}`} index={index}>
     {provided => (
@@ -237,11 +247,27 @@ export default ({
           {isTooltipOpen && (
             <Tooltip ref={tooltipRef}>
               <TooltipName>List Actions</TooltipName>
-              <RemoveListButton
-                onClick={() => onRemoveList(list.id, list.tasks)}
-              >
-                Remove list
-              </RemoveListButton>
+              <TooltipList>
+                {list.name === "Done" && (
+                  <TooltipItem>
+                    <TooltipButton
+                      onClick={() =>
+                        list.tasks.length !== 0 &&
+                        removeTasks(list.id, list.tasks)
+                      }
+                    >
+                      Remove all tasks
+                    </TooltipButton>
+                  </TooltipItem>
+                )}
+                <TooltipItem>
+                  <TooltipButton
+                    onClick={() => onRemoveList(list.id, list.tasks)}
+                  >
+                    Remove list
+                  </TooltipButton>
+                </TooltipItem>
+              </TooltipList>
             </Tooltip>
           )}
         </Header>
