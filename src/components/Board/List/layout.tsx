@@ -66,16 +66,12 @@ const Name = styled.textarea`
   font-weight: bold;
   width: 100%;
   margin: 0;
-  padding: 0 0 0 10px;
+  padding: 2px 0 2px 10px;
   border: 0;
   border-bottom: 1px solid transparent;
   background-color: transparent;
   resize: none;
   transition: 0.1s;
-  &:focus,
-  &:hover {
-    border-bottom: 1px solid rgba(18, 33, 68, 0.15);
-  }
 `;
 const RemoveList = styled.button``;
 
