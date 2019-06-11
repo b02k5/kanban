@@ -83,7 +83,7 @@ export default ({ task, isModalOpen, onModalToggle, index }: IProps) => (
           <Time>{task.date}</Time>
           <Name isDragging={snapshot.isDragging}>{task.name}</Name>
           <Description isDragging={snapshot.isDragging}>
-            <Truncate lines={4} ellipsis="..." width="210">
+            <Truncate lines={4} ellipsis="..." width={210}>
               {task.description}
             </Truncate>
           </Description>
