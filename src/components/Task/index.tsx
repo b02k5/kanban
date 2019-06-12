@@ -1,10 +1,10 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 
-import { TaskArguments } from "../../../store/types/tasks";
-import { addTask } from "../../../store/actions/tasks";
+import { TaskArguments } from "../../store/types/tasks";
+import { addTask } from "../../store/actions/tasks";
 import TaskLayout from "./layout";
-import { TaskType } from "../../../store/types/tasks";
+import { TaskType } from "../../store/types/tasks";
 
 interface IDispatchProps {
   addTask: ({  }: TaskArguments) => void;

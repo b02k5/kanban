@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 import Truncate from "react-truncate";
 
-import { TaskType } from "../../../store/types/tasks";
-import TaskDetails from "../../Modal/TaskDetails";
+import { TaskType } from "../../store/types/tasks";
+import TaskDetails from "../Modal/TaskDetails";
 
 interface IProps {
   task: TaskType;
