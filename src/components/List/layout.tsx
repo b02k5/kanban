@@ -3,12 +3,12 @@ import styled from "styled-components";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import TextareaAutosize from "react-textarea-autosize";
 
-import { IList } from "../../../store/types/lists";
+import { IList } from "../../store/types/lists";
 import Task from "../Task";
-import { TaskType, TaskArguments } from "../../../store/types/tasks";
-import AddModal from "../../Modal/Add/index";
-import { AddButton } from "../../Buttons";
-import ResizableTextarea from "../../ResizableTextarea";
+import { TaskType, TaskArguments } from "../../store/types/tasks";
+import AddModal from "../Modal/Add/index";
+import { AddButton } from "../Buttons";
+import ResizableTextarea from "../ResizableTextarea";
 
 interface IProps {
   list: IList;

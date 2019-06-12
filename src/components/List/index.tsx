@@ -2,12 +2,12 @@ import React, { PureComponent, createRef } from "react";
 import { connect } from "react-redux";
 
 import ListLayout from "./layout";
-import { IList } from "../../../store/types/lists";
-import { removeList, editListName } from "../../../store/actions/lists";
-import { addTask, removeTasks } from "../../../store/actions/tasks";
-import { AppState } from "../../../store";
-import { getTasks } from "../../../store/selectors/tasks";
-import { TaskType, TaskArguments } from "../../../store/types/tasks";
+import { IList } from "../../store/types/lists";
+import { removeList, editListName } from "../../store/actions/lists";
+import { addTask, removeTasks } from "../../store/actions/tasks";
+import { AppState } from "../../store";
+import { getTasks } from "../../store/selectors/tasks";
+import { TaskType, TaskArguments } from "../../store/types/tasks";
 
 interface IProps {
   list: IList;
