@@ -1,14 +1,21 @@
 import React, { useRef, useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { Droppable, Draggable } from "react-beautiful-dnd";
 
-import ListLayout from "./layout";
+import { AppState } from "../../store";
 import { IList } from "../../store/types/lists";
 import { removeList, editListName } from "../../store/actions/lists";
 import { addTask, removeTasks } from "../../store/actions/tasks";
-import { AppState } from "../../store";
 import { getTasks } from "../../store/selectors/tasks";
 import { TaskType, TaskArguments } from "../../store/types/tasks";
 import { ContextList } from "../../utils/context";
+import AddModal from "../Modal/Add/index";
+import ResizableTextarea from "../ResizableTextarea";
+import Tooltip from "../Tooltip";
+import TaskList from "./TaskList";
+import More from "./More";
+
+import * as ListLayout from "./styles";
 
 interface IProps {
   list: IList;
@@ -35,17 +42,22 @@ interface IInfoList {
 type Props = IProps & IStateToProps & IDispatchProps;
 
 const List: React.FunctionComponent<Props> = props => {
-  const [state, setState] = useState({
-    taskName: "",
-    isModalOpen: false
-  });
-
   const [isEditName, setIsEditName] = useState<boolean>(false);
   const [isTooltipOpen, setIsTooltipOpen] = useState<boolean>(false);
   const [infoList, setInfoList] = useState<IInfoList>({
     id: 0,
     name: props.list.name
   });
+  const [tooltipItems, setTooltipItems] = useState([
+    {
+      name: "Remove all tasks",
+      action: () => list.tasks.length !== 0 && removeTasks(list.id, list.tasks)
+    },
+    {
+      name: "Remove list",
+      action: () => removeListHandle(list.id, list.tasks)
+    }
+  ]);
 
   useEffect(() => {
     if (isEditName) {
@@ -60,8 +72,9 @@ const List: React.FunctionComponent<Props> = props => {
     };
   }, [isEditName]);
 
+  const { list, index } = { ...props };
   const listNameRef = useRef<HTMLTextAreaElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
+  const draggableRef = useRef<HTMLDivElement>(null);
 
   const editNameListHandle = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
@@ -127,147 +140,60 @@ const List: React.FunctionComponent<Props> = props => {
 
   return (
     <ContextList.Provider value={{ setIsTooltipOpen, tasks: props.tasks }}>
-      <ListLayout
-        {...props}
-        {...state}
-        onRemoveList={removeListHandle}
-        onEditNameList={editNameListHandle}
-        onModalToggle={modalToggleHandle}
-        onAddTask={addTaskHandle}
-        onVisibleName={visibleNameHandle}
-        listNameRef={listNameRef}
-        isTooltipOpen={isTooltipOpen}
-        isEditName={isEditName}
-        infoList={infoList}
-        headerRef={headerRef}
-      />
+      <Draggable draggableId={`${list.id}`} index={index}>
+        {provided => (
+          <ListLayout.Main
+            id={`${list.id}`}
+            {...provided.draggableProps}
+            ref={provided.innerRef}
+          >
+            <ListLayout.Header>
+              {!isEditName && (
+                <ListLayout.Draggable
+                  onClick={visibleNameHandle}
+                  ref={draggableRef}
+                  {...provided.dragHandleProps}
+                />
+              )}
+              <ResizableTextarea
+                maxRows={4}
+                lineHeight={25}
+                onChange={editNameListHandle}
+                value={infoList.name}
+                elementId={list.id}
+                style={ListLayout.Name}
+                placeholder="Add list name"
+                refTextarea={listNameRef}
+              />
+              <More />
+              {isTooltipOpen && (
+                <Tooltip items={tooltipItems} listName={list.name} />
+              )}
+            </ListLayout.Header>
+            <Droppable key={list.id} droppableId={`${list.id}`} type="task">
+              {(provided, snapshot) => (
+                <ListLayout.Content
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                >
+                  <TaskList provided={provided} snapshot={snapshot} />
+                </ListLayout.Content>
+              )}
+            </Droppable>
+            {/* {isModalOpen && (
+              <AddModal
+                modalName="task"
+                action={addTaskHandle}
+                listId={list.id}
+                onModalToggle={modalToggleHandle}
+              />
+            )} */}
+          </ListLayout.Main>
+        )}
+      </Draggable>
     </ContextList.Provider>
   );
 };
-
-// class List extends PureComponent<Props, IState> {
-//   // public state = {};
-
-//   // private listNameRef = createRef<HTMLTextAreaElement>();
-//   // private tooltipRef = createRef<HTMLDivElement>();
-
-//   // public editNameListHandle = (
-//   //   e: React.ChangeEvent<HTMLTextAreaElement>,
-//   //   listId: number
-//   // ) => {
-//   //   this.setState({
-//   //     listId,
-//   //     listName: e.target.value
-//   //   });
-//   // };
-
-//   // private setTaskNameHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
-//   //   this.setState({
-//   //     taskName: e.target.value
-//   //   });
-//   // };
-
-//   // private addTaskHandle = ({ listId, name, description }: TaskArguments) => {
-//   //   const taskId: number = new Date().getTime();
-
-//   //   const taskArguments = {
-//   //     listId,
-//   //     id: taskId,
-//   //     name,
-//   //     description
-//   //   };
-
-//   //   this.props.addTask(taskArguments);
-//   //   this.modalToggleHandle();
-//   // };
-
-//   // private modalToggleHandle = () => {
-//   //   this.setState(prevState => ({
-//   //     isModalOpen: !prevState.isModalOpen
-//   //   }));
-//   // };
-
-//   // public removeListHandle = (listId: number, tasks: Array<number>) => {
-//   //   const { boardId } = this.props;
-//   //   this.props.removeList(boardId, listId, tasks);
-//   // };
-
-//   // public visibleNameHandle = () => {
-//   //   if (!this.state.isVisibleName) {
-//   //     this.setStateListName();
-//   //     this.setFocusToName();
-//   //     document.addEventListener("click", this.clikOutsideHandle;
-//   //   } else {
-//   //     document.removeEventListener("click", this.clikOutsideHandle;
-//   //     this.state.listName !== this.props.list.name && this.sendEditedListName();
-//   //   }
-
-//   //   this.setState(prevState => ({
-//   //     isVisibleName: !prevState.isVisibleName
-//   //   }));
-//   // };
-
-//   // public visibleTooltipHandle = () => {
-//   //   if (!this.state.isTooltipOpen) {
-//   //     document.addEventListener("click", this.clikOutsideHandle;
-//   //   } else {
-//   //     document.removeEventListener("click", this.clikOutsideHandle;
-//   //   }
-
-//   //   this.setState(prevState => ({
-//   //     isTooltipOpen: !prevState.isTooltipOpen
-//   //   }));
-//   // };
-
-//   // private setFocusToName = () => {
-//   //   const node = this.listNameRef.current!;
-//   //   node.focus();
-//   //   node.setSelectionRange(0, node.value.length);
-//   // };
-
-//   // private clikOutsideHandle= (e: MouseEvent) => {
-//   //   if (this.listNameRef.current !== e.target && this.state.isVisibleName) {
-//   //     this.visibleNameHandle();
-//   //   }
-//   //   if (
-//   //     this.tooltipRef.current !== null &&
-//   //     !this.tooltipRef.current.contains(e.target as Node) &&
-//   //     this.state.isTooltipOpen
-//   //   ) {
-//   //     this.visibleTooltipHandle();
-//   //   }
-//   // };
-
-//   // private setStateListName = () => {
-//   //   this.setState({
-//   //     listName: this.props.list.name
-//   //   });
-//   // };
-
-//   // private sendEditedListName = () => {
-//   //   this.state.listName != ""
-//   //     ? this.props.editListName(this.state.listId, this.state.listName)
-//   //     : (this.state.listName = this.props.list.name);
-//   // };
-
-//   // public render(): JSX.Element {
-//   //   return (
-//   //     <ListLayout
-//   //       {...this.props}
-//   //       {...this.state}
-//   //       onRemoveList={this.removeListHandle}
-//   //       onSetTaskName={this.setTaskNameHandle}
-//   //       onEditNameList={this.editNameListHandle}
-//   //       onModalToggle={this.modalToggleHandle}
-//   //       onAddTask={this.addTaskHandle}
-//   //       onVisibleName={this.visibleNameHandle}
-//   //       listNameRef={this.listNameRef}
-//   //       tooltipRef={this.tooltipRef}
-//   //       onVisibleTooltip={this.visibleTooltipHandle}
-//   //     />
-//   //   );
-//   // }
-// }
 
 const mapStateToProps = (state: AppState, ownProps: any): IStateToProps => ({
   tasks: getTasks(state, ownProps.list.id)
