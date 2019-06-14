@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import TextareaAutosize from "react-textarea-autosize";
@@ -9,6 +9,7 @@ import { TaskType, TaskArguments } from "../../store/types/tasks";
 import AddModal from "../Modal/Add/index";
 import { AddButton } from "../Buttons";
 import ResizableTextarea from "../ResizableTextarea";
+import Tooltip from "../Tooltip";
 
 interface IProps {
   list: IList;
@@ -16,12 +17,11 @@ interface IProps {
   taskName: string;
   isModalOpen: boolean;
   index: number;
-  isVisibleName: boolean;
-  listNameRef: React.RefObject<HTMLTextAreaElement>;
-  listName: string;
+  isEditName: boolean;
+  listNameRef: any;
+  headerRef: any;
   isTooltipOpen: boolean;
-  tooltipRef: React.RefObject<HTMLDivElement>;
-  onSetTaskName: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  infoList: { id: number; name: string };
   onRemoveList: (listId: number, tasks: Array<number>) => void;
   onEditNameList: (
     e: React.ChangeEvent<HTMLTextAreaElement>,
@@ -30,8 +30,8 @@ interface IProps {
   onModalToggle: () => void;
   onAddTask: ({  }: TaskArguments) => void;
   onVisibleName: () => void;
-  onVisibleTooltip: () => void;
   removeTasks: (listId: number, tasks: Array<number>) => void;
+  setIsTooltipOpen: (_: boolean) => void;
 }
 
 const List = styled.div`
@@ -150,55 +150,6 @@ const MoreCircle = styled.span`
   }
 `;
 
-const Tooltip = styled.div`
-  position: absolute;
-  top: 45px;
-  right: -200px;
-  width: 250px;
-  border-radius: 3px;
-  overflow: hidden;
-  box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
-    0 0 0 1px rgba(9, 30, 66, 0.08);
-  background-color: white;
-  z-index: 3;
-`;
-
-const TooltipName = styled.span`
-  color: #a4afb6;
-  display: block;
-  font-size: 14px;
-  line-height: 19px;
-  text-align: center;
-  border-bottom: 1px solid rgba(9, 30, 66, 0.13);
-  padding: 10px 0;
-  margin: 0 15px 10px 15px;
-`;
-
-const TooltipList = styled.ul`
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-`;
-
-const TooltipItem = styled.li``;
-
-const TooltipButton = styled.button`
-  color: #36373a;
-  width: 100%;
-  text-align: left;
-  margin: 0;
-  padding: 10px 15px;
-  border: 0;
-  font-size: 14px;
-  line-height: 19px;
-  font-weight: 500;
-  background-color: transparent;
-  cursor: pointer;
-  &:hover {
-    background-color: #e9edf4;
-  }
-`;
-
 export default ({
   list,
   onRemoveList,
@@ -209,98 +160,89 @@ export default ({
   onAddTask,
   index,
   onVisibleName,
-  isVisibleName,
+  isEditName,
   listNameRef,
-  listName,
   isTooltipOpen,
-  tooltipRef,
-  onVisibleTooltip,
-  removeTasks
-}: IProps): JSX.Element => (
-  <Draggable draggableId={`${list.id}`} index={index}>
-    {provided => (
-      <List
-        id={`${list.id}`}
-        {...provided.draggableProps}
-        ref={provided.innerRef}
-      >
-        <Header>
-          {!isVisibleName && (
-            <HeaderTarget
-              onClick={onVisibleName}
-              {...provided.dragHandleProps}
+  removeTasks,
+  setIsTooltipOpen,
+  infoList,
+  headerRef
+}: IProps): JSX.Element => {
+  const [tooltipItems, setTooltipItems] = useState([
+    {
+      name: "Remove all tasks",
+      action: () => list.tasks.length !== 0 && removeTasks(list.id, list.tasks)
+    },
+    {
+      name: "Remove list",
+      action: () => onRemoveList(list.id, list.tasks)
+    }
+  ]);
+
+  return (
+    <Draggable draggableId={`${list.id}`} index={index}>
+      {provided => (
+        <List
+          id={`${list.id}`}
+          {...provided.draggableProps}
+          ref={provided.innerRef}
+        >
+          <Header>
+            {!isEditName && (
+              <HeaderTarget
+                onClick={onVisibleName}
+                ref={headerRef}
+                {...provided.dragHandleProps}
+              />
+            )}
+            <ResizableTextarea
+              maxRows={4}
+              lineHeight={25}
+              onChange={onEditNameList}
+              value={infoList.name}
+              elementId={list.id}
+              style={Name}
+              placeholder="Add list name"
+              refTextarea={listNameRef}
+            />
+            <More onClick={() => setIsTooltipOpen(true)}>
+              <MoreCircle />
+            </More>
+            {isTooltipOpen && (
+              <Tooltip items={tooltipItems} listName={list.name} />
+            )}
+          </Header>
+          <Droppable key={list.id} droppableId={`${list.id}`} type="task">
+            {(provided, snapshot) => (
+              <Content {...provided.droppableProps} ref={provided.innerRef}>
+                <TasksWrapper>
+                  <Tasks isDraggingOver={snapshot.isDraggingOver}>
+                    {[...tasks].map((task, index) => (
+                      <TasksItem key={task.id}>
+                        <Task task={task} index={index} />
+                      </TasksItem>
+                    ))}
+                    {provided.placeholder}
+                  </Tasks>
+                  <AddButton
+                    name="Add new task"
+                    action="task"
+                    click={onModalToggle}
+                  />
+                </TasksWrapper>
+              </Content>
+            )}
+          </Droppable>
+          {isModalOpen && (
+            <AddModal
+              modalName="task"
+              action={onAddTask}
+              listId={list.id}
+              onModalToggle={onModalToggle}
             />
           )}
-          <ResizableTextarea
-            maxRows={4}
-            lineHeight={25}
-            onChange={onEditNameList}
-            value={listName}
-            elementId={list.id}
-            style={Name}
-            placeholder="Add list name"
-            refTextarea={listNameRef}
-          />
-          <More onClick={onVisibleTooltip}>
-            <MoreCircle />
-          </More>
-          {isTooltipOpen && (
-            <Tooltip ref={tooltipRef}>
-              <TooltipName>List Actions</TooltipName>
-              <TooltipList>
-                {list.name === "Done" && (
-                  <TooltipItem>
-                    <TooltipButton
-                      onClick={() =>
-                        list.tasks.length !== 0 &&
-                        removeTasks(list.id, list.tasks)
-                      }
-                    >
-                      Remove all tasks
-                    </TooltipButton>
-                  </TooltipItem>
-                )}
-                <TooltipItem>
-                  <TooltipButton
-                    onClick={() => onRemoveList(list.id, list.tasks)}
-                  >
-                    Remove list
-                  </TooltipButton>
-                </TooltipItem>
-              </TooltipList>
-            </Tooltip>
-          )}
-        </Header>
-        <Droppable key={list.id} droppableId={`${list.id}`} type="task">
-          {(provided, snapshot) => (
-            <Content {...provided.droppableProps} ref={provided.innerRef}>
-              <TasksWrapper>
-                <Tasks isDraggingOver={snapshot.isDraggingOver}>
-                  {[...tasks].map((task, index) => (
-                    <TasksItem key={task.id}>
-                      <Task task={task} index={index} />
-                    </TasksItem>
-                  ))}
-                  {provided.placeholder}
-                </Tasks>
-                <AddButton
-                  name="Add new task"
-                  action="task"
-                  click={onModalToggle}
-                />
-              </TasksWrapper>
-            </Content>
-          )}
-        </Droppable>
-        {isModalOpen && (
-          <AddModal
-            modalName="task"
-            action={onAddTask}
-            listId={list.id}
-            onModalToggle={onModalToggle}
-          />
-        )}
-      </List>
-    )}
-  </Draggable>
-);
+        </List>
+      )}
+    </Draggable>
+  );
+};

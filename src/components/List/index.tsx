@@ -1,4 +1,4 @@
-import React, { PureComponent, createRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { connect } from "react-redux";
 
 import ListLayout from "./layout";
@@ -8,6 +8,7 @@ import { addTask, removeTasks } from "../../store/actions/tasks";
 import { AppState } from "../../store";
 import { getTasks } from "../../store/selectors/tasks";
 import { TaskType, TaskArguments } from "../../store/types/tasks";
+import { ContextList } from "../../utils/context";
 
 interface IProps {
   list: IList;
@@ -26,147 +27,248 @@ interface IDispatchProps {
   removeTasks: (listId: number, tasks: Array<number>) => void;
 }
 
-interface IState {
-  listId: number;
-  listName: string;
-  taskName: string;
-  isModalOpen: boolean;
-  isVisibleName: boolean;
-  isTooltipOpen: boolean;
+interface IInfoList {
+  id: number;
+  name: string;
 }
 
 type Props = IProps & IStateToProps & IDispatchProps;
 
-class List extends PureComponent<Props, IState> {
-  public state = {
-    listId: 0,
-    listName: this.props.list.name,
+const List: React.FunctionComponent<Props> = props => {
+  const [state, setState] = useState({
     taskName: "",
-    isModalOpen: false,
-    isVisibleName: false,
-    isTooltipOpen: false
-  };
+    isModalOpen: false
+  });
 
-  private listNameRef = createRef<HTMLTextAreaElement>();
-  private tooltipRef = createRef<HTMLDivElement>();
+  const [isEditName, setIsEditName] = useState<boolean>(false);
+  const [isTooltipOpen, setIsTooltipOpen] = useState<boolean>(false);
+  const [infoList, setInfoList] = useState<IInfoList>({
+    id: 0,
+    name: props.list.name
+  });
 
-  public editNameListHandle = (
+  useEffect(() => {
+    if (isEditName) {
+      document.addEventListener("click", clickOutsideHandle);
+    } else {
+      document.removeEventListener("click", clickOutsideHandle);
+      infoList.name !== props.list.name && sendEditedListName();
+    }
+
+    return () => {
+      document.removeEventListener("click", clickOutsideHandle);
+    };
+  }, [isEditName]);
+
+  const listNameRef = useRef<HTMLTextAreaElement>(null);
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  const editNameListHandle = (
     e: React.ChangeEvent<HTMLTextAreaElement>,
     listId: number
   ) => {
-    this.setState({
-      listId,
-      listName: e.target.value
+    setInfoList({
+      id: listId,
+      name: e.target.value
     });
   };
 
-  private setTaskNameHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      taskName: e.target.value
-    });
+  const clickOutsideHandle = (e: MouseEvent) => {
+    const node = listNameRef.current;
+    node && !node.contains(e.target as Node) && setIsEditName(false);
   };
 
-  private addTaskHandle = ({ listId, name, description }: TaskArguments) => {
+  const addTaskHandle = ({ listId, name, description }: TaskArguments) => {
     const taskId: number = new Date().getTime();
-
     const taskArguments = {
       listId,
       id: taskId,
       name,
       description
     };
-
-    this.props.addTask(taskArguments);
-    this.modalToggleHandle();
+    props.addTask(taskArguments);
+    modalToggleHandle();
   };
 
-  private modalToggleHandle = () => {
-    this.setState(prevState => ({
-      isModalOpen: !prevState.isModalOpen
-    }));
+  const modalToggleHandle = () => {
+    // this.setState(prevState => ({
+    //   isModalOpen: !prevState.isModalOpen
+    // }));
   };
 
-  public removeListHandle = (listId: number, tasks: Array<number>) => {
-    const { boardId } = this.props;
-    this.props.removeList(boardId, listId, tasks);
+  const removeListHandle = (listId: number, tasks: Array<number>) => {
+    const { boardId } = props;
+    props.removeList(boardId, listId, tasks);
   };
 
-  public visibleNameHandle = () => {
-    if (!this.state.isVisibleName) {
-      this.setStateListName();
-      this.setFocusToName();
-      document.addEventListener("click", this.onDocument);
-    } else {
-      document.removeEventListener("click", this.onDocument);
-      this.state.listName !== this.props.list.name && this.sendEditedListName();
-    }
-
-    this.setState(prevState => ({
-      isVisibleName: !prevState.isVisibleName
-    }));
+  const visibleNameHandle = () => {
+    !isEditName && setFocusToName();
+    setIsEditName(prevState => !prevState);
   };
 
-  public visibleTooltipHandle = () => {
-    if (!this.state.isTooltipOpen) {
-      document.addEventListener("click", this.onDocument);
-    } else {
-      document.removeEventListener("click", this.onDocument);
-    }
-
-    this.setState(prevState => ({
-      isTooltipOpen: !prevState.isTooltipOpen
-    }));
+  const setFocusToName = () => {
+    const node = listNameRef.current;
+    node && node.focus();
+    node && node.setSelectionRange(0, node.value.length);
   };
 
-  private setFocusToName = () => {
-    const node = this.listNameRef.current!;
-    node.focus();
-    node.setSelectionRange(0, node.value.length);
-  };
-
-  private onDocument = (e: MouseEvent) => {
-    if (this.listNameRef.current !== e.target && this.state.isVisibleName) {
-      this.visibleNameHandle();
-    }
-    if (
-      this.tooltipRef.current !== null &&
-      !this.tooltipRef.current.contains(e.target as Node) &&
-      this.state.isTooltipOpen
-    ) {
-      this.visibleTooltipHandle();
-    }
-  };
-
-  private setStateListName = () => {
-    this.setState({
-      listName: this.props.list.name
+  const setStateListName = () => {
+    setInfoList({
+      ...infoList,
+      name: props.list.name
     });
   };
 
-  private sendEditedListName = () => {
-    this.state.listName != ""
-      ? this.props.editListName(this.state.listId, this.state.listName)
-      : (this.state.listName = this.props.list.name);
+  const sendEditedListName = () => {
+    infoList.name !== ""
+      ? props.editListName(infoList.id, infoList.name)
+      : setStateListName();
   };
 
-  public render(): JSX.Element {
-    return (
+  return (
+    <ContextList.Provider value={{ setIsTooltipOpen }}>
       <ListLayout
-        {...this.props}
-        {...this.state}
-        onRemoveList={this.removeListHandle}
-        onSetTaskName={this.setTaskNameHandle}
-        onEditNameList={this.editNameListHandle}
-        onModalToggle={this.modalToggleHandle}
-        onAddTask={this.addTaskHandle}
-        onVisibleName={this.visibleNameHandle}
-        listNameRef={this.listNameRef}
-        tooltipRef={this.tooltipRef}
-        onVisibleTooltip={this.visibleTooltipHandle}
+        {...props}
+        {...state}
+        onRemoveList={removeListHandle}
+        onEditNameList={editNameListHandle}
+        onModalToggle={modalToggleHandle}
+        onAddTask={addTaskHandle}
+        onVisibleName={visibleNameHandle}
+        listNameRef={listNameRef}
+        isTooltipOpen={isTooltipOpen}
+        isEditName={isEditName}
+        setIsTooltipOpen={setIsTooltipOpen}
+        infoList={infoList}
+        headerRef={headerRef}
       />
-    );
-  }
-}
+    </ContextList.Provider>
+  );
+};
+
+// class List extends PureComponent<Props, IState> {
+//   // public state = {};
+
+//   // private listNameRef = createRef<HTMLTextAreaElement>();
+//   // private tooltipRef = createRef<HTMLDivElement>();
+
+//   // public editNameListHandle = (
+//   //   e: React.ChangeEvent<HTMLTextAreaElement>,
+//   //   listId: number
+//   // ) => {
+//   //   this.setState({
+//   //     listId,
+//   //     listName: e.target.value
+//   //   });
+//   // };
+
+//   // private setTaskNameHandle = (e: React.ChangeEvent<HTMLInputElement>) => {
+//   //   this.setState({
+//   //     taskName: e.target.value
+//   //   });
+//   // };
+
+//   // private addTaskHandle = ({ listId, name, description }: TaskArguments) => {
+//   //   const taskId: number = new Date().getTime();
+
+//   //   const taskArguments = {
+//   //     listId,
+//   //     id: taskId,
+//   //     name,
+//   //     description
+//   //   };
+
+//   //   this.props.addTask(taskArguments);
+//   //   this.modalToggleHandle();
+//   // };
+
+//   // private modalToggleHandle = () => {
+//   //   this.setState(prevState => ({
+//   //     isModalOpen: !prevState.isModalOpen
+//   //   }));
+//   // };
+
+//   // public removeListHandle = (listId: number, tasks: Array<number>) => {
+//   //   const { boardId } = this.props;
+//   //   this.props.removeList(boardId, listId, tasks);
+//   // };
+
+//   // public visibleNameHandle = () => {
+//   //   if (!this.state.isVisibleName) {
+//   //     this.setStateListName();
+//   //     this.setFocusToName();
+//   //     document.addEventListener("click", this.clikOutsideHandle;
+//   //   } else {
+//   //     document.removeEventListener("click", this.clikOutsideHandle;
+//   //     this.state.listName !== this.props.list.name && this.sendEditedListName();
+//   //   }
+
+//   //   this.setState(prevState => ({
+//   //     isVisibleName: !prevState.isVisibleName
+//   //   }));
+//   // };
+
+//   // public visibleTooltipHandle = () => {
+//   //   if (!this.state.isTooltipOpen) {
+//   //     document.addEventListener("click", this.clikOutsideHandle;
+//   //   } else {
+//   //     document.removeEventListener("click", this.clikOutsideHandle;
+//   //   }
+
+//   //   this.setState(prevState => ({
+//   //     isTooltipOpen: !prevState.isTooltipOpen
+//   //   }));
+//   // };
+
+//   // private setFocusToName = () => {
+//   //   const node = this.listNameRef.current!;
+//   //   node.focus();
+//   //   node.setSelectionRange(0, node.value.length);
+//   // };
+
+//   // private clikOutsideHandle= (e: MouseEvent) => {
+//   //   if (this.listNameRef.current !== e.target && this.state.isVisibleName) {
+//   //     this.visibleNameHandle();
+//   //   }
+//   //   if (
+//   //     this.tooltipRef.current !== null &&
+//   //     !this.tooltipRef.current.contains(e.target as Node) &&
+//   //     this.state.isTooltipOpen
+//   //   ) {
+//   //     this.visibleTooltipHandle();
+//   //   }
+//   // };
+
+//   // private setStateListName = () => {
+//   //   this.setState({
+//   //     listName: this.props.list.name
+//   //   });
+//   // };
+
+//   // private sendEditedListName = () => {
+//   //   this.state.listName != ""
+//   //     ? this.props.editListName(this.state.listId, this.state.listName)
+//   //     : (this.state.listName = this.props.list.name);
+//   // };
+
+//   // public render(): JSX.Element {
+//   //   return (
+//   //     <ListLayout
+//   //       {...this.props}
+//   //       {...this.state}
+//   //       onRemoveList={this.removeListHandle}
+//   //       onSetTaskName={this.setTaskNameHandle}
+//   //       onEditNameList={this.editNameListHandle}
+//   //       onModalToggle={this.modalToggleHandle}
+//   //       onAddTask={this.addTaskHandle}
+//   //       onVisibleName={this.visibleNameHandle}
+//   //       listNameRef={this.listNameRef}
+//   //       tooltipRef={this.tooltipRef}
+//   //       onVisibleTooltip={this.visibleTooltipHandle}
+//   //     />
+//   //   );
+//   // }
+// }
 
 const mapStateToProps = (state: AppState, ownProps: any): IStateToProps => ({
   tasks: getTasks(state, ownProps.list.id)
