@@ -4,12 +4,11 @@ import { Droppable, Draggable } from "react-beautiful-dnd";
 import TextareaAutosize from "react-textarea-autosize";
 
 import { IList } from "../../store/types/lists";
-import Task from "../Task";
 import { TaskType, TaskArguments } from "../../store/types/tasks";
 import AddModal from "../Modal/Add/index";
-import { AddButton } from "../Buttons";
 import ResizableTextarea from "../ResizableTextarea";
 import Tooltip from "../Tooltip";
+import TaskList from "./TaskList";
 
 interface IProps {
   list: IList;
@@ -78,29 +77,6 @@ const RemoveList = styled.button``;
 
 const Content = styled.div`
   height: calc(100vh - 119px);
-`;
-
-const TasksWrapper = styled.div`
-  background-color: #e9edf4;
-  border-radius: 0 0 5px 5px;
-`;
-
-const Tasks = styled.ul<{ isDraggingOver: boolean }>`
-  list-style-type: none;
-  margin: 0;
-  padding: 0 15px;
-  max-height: calc(100vh - 182px);
-  overflow-y: scroll;
-  transition: background-color 0.15s ease;
-  background-color: ${props =>
-    props.isDraggingOver ? "#d3d9e1" : "transparent"};
-`;
-
-const TasksItem = styled.li`
-  width: 100%;
-  &:last-child {
-    margin-bottom: 0;
-  }
 `;
 
 const More = styled.button`
@@ -215,21 +191,7 @@ export default ({
           <Droppable key={list.id} droppableId={`${list.id}`} type="task">
             {(provided, snapshot) => (
               <Content {...provided.droppableProps} ref={provided.innerRef}>
-                <TasksWrapper>
-                  <Tasks isDraggingOver={snapshot.isDraggingOver}>
-                    {[...tasks].map((task, index) => (
-                      <TasksItem key={task.id}>
-                        <Task task={task} index={index} />
-                      </TasksItem>
-                    ))}
-                    {provided.placeholder}
-                  </Tasks>
-                  <AddButton
-                    name="Add new task"
-                    action="task"
-                    click={onModalToggle}
-                  />
-                </TasksWrapper>
+                <TaskList provided={provided} snapshot={snapshot} />
               </Content>
             )}
           </Droppable>

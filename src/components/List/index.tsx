@@ -126,7 +126,7 @@ const List: React.FunctionComponent<Props> = props => {
   };
 
   return (
-    <ContextList.Provider value={{ setIsTooltipOpen }}>
+    <ContextList.Provider value={{ setIsTooltipOpen, tasks: props.tasks }}>
       <ListLayout
         {...props}
         {...state}
