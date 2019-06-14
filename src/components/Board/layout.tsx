@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
 
 import { BoardType } from "../../store/types/boards";
-import List from "./List";
+import List from "../List";
 import { IList } from "../../store/types/lists";
 import AddModal from "../Modal/Add";
 import { AddButton } from "../Buttons";
