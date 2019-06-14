@@ -39,6 +39,8 @@ interface IInfoList {
   name: string;
 }
 
+type TooltipItems = Array<{ name: string; action: () => any }>;
+
 type Props = IProps & IStateToProps & IDispatchProps;
 
 const List: React.FunctionComponent<Props> = props => {
@@ -48,7 +50,7 @@ const List: React.FunctionComponent<Props> = props => {
     id: 0,
     name: props.list.name
   });
-  const [tooltipItems, setTooltipItems] = useState([
+  const [tooltipItems, setTooltipItems] = useState<TooltipItems>([
     {
       name: "Remove all tasks",
       action: () => list.tasks.length !== 0 && removeTasks(list.id, list.tasks)
