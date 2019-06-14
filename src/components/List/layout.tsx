@@ -9,6 +9,7 @@ import AddModal from "../Modal/Add/index";
 import ResizableTextarea from "../ResizableTextarea";
 import Tooltip from "../Tooltip";
 import TaskList from "./TaskList";
+import More from "./More";
 
 interface IProps {
   list: IList;
@@ -30,7 +31,6 @@ interface IProps {
   onAddTask: ({  }: TaskArguments) => void;
   onVisibleName: () => void;
   removeTasks: (listId: number, tasks: Array<number>) => void;
-  setIsTooltipOpen: (_: boolean) => void;
 }
 
 const List = styled.div`
@@ -79,53 +79,6 @@ const Content = styled.div`
   height: calc(100vh - 119px);
 `;
 
-const More = styled.button`
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  margin: 0;
-  padding: 0;
-  width: 25px;
-  height: 30px;
-  border: 0;
-  border-radius: 3px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  background-color: transparent;
-  transition: 0.15s;
-  &:hover {
-    background-color: rgba(78, 79, 83, 0.1);
-  }
-`;
-
-const MoreCircle = styled.span`
-  position: relative;
-  display: block;
-  width: 4px;
-  height: 4px;
-  background-color: #9d9d9f;
-  border-radius: 50%;
-  &::before,
-  &::after {
-    content: "";
-    left: 0;
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background-color: #9d9d9f;
-    border-radius: 50%;
-  }
-  &::before {
-    top: -6px;
-  }
-  &::after {
-    top: 6px;
-  }
-`;
-
 export default ({
   list,
   onRemoveList,
@@ -140,7 +93,6 @@ export default ({
   listNameRef,
   isTooltipOpen,
   removeTasks,
-  setIsTooltipOpen,
   infoList,
   headerRef
 }: IProps): JSX.Element => {
@@ -181,9 +133,7 @@ export default ({
               placeholder="Add list name"
               refTextarea={listNameRef}
             />
-            <More onClick={() => setIsTooltipOpen(true)}>
-              <MoreCircle />
-            </More>
+            <More />
             {isTooltipOpen && (
               <Tooltip items={tooltipItems} listName={list.name} />
             )}

@@ -138,7 +138,6 @@ const List: React.FunctionComponent<Props> = props => {
         listNameRef={listNameRef}
         isTooltipOpen={isTooltipOpen}
         isEditName={isEditName}
-        setIsTooltipOpen={setIsTooltipOpen}
         infoList={infoList}
         headerRef={headerRef}
       />
