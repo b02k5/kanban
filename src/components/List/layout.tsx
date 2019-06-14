@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import TextareaAutosize from "react-textarea-autosize";
 
@@ -10,6 +9,8 @@ import ResizableTextarea from "../ResizableTextarea";
 import Tooltip from "../Tooltip";
 import TaskList from "./TaskList";
 import More from "./More";
+
+import * as List from "./styles";
 
 interface IProps {
   list: IList;
@@ -32,52 +33,6 @@ interface IProps {
   onVisibleName: () => void;
   removeTasks: (listId: number, tasks: Array<number>) => void;
 }
-
-const List = styled.div`
-  position: relative;
-  width: 280px;
-  margin-left: 15px;
-`;
-
-const Header = styled.div`
-  position: relative;
-  padding: 10px 40px 10px 15px;
-  border-radius: 5px 5px 0 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #e9edf4;
-`;
-
-const HeaderTarget = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  cursor: grab;
-`;
-
-const Name = styled.textarea`
-  color: #36373a;
-  font-size: 20px;
-  line-height: 25px;
-  font-weight: bold;
-  width: 100%;
-  margin: 0;
-  padding: 2px 0 2px 10px;
-  border: 0;
-  border-bottom: 1px solid transparent;
-  background-color: transparent;
-  resize: none;
-  transition: 0.1s;
-`;
-const RemoveList = styled.button``;
-
-const Content = styled.div`
-  height: calc(100vh - 119px);
-`;
 
 export default ({
   list,
@@ -110,14 +65,14 @@ export default ({
   return (
     <Draggable draggableId={`${list.id}`} index={index}>
       {provided => (
-        <List
+        <List.Main
           id={`${list.id}`}
           {...provided.draggableProps}
           ref={provided.innerRef}
         >
-          <Header>
+          <List.Header>
             {!isEditName && (
-              <HeaderTarget
+              <List.Draggable
                 onClick={onVisibleName}
                 ref={headerRef}
                 {...provided.dragHandleProps}
@@ -129,7 +84,7 @@ export default ({
               onChange={onEditNameList}
               value={infoList.name}
               elementId={list.id}
-              style={Name}
+              style={List.Name}
               placeholder="Add list name"
               refTextarea={listNameRef}
             />
@@ -137,12 +92,15 @@ export default ({
             {isTooltipOpen && (
               <Tooltip items={tooltipItems} listName={list.name} />
             )}
-          </Header>
+          </List.Header>
           <Droppable key={list.id} droppableId={`${list.id}`} type="task">
             {(provided, snapshot) => (
-              <Content {...provided.droppableProps} ref={provided.innerRef}>
+              <List.Content
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
                 <TaskList provided={provided} snapshot={snapshot} />
-              </Content>
+              </List.Content>
             )}
           </Droppable>
           {isModalOpen && (
@@ -153,7 +111,7 @@ export default ({
               onModalToggle={onModalToggle}
             />
           )}
-        </List>
+        </List.Main>
       )}
     </Draggable>
   );
