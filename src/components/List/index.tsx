@@ -103,10 +103,10 @@ const List: React.FunctionComponent<Props> = props => {
       description
     };
     props.addTask(taskArguments);
-    modalToggleHandle();
+    openModalHandle();
   };
 
-  const modalToggleHandle = () => {
+  const openModalHandle = () => {
     setIsModalOpen(prevState => !prevState);
   };
 
@@ -141,7 +141,7 @@ const List: React.FunctionComponent<Props> = props => {
 
   return (
     <ContextList.Provider
-      value={{ setIsTooltipOpen, tasks: props.tasks, modalToggleHandle }}
+      value={{ setIsTooltipOpen, tasks: props.tasks, openModalHandle }}
     >
       <Draggable draggableId={`${list.id}`} index={index}>
         {provided => (
@@ -188,7 +188,7 @@ const List: React.FunctionComponent<Props> = props => {
                 modalName="task"
                 action={addTaskHandle}
                 listId={list.id}
-                onModalToggle={modalToggleHandle}
+                onModalToggle={openModalHandle}
               />
             )}
           </ListLayout.Main>

@@ -80,11 +80,9 @@ export default ({
             )}
           </Droppable>
           <AddListWrapper>
-            <AddButton
-              name="Add new list"
-              action="list"
-              click={onModalToggle}
-            />
+            <AddButton actionName="list" onClick={onModalToggle}>
+              Add new list
+            </AddButton>
             {isModalOpen && (
               <AddModal
                 modalName="list"
