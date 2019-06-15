@@ -25,17 +25,13 @@ const Task: React.FunctionComponent<Props> = props => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const { task, index } = { ...props };
 
-  const modalToggleHandle = () => {
-    setIsModalOpen(prevState => !prevState);
-  };
-
   return (
     <>
       <Draggable draggableId={`${task.id}`} index={index}>
         {(provided, snapshot) => (
           <TaskLayout.Main
             draggable={true}
-            onClick={modalToggleHandle}
+            onClick={() => setIsModalOpen(prevState => !prevState)}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
@@ -61,7 +57,10 @@ const Task: React.FunctionComponent<Props> = props => {
         )}
       </Draggable>
       {isModalOpen && (
-        <TaskDetails task={task} modalClick={modalToggleHandle} />
+        <TaskDetails
+          task={task}
+          modalClick={() => setIsModalOpen(prevState => !prevState)}
+        />
       )}
     </>
   );
