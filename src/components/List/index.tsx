@@ -15,7 +15,7 @@ import Tooltip from "../Tooltip";
 import TaskList from "./TaskList";
 import More from "./More";
 
-import * as ListLayout from "./styles";
+import * as List from "./styles";
 
 interface IProps {
   list: IList;
@@ -138,14 +138,14 @@ export default (props: IProps) => {
     <ContextList.Provider value={{ setIsTooltipOpen, tasks, openModalHandle }}>
       <Draggable draggableId={`${list.id}`} index={index}>
         {provided => (
-          <ListLayout.Main
+          <List.Main
             id={`${list.id}`}
             {...provided.draggableProps}
             ref={provided.innerRef}
           >
-            <ListLayout.Header>
+            <List.Header>
               {!isEditName && (
-                <ListLayout.Draggable
+                <List.Draggable
                   onClick={visibleNameHandle}
                   ref={draggableRef}
                   {...provided.dragHandleProps}
@@ -157,7 +157,7 @@ export default (props: IProps) => {
                 onChange={editNameListHandle}
                 value={infoList.name}
                 elementId={list.id}
-                style={ListLayout.Name}
+                style={List.Name}
                 placeholder="Add list name"
                 refTextarea={listNameRef}
               />
@@ -165,15 +165,15 @@ export default (props: IProps) => {
               {isTooltipOpen && (
                 <Tooltip items={tooltipItems} listName={list.name} />
               )}
-            </ListLayout.Header>
+            </List.Header>
             <Droppable key={list.id} droppableId={`${list.id}`} type="task">
               {(provided, snapshot) => (
-                <ListLayout.Content
+                <List.Content
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                 >
                   <TaskList provided={provided} snapshot={snapshot} />
-                </ListLayout.Content>
+                </List.Content>
               )}
             </Droppable>
             {isModalOpen && (
@@ -184,7 +184,7 @@ export default (props: IProps) => {
                 onModalToggle={openModalHandle}
               />
             )}
-          </ListLayout.Main>
+          </List.Main>
         )}
       </Draggable>
     </ContextList.Provider>
