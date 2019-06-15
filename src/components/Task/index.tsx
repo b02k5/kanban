@@ -1,10 +1,14 @@
-import React, { PureComponent } from "react";
+import React, { useState } from "react";
+import { Draggable } from "react-beautiful-dnd";
+import Truncate from "react-truncate";
 import { connect } from "react-redux";
 
 import { TaskArguments } from "../../store/types/tasks";
 import { addTask } from "../../store/actions/tasks";
-import TaskLayout from "./layout";
 import { TaskType } from "../../store/types/tasks";
+import TaskDetails from "../Modal/TaskDetails";
+
+import * as TaskLayout from "./styles";
 
 interface IDispatchProps {
   addTask: ({  }: TaskArguments) => void;
@@ -15,33 +19,54 @@ interface IProps {
   index: number;
 }
 
-interface IState {
-  isModalOpen: boolean;
-}
-
 type Props = IDispatchProps & IProps;
 
-class Task extends PureComponent<Props, IState> {
-  public state = {
-    isModalOpen: false
+const Task: React.FunctionComponent<Props> = props => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { task, index } = { ...props };
+
+  const modalToggleHandle = () => {
+    setIsModalOpen(prevState => !prevState);
   };
 
-  private modalToggleHandle = () => {
-    this.setState(prevState => ({
-      isModalOpen: !prevState.isModalOpen
-    }));
-  };
+  return (
+    <>
+      <Draggable draggableId={`${task.id}`} index={index}>
+        {(provided, snapshot) => (
+          <TaskLayout.Main
+            draggable={true}
+            onClick={modalToggleHandle}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+            isDragging={snapshot.isDragging}
+          >
+            <TaskLayout.Time>{task.date}</TaskLayout.Time>
+            <TaskLayout.Name isDragging={snapshot.isDragging}>
+              {task.name}
+            </TaskLayout.Name>
+            <TaskLayout.Description isDragging={snapshot.isDragging}>
+              <Truncate lines={4} ellipsis="..." width={210}>
+                {task.description}
+              </Truncate>
+            </TaskLayout.Description>
+            <TaskLayout.Footer>
+              <TaskLayout.TagLists>
+                <TaskLayout.TagItem>
+                  <TaskLayout.Tag>UI</TaskLayout.Tag>
+                </TaskLayout.TagItem>
+              </TaskLayout.TagLists>
+            </TaskLayout.Footer>
+          </TaskLayout.Main>
+        )}
+      </Draggable>
+      {isModalOpen && (
+        <TaskDetails task={task} modalClick={modalToggleHandle} />
+      )}
+    </>
+  );
+};
 
-  render() {
-    return (
-      <TaskLayout
-        {...this.props}
-        {...this.state}
-        onModalToggle={this.modalToggleHandle}
-      />
-    );
-  }
-}
 const mapDispatchToProps: IDispatchProps = {
   addTask
 };
