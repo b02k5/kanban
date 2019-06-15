@@ -7,7 +7,7 @@ import { AddButton } from "../../Buttons";
 import * as TaskList from "./styles";
 
 export default ({ provided, snapshot }: any) => {
-  const { tasks } = useContext(ContextList);
+  const { tasks, modalToggleHandle } = useContext(ContextList);
   return (
     <TaskList.Wrapper>
       <TaskList.List isDraggingOver={snapshot.isDraggingOver}>
@@ -18,7 +18,7 @@ export default ({ provided, snapshot }: any) => {
         ))}
         {provided.placeholder}
       </TaskList.List>
-      {/* <AddButton name="Add new task" action="task" click={onModalToggle} /> */}
+      <AddButton name="Add new task" action="task" click={modalToggleHandle} />
     </TaskList.Wrapper>
   );
 };

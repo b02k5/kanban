@@ -46,6 +46,7 @@ type Props = IProps & IStateToProps & IDispatchProps;
 const List: React.FunctionComponent<Props> = props => {
   const [isEditName, setIsEditName] = useState<boolean>(false);
   const [isTooltipOpen, setIsTooltipOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [infoList, setInfoList] = useState<IInfoList>({
     id: 0,
     name: props.list.name
@@ -106,9 +107,7 @@ const List: React.FunctionComponent<Props> = props => {
   };
 
   const modalToggleHandle = () => {
-    // this.setState(prevState => ({
-    //   isModalOpen: !prevState.isModalOpen
-    // }));
+    setIsModalOpen(prevState => !prevState);
   };
 
   const removeListHandle = (listId: number, tasks: Array<number>) => {
@@ -141,7 +140,9 @@ const List: React.FunctionComponent<Props> = props => {
   };
 
   return (
-    <ContextList.Provider value={{ setIsTooltipOpen, tasks: props.tasks }}>
+    <ContextList.Provider
+      value={{ setIsTooltipOpen, tasks: props.tasks, modalToggleHandle }}
+    >
       <Draggable draggableId={`${list.id}`} index={index}>
         {provided => (
           <ListLayout.Main
@@ -182,14 +183,14 @@ const List: React.FunctionComponent<Props> = props => {
                 </ListLayout.Content>
               )}
             </Droppable>
-            {/* {isModalOpen && (
+            {isModalOpen && (
               <AddModal
                 modalName="task"
                 action={addTaskHandle}
                 listId={list.id}
                 onModalToggle={modalToggleHandle}
               />
-            )} */}
+            )}
           </ListLayout.Main>
         )}
       </Draggable>
