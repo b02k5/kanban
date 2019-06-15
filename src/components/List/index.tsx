@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
 import { AppState } from "../../store";
@@ -23,27 +23,15 @@ interface IProps {
   index: number;
 }
 
-interface IStateToProps {
-  tasks: TaskType[];
-}
-
-interface IDispatchProps {
-  removeList: (boardId: number, listId: number, tasks: Array<number>) => void;
-  editListName: (listId: number, nameList: string) => void;
-  addTask: ({  }: TaskArguments) => void;
-  removeTasks: (listId: number, tasks: Array<number>) => void;
-}
-
 interface IInfoList {
   id: number;
   name: string;
 }
 
-type TooltipItems = Array<{ name: string; action: () => any }>;
+type TooltipItems = Array<{ name: string; action: () => void }>;
 
-type Props = IProps & IStateToProps & IDispatchProps;
-
-const List: React.FunctionComponent<Props> = props => {
+export default (props: IProps) => {
+  // Create state
   const [isEditName, setIsEditName] = useState<boolean>(false);
   const [isTooltipOpen, setIsTooltipOpen] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -54,13 +42,20 @@ const List: React.FunctionComponent<Props> = props => {
   const [tooltipItems, setTooltipItems] = useState<TooltipItems>([
     {
       name: "Remove all tasks",
-      action: () => list.tasks.length !== 0 && removeTasks(list.id, list.tasks)
+      action: () =>
+        list.tasks.length !== 0 && dispatch(removeTasks(list.id, list.tasks))
     },
     {
       name: "Remove list",
       action: () => removeListHandle(list.id, list.tasks)
     }
   ]);
+
+  // Connect to redux
+  const tasks = useSelector<AppState, TaskType[] | []>(state =>
+    getTasks(state, props.list.id)
+  );
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (isEditName) {
@@ -102,7 +97,7 @@ const List: React.FunctionComponent<Props> = props => {
       name,
       description
     };
-    props.addTask(taskArguments);
+    dispatch(addTask(taskArguments));
     openModalHandle();
   };
 
@@ -112,7 +107,7 @@ const List: React.FunctionComponent<Props> = props => {
 
   const removeListHandle = (listId: number, tasks: Array<number>) => {
     const { boardId } = props;
-    props.removeList(boardId, listId, tasks);
+    dispatch(removeList(boardId, listId, tasks));
   };
 
   const visibleNameHandle = () => {
@@ -135,14 +130,12 @@ const List: React.FunctionComponent<Props> = props => {
 
   const sendEditedListName = () => {
     infoList.name !== ""
-      ? props.editListName(infoList.id, infoList.name)
+      ? dispatch(editListName(infoList.id, infoList.name))
       : setStateListName();
   };
 
   return (
-    <ContextList.Provider
-      value={{ setIsTooltipOpen, tasks: props.tasks, openModalHandle }}
-    >
+    <ContextList.Provider value={{ setIsTooltipOpen, tasks, openModalHandle }}>
       <Draggable draggableId={`${list.id}`} index={index}>
         {provided => (
           <ListLayout.Main
@@ -197,19 +190,3 @@ const List: React.FunctionComponent<Props> = props => {
     </ContextList.Provider>
   );
 };
-
-const mapStateToProps = (state: AppState, ownProps: any): IStateToProps => ({
-  tasks: getTasks(state, ownProps.list.id)
-});
-
-const mapDispatchToProps: IDispatchProps = {
-  removeList,
-  editListName,
-  addTask,
-  removeTasks
-};
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(List);
