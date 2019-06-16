@@ -4,6 +4,7 @@ import Truncate from "react-truncate";
 
 import { TaskType } from "../../store/types/tasks";
 import TaskDetails from "../Modal/TaskDetails";
+import TagList from "./TagList";
 
 import * as Task from "./styles";
 
@@ -36,11 +37,7 @@ export default (props: IProps) => {
               </Truncate>
             </Task.Description>
             <Task.Footer>
-              <Task.TagLists>
-                <Task.TagItem>
-                  <Task.Tag>UI</Task.Tag>
-                </Task.TagItem>
-              </Task.TagLists>
+              <TagList />
             </Task.Footer>
           </Task.Main>
         )}
