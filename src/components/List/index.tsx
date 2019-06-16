@@ -10,7 +10,6 @@ import { getTasks } from "../../store/selectors/tasks";
 import { TaskType, TaskArguments } from "../../store/types/tasks";
 import { ContextList } from "../../utils/context";
 import AddModal from "../Modal/Add/index";
-import ResizableTextarea from "../ResizableTextarea";
 import Tooltip from "../Tooltip";
 import TaskList from "./TaskList";
 import More from "./More";
@@ -152,15 +151,12 @@ export default (props: IProps) => {
                   {...provided.dragHandleProps}
                 />
               )}
-              <ResizableTextarea
-                maxRows={4}
-                lineHeight={25}
-                onChange={editNameListHandle}
+              <List.Name
+                maxRows={3}
+                onChange={event => editNameListHandle(event, list.id)}
                 value={infoList.name}
-                elementId={list.id}
-                style={List.Name}
                 placeholder="Add list name"
-                refTextarea={listNameRef}
+                inputRef={listNameRef}
               />
               <More />
               {isTooltipOpen && (
