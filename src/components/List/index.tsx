@@ -41,8 +41,7 @@ export default (props: IProps) => {
   const [tooltipItems, setTooltipItems] = useState<TooltipItems>([
     {
       name: "Remove all tasks",
-      action: () =>
-        list.tasks.length !== 0 && dispatch(removeTasks(list.id, list.tasks))
+      action: () => dispatch(removeTasks(list.id, list.tasks))
     },
     {
       name: "Remove list",
@@ -54,6 +53,7 @@ export default (props: IProps) => {
   const tasks = useSelector<AppState, TaskType[] | []>(state =>
     getTasks(state, props.list.id)
   );
+  const { list, index } = props;
   const dispatch = useDispatch();
 
   // cDM && cDU
@@ -70,7 +70,6 @@ export default (props: IProps) => {
     };
   }, [isEditName]);
 
-  const { list, index } = { ...props };
   const listNameRef = useRef<HTMLTextAreaElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
 
