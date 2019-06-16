@@ -29,6 +29,7 @@ export const Overflow = styled.div`
 export const List = styled.ul<{ isDraggingOver: boolean }>`
   width: 240px;
   padding: 0;
+  border-radius: 5px;
   list-style-type: none;
   overflow: hidden;
   transition: background-color 0.15s ease;
