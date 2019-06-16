@@ -61,6 +61,40 @@ const Description = styled.textarea`
   width: 100%;
 `;
 
+const CloseButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 0 10px 0 10px;
+  background-color: #ffffff;
+  border: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: rgb(78, 79, 83);
+  transition: 0.15s;
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 17px;
+    height: 2px;
+    border-radius: 7px;
+    background-color: white;
+  }
+  &::before {
+    transform: rotate(45deg);
+  }
+  &::after {
+    transform: rotate(-45deg);
+  }
+`;
+
 const TaskDetails: React.FunctionComponent<Props> = ({
   modalClick,
   task: { id, date, name, description },
@@ -102,6 +136,7 @@ const TaskDetails: React.FunctionComponent<Props> = ({
         style={Description}
         placeholder="Add description..."
       />
+      <CloseButton onClick={modalClick} />
     </Modal>
   );
 };
