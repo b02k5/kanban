@@ -15,7 +15,7 @@ interface IProps {
 
 export default (props: IProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { task, index } = { ...props };
+  const { task, index } = props;
 
   return (
     <>
