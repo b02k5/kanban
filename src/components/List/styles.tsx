@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Textarea from "react-textarea-autosize";
 
 export const Main = styled.div`
   position: relative;
@@ -26,7 +27,7 @@ export const Draggable = styled.div`
   cursor: grab;
 `;
 
-export const Name = styled.textarea`
+export const Name = styled(Textarea)`
   color: #36373a;
   font-size: 20px;
   line-height: 25px;
