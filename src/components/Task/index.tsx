@@ -32,7 +32,7 @@ export default (props: IProps) => {
             <Task.Time>{task.date}</Task.Time>
             <Task.Name isDragging={snapshot.isDragging}>{task.name}</Task.Name>
             <Task.Description isDragging={snapshot.isDragging}>
-              <Truncate lines={4} ellipsis="..." width={210}>
+              <Truncate lines={3} ellipsis="..." width={200}>
                 {task.description}
               </Truncate>
             </Task.Description>
