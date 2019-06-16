@@ -84,6 +84,16 @@ export default (props: IProps) => {
     });
   };
 
+  const checkEnterNameHandle = (e: React.KeyboardEvent) => {
+    if (e.keyCode === 13) {
+      setIsEditName(false);
+      listNameRef.current && listNameRef.current.blur();
+      e.preventDefault();
+    } else {
+      e.stopPropagation();
+    }
+  };
+
   const clickOutsideHandle = (e: MouseEvent) => {
     const node = listNameRef.current;
     node && !node.contains(e.target as Node) && setIsEditName(false);
@@ -153,7 +163,8 @@ export default (props: IProps) => {
               )}
               <List.Name
                 maxRows={3}
-                onChange={event => editNameListHandle(event, list.id)}
+                onChange={e => editNameListHandle(e, list.id)}
+                onKeyDown={e => checkEnterNameHandle(e)}
                 value={infoList.name}
                 placeholder="Add list name"
                 inputRef={listNameRef}
