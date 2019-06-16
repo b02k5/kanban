@@ -45,7 +45,7 @@ export default (props: IProps) => {
     },
     {
       name: "Remove list",
-      action: () => removeListHandle(list.id, list.tasks)
+      action: () => dispatch(removeList(boardId, list.id, list.tasks))
     }
   ]);
 
@@ -53,7 +53,7 @@ export default (props: IProps) => {
   const tasks = useSelector<AppState, TaskType[] | []>(state =>
     getTasks(state, props.list.id)
   );
-  const { list, index } = props;
+  const { list, boardId, index } = props;
   const dispatch = useDispatch();
 
   // cDM && cDU
@@ -112,11 +112,6 @@ export default (props: IProps) => {
 
   const openModalHandle = () => {
     setIsModalOpen(prevState => !prevState);
-  };
-
-  const removeListHandle = (listId: number, tasks: Array<number>) => {
-    const { boardId } = props;
-    dispatch(removeList(boardId, listId, tasks));
   };
 
   const visibleNameHandle = () => {
