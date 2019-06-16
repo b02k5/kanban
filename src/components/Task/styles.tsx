@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Main = styled.div<{ isDragging: boolean }>`
   width: 100%;
-  padding: 15px 20px;
+  padding: 12px 17px;
   border-radius: 5px;
   cursor: pointer;
   margin-bottom: 10px;
