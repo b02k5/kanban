@@ -10,14 +10,16 @@ export default ({ provided, snapshot }: any) => {
   const { tasks, openModalHandle } = useContext(ContextList);
   return (
     <TaskList.Wrapper>
-      <TaskList.List isDraggingOver={snapshot.isDraggingOver}>
-        {[...tasks].map((task, index) => (
-          <TaskList.Item key={task.id}>
-            <Task task={task} index={index} />
-          </TaskList.Item>
-        ))}
-        {provided.placeholder}
-      </TaskList.List>
+      <TaskList.Overflow>
+        <TaskList.List isDraggingOver={snapshot.isDraggingOver}>
+          {[...tasks].map((task, index) => (
+            <TaskList.Item key={task.id}>
+              <Task task={task} index={index} />
+            </TaskList.Item>
+          ))}
+          {provided.placeholder}
+        </TaskList.List>
+      </TaskList.Overflow>
       <AddButton actionName="task" onClick={openModalHandle}>
         Add new task
       </AddButton>
