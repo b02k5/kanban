@@ -26,7 +26,7 @@ const Header = styled.header`
 const Name = styled.h1`
   color: #3d3f43;
   font-size: 20px;
-  line-height: 33px;
+  line-height: 24px;
   font-weight: 700;
   margin: 0;
 `;
