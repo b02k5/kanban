@@ -15,6 +15,7 @@ export const Overflow = styled.div`
     width: 6px;
   }
   ::-webkit-scrollbar-track {
+    margin-bottom: 10px;
     background: #f1f1f1;
   }
   ::-webkit-scrollbar-thumb {
