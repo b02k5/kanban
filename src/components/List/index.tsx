@@ -156,7 +156,7 @@ export default (props: IProps) => {
                 />
               )}
               <List.Name
-                maxRows={3}
+                maxRows={1}
                 onChange={e => editNameListHandle(e, list.id)}
                 onKeyDown={e => checkEnterNameHandle(e)}
                 value={infoList.name}
