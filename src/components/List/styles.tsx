@@ -4,6 +4,7 @@ import Textarea from "react-textarea-autosize";
 export const Main = styled.div`
   position: relative;
   width: 270px;
+  height: 100%;
   margin-left: 15px;
 `;
 
@@ -56,6 +57,5 @@ export const Name = styled(Textarea)`
 `;
 
 export const Content = styled.div`
-  height: 100vh;
-  max-height: calc(100vh - 169px);
+  height: calc(100% - 60px);
 `;
