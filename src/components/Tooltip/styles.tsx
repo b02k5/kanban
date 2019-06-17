@@ -7,6 +7,7 @@ export const Main = styled.div`
   width: 250px;
   border-radius: 3px;
   overflow: hidden;
+  padding: 10px 0;
   box-shadow: 0 8px 16px -4px rgba(9, 30, 66, 0.25),
     0 0 0 1px rgba(9, 30, 66, 0.08);
   background-color: white;
@@ -20,7 +21,7 @@ export const Name = styled.span`
   line-height: 19px;
   text-align: center;
   border-bottom: 1px solid rgba(9, 30, 66, 0.13);
-  padding: 10px 0;
+  padding-bottom: 10px;
   margin: 0 15px 10px 15px;
 `;
 
