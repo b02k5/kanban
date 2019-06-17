@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 import Modal from "../index";
 import Field from "./Filed";
-import Button from "./Button";
+import { Button } from "../../Buttons";
+import { EConfirmModalForm } from "../../Buttons";
 
 interface IProps {
   taskName: string;
@@ -50,6 +51,21 @@ const ModalFooter = styled.div`
   padding: 0 35px;
 `;
 
+const ButtonModal = styled.button<{ actionName: EConfirmModalForm }>`
+  color: ${props =>
+    props.actionName === EConfirmModalForm.Cancel ? "#9ba8b0" : "#36373a"};
+  text-transform: uppercase;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 500;
+  padding: 20px 10px;
+  cursor: pointer;
+  &:hover,
+  &:focus {
+    background-color: #eeeeee;
+  }
+`;
+
 export default ({
   onSubmitForm,
   onTextareaDesc,
@@ -82,8 +98,22 @@ export default ({
         </ModalField>
       )}
       <ModalFooter>
-        <Button name="Cancel" onClick={onModalToggle} />
-        <Button name="Create" onClick={onSubmitForm} />
+        <Button
+          styles={ButtonModal}
+          actionName={EConfirmModalForm.Cancel}
+          onClick={onModalToggle}
+          disabled={false}
+        >
+          Cancel
+        </Button>
+        <Button
+          styles={ButtonModal}
+          actionName={EConfirmModalForm.Create}
+          onClick={onSubmitForm}
+          disabled={false}
+        >
+          Create
+        </Button>
       </ModalFooter>
     </ModalForm>
   </Modal>
