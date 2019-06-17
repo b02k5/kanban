@@ -1,5 +1,11 @@
-import React, { PureComponent } from "react";
-import TaskDetailsLayout from "./layout";
+import React, { useState } from "react";
+
+import Modal from "../index";
+import Field from "./Filed";
+import { Button } from "../../Buttons";
+import { EConfirmModalForm } from "../../Buttons";
+
+import * as ModalAdd from "./styles";
 
 interface IProps {
   listId?: number;
@@ -13,53 +19,84 @@ interface IState {
   taskDesc: string;
 }
 
-export default class AddModal extends PureComponent<IProps, IState> {
-  public state = {
+export default (props: IProps) => {
+  const { listId, onModalToggle, modalName, action } = props;
+  const [fieldsForm, setFieldsForm] = useState<IState>({
     taskName: "",
     taskDesc: ""
-  };
+  });
 
-  public submitFormHandle = (e: any) => {
-    if (this.props.listId) {
-      if (this.state.taskName && this.state.taskDesc !== "") {
+  const submitFormHandle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (listId) {
+      if (fieldsForm.taskName && fieldsForm.taskDesc !== "") {
         e.preventDefault();
         const addTaskArguments = {
-          listId: this.props.listId,
-          name: this.state.taskName,
-          description: this.state.taskDesc
+          listId: listId,
+          name: fieldsForm.taskName,
+          description: fieldsForm.taskDesc
         };
 
-        this.props.action(addTaskArguments);
+        action(addTaskArguments);
       }
     } else {
-      if (this.state.taskName !== "") {
+      if (fieldsForm.taskName !== "") {
         e.preventDefault();
-        this.props.action({ name: this.state.taskName });
+        action({ name: fieldsForm.taskName });
       }
     }
   };
 
-  public textareaNameHandle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    this.setState({
-      taskName: e.target.value
-    });
-  };
-
-  public textareaDescHandle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    this.setState({
-      taskDesc: e.target.value
-    });
-  };
-
-  public render() {
-    return (
-      <TaskDetailsLayout
-        {...this.props}
-        {...this.state}
-        onSubmitForm={this.submitFormHandle}
-        onTextareaName={this.textareaNameHandle}
-        onTextareaDesc={this.textareaDescHandle}
-      />
-    );
-  }
-}
+  return (
+    <Modal modalClick={onModalToggle} containerStyles={ModalAdd.Container}>
+      <ModalAdd.Title>{`New ${modalName}`}</ModalAdd.Title>
+      <ModalAdd.Form>
+        <ModalAdd.Field>
+          <Field
+            name="Name"
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              setFieldsForm({
+                ...fieldsForm,
+                taskName: e.target.value
+              })
+            }
+            value={fieldsForm.taskName}
+            autoFocus={true}
+          />
+        </ModalAdd.Field>
+        {listId && (
+          <ModalAdd.Field>
+            <Field
+              name="Description"
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setFieldsForm({
+                  ...fieldsForm,
+                  taskDesc: e.target.value
+                })
+              }
+              value={fieldsForm.taskDesc}
+              autoFocus={false}
+            />
+          </ModalAdd.Field>
+        )}
+        <ModalAdd.Footer>
+          <Button
+            styles={ModalAdd.Button}
+            actionName={EConfirmModalForm.Cancel}
+            onClick={onModalToggle}
+            disabled={false}
+          >
+            Cancel
+          </Button>
+          <Button
+            styles={ModalAdd.Button}
+            actionName={EConfirmModalForm.Create}
+            onClick={submitFormHandle}
+            disabled={false}
+          >
+            Create
+          </Button>
+        </ModalAdd.Footer>
+      </ModalAdd.Form>
+    </Modal>
+  );
+};
