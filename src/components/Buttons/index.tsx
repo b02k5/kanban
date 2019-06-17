@@ -16,7 +16,7 @@ export enum EConfirmModalForm {
 interface IAddNewComponent {
   children: Node | string;
   actionName: EAddNewComponent;
-  onClick: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 interface IProps {
@@ -24,7 +24,7 @@ interface IProps {
   actionName: EConfirmModalForm;
   disabled: boolean;
   styles: any;
-  onClick: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const ButtonAdd = ({
