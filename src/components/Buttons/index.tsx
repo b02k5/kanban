@@ -1,32 +1,56 @@
 import React from "react";
 
-import * as Button from "./styles";
+import * as ButtonL from "./styles";
 
-export enum EActionName {
+export enum EAddNewComponent {
   Board = "Board",
   List = "List",
   Task = "Task"
 }
 
+export enum EConfirmModalForm {
+  Cancel = "Cancel",
+  Create = "Create"
+}
+
+interface IAddNewComponent {
+  children: Node | string;
+  actionName: EAddNewComponent;
+  onClick: (e?: React.MouseEvent<HTMLButtonElement>) => void;
+}
+
 interface IProps {
   children: Node | string;
-  actionName: EActionName;
+  actionName: EConfirmModalForm;
   disabled: boolean;
-  onClick: () => void;
+  styles: any;
+  onClick: (e?: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const ButtonAdd = ({
   children,
   onClick,
+  actionName
+}: IAddNewComponent) => (
+  <ButtonL.ButtonAdd actionName={actionName} onClick={onClick}>
+    <ButtonL.Plus />
+    {children}
+  </ButtonL.ButtonAdd>
+);
+
+export const Button = ({
+  children,
+  onClick,
   disabled,
+  styles,
   actionName
 }: IProps) => (
-  <Button.ButtonAdd
+  <ButtonL.Main
     actionName={actionName}
+    as={styles}
     onClick={onClick}
     disabled={disabled}
   >
-    <Button.Plus />
     {children}
-  </Button.ButtonAdd>
+  </ButtonL.Main>
 );
