@@ -43,5 +43,5 @@ export const Name = styled(Textarea)`
 `;
 
 export const Content = styled.div`
-  height: calc(100vh - 119px);
+  height: calc(100vh - 170px);
 `;

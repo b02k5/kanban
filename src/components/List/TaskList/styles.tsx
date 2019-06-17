@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Overflow = styled.div`
-  max-height: calc(100vh - 182px);
+  max-height: calc(100vh - 232px);
   overflow: hidden;
   overflow-y: auto;
   margin: 0 3px;
