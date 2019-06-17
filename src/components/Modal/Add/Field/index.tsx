@@ -7,13 +7,21 @@ interface IProps {
   value: string;
   autoFocus: boolean;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onKeydown?: (e: React.KeyboardEvent) => void;
 }
 
-export default ({ name, onChange, value, autoFocus }: IProps): JSX.Element => (
+export default ({
+  name,
+  onChange,
+  onKeydown,
+  value,
+  autoFocus
+}: IProps): JSX.Element => (
   <>
     <Field.Label value={value}>{name}</Field.Label>
     <Field.TextareaAutoSize
       onChange={onChange}
+      onKeyDown={onKeydown}
       style={{}}
       autoFocus={autoFocus}
       required

@@ -51,6 +51,9 @@ export default (props: IProps) => {
         <ModalAdd.Field>
           <Field
             name="Name"
+            onKeydown={(e: React.KeyboardEvent) => {
+              e.keyCode === 13 && e.preventDefault();
+            }}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               setFieldsForm({
                 ...fieldsForm,
