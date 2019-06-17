@@ -40,6 +40,19 @@ export const Name = styled(Textarea)`
   background-color: transparent;
   resize: none;
   transition: 0.1s;
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background: #888;
+    &:hover {
+      background: #555;
+    }
+  }
 `;
 
 export const Content = styled.div`
