@@ -44,3 +44,24 @@ export const Item = styled.li`
     margin-bottom: 0;
   }
 `;
+
+export const Plus = styled.span<{ action: string }>`
+  position: relative;
+  width: 8px;
+  height: 2px;
+  background-color: ${props => (props.action === "task" ? "#777a80" : "white")}
+  margin-right: 5px;
+  transition: 0.15s;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 2px;
+    background-color: ${props =>
+      props.action === "task" ? "#777a80" : "white"}
+    transform: rotate(90deg);
+    transition: 0.15s;
+  }
+`;

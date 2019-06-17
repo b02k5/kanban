@@ -1,16 +1,32 @@
 import React from "react";
 
-import * as ButtonAdd from "./styles";
+import * as Button from "./styles";
+
+export enum EActionName {
+  Board = "Board",
+  List = "List",
+  Task = "Task"
+}
 
 interface IProps {
   children: Node | string;
-  actionName: string;
+  actionName: EActionName;
+  disabled: boolean;
   onClick: () => void;
 }
 
-export const AddButton = ({ children, actionName, onClick }: IProps) => (
-  <ButtonAdd.MainAdd action={actionName} onClick={onClick}>
-    <ButtonAdd.Plus action={actionName} />
+export const ButtonAdd = ({
+  children,
+  onClick,
+  disabled,
+  actionName
+}: IProps) => (
+  <Button.ButtonAdd
+    actionName={actionName}
+    onClick={onClick}
+    disabled={disabled}
+  >
+    <Button.Plus />
     {children}
-  </ButtonAdd.MainAdd>
+  </Button.ButtonAdd>
 );

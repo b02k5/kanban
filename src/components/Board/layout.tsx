@@ -6,7 +6,7 @@ import { BoardType } from "../../store/types/boards";
 import List from "../List";
 import { IList } from "../../store/types/lists";
 import AddModal from "../Modal/Add";
-import { AddButton } from "../Buttons";
+import { ButtonAdd, EActionName } from "../Buttons";
 
 interface IProps {
   activeBoard: BoardType | undefined;
@@ -80,9 +80,13 @@ export default ({
             )}
           </Droppable>
           <AddListWrapper>
-            <AddButton actionName="list" onClick={onModalToggle}>
+            <ButtonAdd
+              actionName={EActionName.List}
+              onClick={onModalToggle}
+              disabled={false}
+            >
               Add new list
-            </AddButton>
+            </ButtonAdd>
             {isModalOpen && (
               <AddModal
                 modalName="list"

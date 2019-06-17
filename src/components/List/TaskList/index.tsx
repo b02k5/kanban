@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { ContextList } from "../../../utils/context";
 import Task from "../../Task";
-import { AddButton } from "../../Buttons";
+import { ButtonAdd, EActionName } from "../../Buttons";
 
 import * as TaskList from "./styles";
 
@@ -20,9 +20,13 @@ export default ({ provided, snapshot }: any) => {
           {provided.placeholder}
         </TaskList.List>
       </TaskList.Overflow>
-      <AddButton actionName="task" onClick={openModalHandle}>
+      <ButtonAdd
+        actionName={EActionName.Task}
+        onClick={openModalHandle}
+        disabled={false}
+      >
         Add new task
-      </AddButton>
+      </ButtonAdd>
     </TaskList.Wrapper>
   );
 };
