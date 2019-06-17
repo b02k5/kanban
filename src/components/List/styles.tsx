@@ -9,7 +9,7 @@ export const Main = styled.div`
 
 export const Header = styled.div`
   position: relative;
-  padding: 10px 40px 0 15px;
+  padding: 7px 40px 7px 15px;
   border-radius: 5px 5px 0 0;
   display: flex;
   flex-direction: row;
@@ -56,5 +56,6 @@ export const Name = styled(Textarea)`
 `;
 
 export const Content = styled.div`
-  height: calc(100vh - 170px);
+  height: 100vh;
+  max-height: calc(100vh - 169px);
 `;
