@@ -16,7 +16,15 @@ interface IProps {
   onModalToggle: () => void;
 }
 
-const Board = styled.div``;
+const Board = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+`;
 const Header = styled.header`
   margin-bottom: 15px;
   padding: 10px 30px;
@@ -32,7 +40,11 @@ const Name = styled.h1`
 `;
 
 const Content = styled.div`
+  width: 100%;
+  height: 100%;
+  padding-bottom: 15px;
   display: flex;
+  overflow-x: scroll;
 `;
 const Lists = styled.ul`
   list-style-type: none;
