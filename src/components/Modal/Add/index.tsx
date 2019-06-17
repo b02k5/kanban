@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import Modal from "../index";
-import Field from "./Filed";
+import Field from "./Field";
 import { Button } from "../../Buttons";
 import { EConfirmModalForm } from "../../Buttons";
 
