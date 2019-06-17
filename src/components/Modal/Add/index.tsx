@@ -30,13 +30,11 @@ export default (props: IProps) => {
     if (listId) {
       if (fieldsForm.taskName && fieldsForm.taskDesc !== "") {
         e.preventDefault();
-        const addTaskArguments = {
+        action({
           listId: listId,
           name: fieldsForm.taskName,
           description: fieldsForm.taskDesc
-        };
-
-        action(addTaskArguments);
+        });
       }
     } else {
       if (fieldsForm.taskName !== "") {
