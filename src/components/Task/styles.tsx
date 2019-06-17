@@ -5,7 +5,7 @@ export const Main = styled.div<{ isDragging: boolean }>`
   padding: 12px 17px;
   border-radius: 5px;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-top: 10px;
   transition: background-color 0.15s ease;
   background-color: ${props => (props.isDragging ? "#67686d" : "white")};
 `;

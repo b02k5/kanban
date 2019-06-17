@@ -9,7 +9,7 @@ export const Main = styled.div`
 
 export const Header = styled.div`
   position: relative;
-  padding: 10px 40px 10px 15px;
+  padding: 10px 40px 0 15px;
   border-radius: 5px 5px 0 0;
   display: flex;
   flex-direction: row;
