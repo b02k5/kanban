@@ -17,7 +17,10 @@
     "react-textarea-autosize": "^7.1.0",
     "react-truncate": "^2.4.0",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "redux-logger": "^3.0.6",
+    "styled-components": "^4.3.1",
+    "typescript": "^3.5.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -51,8 +54,5 @@
     "@types/redux-logger": "^3.0.7",
     "@types/redux-thunk": "^2.1.0",
     "@types/styled-components": "^4.1.16",
-    "redux-logger": "^3.0.6",
-    "styled-components": "^4.3.1",
-    "typescript": "^3.5.2"
   }
 }
