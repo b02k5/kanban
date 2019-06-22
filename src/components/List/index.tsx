@@ -13,6 +13,7 @@ import AddModal from "../Modal/Add/index";
 import Tooltip from "../Tooltip";
 import TaskList from "./TaskList";
 import More from "./More";
+import { Item, Button } from "../Tooltip/styles";
 
 import * as List from "./styles";
 
@@ -27,8 +28,6 @@ interface IInfoList {
   name: string;
 }
 
-type TooltipItems = Array<{ name: string; action: () => void }>;
-
 export default (props: IProps) => {
   // Create state
   const [isEditName, setIsEditName] = useState<boolean>(false);
@@ -38,22 +37,11 @@ export default (props: IProps) => {
     id: 0,
     name: props.list.name
   });
-  const [tooltipItems, setTooltipItems] = useState<TooltipItems>([
-    {
-      name: "Remove all tasks",
-      action: () => dispatch(removeTasks(list.id, list.tasks))
-    },
-    {
-      name: "Remove list",
-      action: () => dispatch(removeList(boardId, list.id, list.tasks))
-    }
-  ]);
 
   // Connect to redux
   const tasks = useSelector<AppState, TaskType[] | []>(state =>
     getTasks(state, props.list.id)
   );
-  const { list, boardId, index } = props;
   const dispatch = useDispatch();
 
   // cDM && cDU
@@ -70,6 +58,7 @@ export default (props: IProps) => {
     };
   }, [isEditName]);
 
+  const { list, boardId, index } = props;
   const listNameRef = useRef<HTMLTextAreaElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
 
@@ -165,7 +154,20 @@ export default (props: IProps) => {
               />
               <More />
               {isTooltipOpen && (
-                <Tooltip items={tooltipItems} listName={list.name} />
+                <Tooltip  >
+                  {list.name === 'Done' &&
+                    <Item>
+                      <Button onClick={() => dispatch(removeTasks(list.id, list.tasks))}>
+                        Remove all tasks
+                    </Button>
+                    </Item>
+                  }
+                  <Item>
+                    <Button onClick={() => dispatch(removeList(boardId, list.id, list.tasks))}>
+                      Remove list
+                    </Button>
+                  </Item>
+                </Tooltip>
               )}
             </List.Header>
             <Droppable key={list.id} droppableId={`${list.id}`} type="task">
