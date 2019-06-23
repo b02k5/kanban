@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Description = styled.p`
   font-size: 13px;
   line-height: 18px;
-  margin: 10px 0 0 0;
+  margin: 7px 0 0 0;
 `;
 
 export const Name = styled.h3`
