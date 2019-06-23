@@ -1,5 +1,13 @@
 import { SET_CATEGORY } from "../constants/categories";
 
+export enum ECategories {
+  UI = "UI",
+  UX = "UX",
+  Color = "Color",
+  Animation = "Animation",
+  Illustration = "Illustration"
+}
+
 export type Category = { value: string; label: string };
 
 export type CategoriesType = Array<Category>;
