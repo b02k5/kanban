@@ -28,6 +28,12 @@ export const Name = styled(Textarea)`
   resize: none;
   width: 100%;
   margin-bottom: 18px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  transition: 0.12s;
+  &:focus {
+    border-color: #8ab8db;
+  }
 `;
 
 export const Description = styled(Textarea)`
@@ -37,6 +43,12 @@ export const Description = styled(Textarea)`
   line-height: 19px;
   resize: none;
   width: 100%;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  transition: 0.12s;
+  &:focus {
+    border-color: #8ab8db;
+  }
 `;
 
 export const CloseButton = styled.button`
