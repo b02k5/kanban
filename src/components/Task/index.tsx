@@ -7,6 +7,7 @@ import TaskDetails from "../Modal/TaskDetails";
 import TagList from "./TagList";
 
 import * as Task from "./styles";
+import { ContextList } from "../../utils/context";
 
 interface IProps {
   task: TaskType;
@@ -18,7 +19,7 @@ export default (props: IProps) => {
   const { task, index } = props;
 
   return (
-    <>
+    <ContextList.Provider value={{ category: task.category }}>
       <Draggable draggableId={`${task.id}`} index={index}>
         {(provided, snapshot) => (
           <Task.Main
@@ -40,9 +41,7 @@ export default (props: IProps) => {
                 {task.description}
               </Truncate>
             </Task.Description>
-            <Task.Footer>
-              <TagList />
-            </Task.Footer>
+            <Task.Footer>{task.category && <TagList />}</Task.Footer>
           </Task.Main>
         )}
       </Draggable>
@@ -52,6 +51,6 @@ export default (props: IProps) => {
           modalClick={() => setIsModalOpen(prevState => !prevState)}
         />
       )}
-    </>
+    </ContextList.Provider>
   );
 };
