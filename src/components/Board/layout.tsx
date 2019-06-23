@@ -100,7 +100,7 @@ export default ({
             </ButtonAdd>
             {isModalOpen && (
               <AddModal
-                modalName="list"
+                name={EAddNewComponent.List}
                 action={onAddList}
                 onModalToggle={onModalToggle}
               />

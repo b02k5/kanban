@@ -14,6 +14,7 @@ import Tooltip from "../Tooltip";
 import TaskList from "./TaskList";
 import More from "./More";
 import { Item, Button } from "../Tooltip/styles";
+import { EAddNewComponent } from "../Buttons";
 
 import * as List from "./styles";
 
@@ -196,7 +197,7 @@ export default (props: IProps) => {
             </Droppable>
             {isModalOpen && (
               <AddModal
-                modalName="task"
+                name={EAddNewComponent.Task}
                 action={addTaskHandle}
                 listId={list.id}
                 onModalToggle={openModalHandle}

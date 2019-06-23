@@ -4,7 +4,7 @@ import Select from "react-select";
 
 import Modal from "../index";
 import Field from "./Field";
-import { Button } from "../../Buttons";
+import { Button, EAddNewComponent } from "../../Buttons";
 import { EConfirmModalForm } from "../../Buttons";
 
 import * as ModalAdd from "./styles";
@@ -12,8 +12,8 @@ import { AppState } from "../../../store";
 import { CategoriesType } from "../../../store/types/categories";
 
 interface IProps {
+  name: EAddNewComponent;
   listId?: number;
-  modalName: string;
   onModalToggle: () => void;
   action: ({  }: any) => void;
 }
@@ -37,7 +37,7 @@ export default (props: IProps) => {
     state => state.categories
   );
 
-  const { listId, onModalToggle, modalName, action } = props;
+  const { listId, onModalToggle, action, name } = props;
 
   const submitFormHandle = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (listId) {
@@ -60,7 +60,7 @@ export default (props: IProps) => {
 
   return (
     <Modal modalClick={onModalToggle} containerStyles={ModalAdd.Container}>
-      <ModalAdd.Title>{`New ${modalName}`}</ModalAdd.Title>
+      <ModalAdd.Title>{`New ${name}`}</ModalAdd.Title>
       <ModalAdd.Form>
         <ModalAdd.Field>
           <Field
@@ -78,7 +78,7 @@ export default (props: IProps) => {
             autoFocus={true}
           />
         </ModalAdd.Field>
-        {listId && (
+        {name === EAddNewComponent.Task && (
           <ModalAdd.Field>
             <Field
               name="Description"
@@ -93,11 +93,15 @@ export default (props: IProps) => {
             />
           </ModalAdd.Field>
         )}
-        <Select
-          value={selectedOption}
-          onChange={(selectedOption: any) => setSelectedOption(selectedOption)}
-          options={categories}
-        />
+        {name === EAddNewComponent.Task && (
+          <Select
+            value={selectedOption}
+            onChange={(selectedOption: any) =>
+              setSelectedOption(selectedOption)
+            }
+            options={categories}
+          />
+        )}
         <ModalAdd.Footer>
           <Button
             styles={ModalAdd.Button}
