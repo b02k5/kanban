@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import Select from "react-select";
+import { useDispatch, useSelector } from "react-redux";
 
 import Modal from "../../Modal";
 import { TaskType } from "../../../store/types/tasks";
@@ -7,6 +8,9 @@ import {
   editTaskName,
   editTaskDescription
 } from "../../../store/actions/tasks";
+import { CategoriesType } from "../../../store/types/categories";
+import { AppState } from "../../../store";
+import { setCategory } from "../../../store/actions/categories";
 
 import * as TaskDetails from "./styles";
 
@@ -17,8 +21,11 @@ interface IProps {
 
 export default ({
   modalClick,
-  task: { id, date, name, description }
+  task: { id, date, name, description, category }
 }: IProps) => {
+  const categories = useSelector<AppState, CategoriesType>(
+    state => state.categories
+  );
   const dispatch = useDispatch();
   const refName = useRef<HTMLTextAreaElement>(null);
   const refDesc = useRef<HTMLTextAreaElement>(null);
@@ -27,6 +34,11 @@ export default ({
     name,
     description
   });
+
+  const [selectedOption, setSelectedOption] = useState<{
+    value: string;
+    label: string;
+  } | null>(category);
 
   const setFieldValueHandle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target === refName.current) {
@@ -74,6 +86,17 @@ export default ({
     }
   };
 
+  const selectedOptionHandle = (selectedOption: any) => {
+    setSelectedOption(selectedOption);
+    dispatch(
+      setCategory({
+        value: selectedOption.value,
+        label: selectedOption.label,
+        taskId: id
+      })
+    );
+  };
+
   return (
     <Modal modalClick={modalClick} containerStyles={TaskDetails.Container}>
       <TaskDetails.Time>{date}</TaskDetails.Time>
@@ -92,6 +115,11 @@ export default ({
         placeholder="Add description..."
         onBlur={e => setFieldBlur(e, refDesc)}
         inputRef={refDesc}
+      />
+      <Select
+        value={selectedOption}
+        onChange={selectedOptionHandle}
+        options={categories}
       />
       <TaskDetails.CloseButton onClick={modalClick} />
     </Modal>
