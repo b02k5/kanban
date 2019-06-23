@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import Select from "react-select";
 
 import Modal from "../index";
 import Field from "./Field";
@@ -6,6 +8,8 @@ import { Button } from "../../Buttons";
 import { EConfirmModalForm } from "../../Buttons";
 
 import * as ModalAdd from "./styles";
+import { AppState } from "../../../store";
+import { CategoriesType } from "../../../store/types/categories";
 
 interface IProps {
   listId?: number;
@@ -20,11 +24,20 @@ interface IState {
 }
 
 export default (props: IProps) => {
-  const { listId, onModalToggle, modalName, action } = props;
   const [fieldsForm, setFieldsForm] = useState<IState>({
     taskName: "",
     taskDesc: ""
   });
+  const [selectedOption, setSelectedOption] = useState<{
+    value: string;
+    label: string;
+  } | null>(null);
+
+  const categories = useSelector<AppState, CategoriesType>(
+    state => state.categories
+  );
+
+  const { listId, onModalToggle, modalName, action } = props;
 
   const submitFormHandle = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (listId) {
@@ -33,7 +46,8 @@ export default (props: IProps) => {
         action({
           listId: listId,
           name: fieldsForm.taskName,
-          description: fieldsForm.taskDesc
+          description: fieldsForm.taskDesc,
+          category: selectedOption
         });
       }
     } else {
@@ -79,6 +93,11 @@ export default (props: IProps) => {
             />
           </ModalAdd.Field>
         )}
+        <Select
+          value={selectedOption}
+          onChange={(selectedOption: any) => setSelectedOption(selectedOption)}
+          options={categories}
+        />
         <ModalAdd.Footer>
           <Button
             styles={ModalAdd.Button}
