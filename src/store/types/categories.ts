@@ -12,9 +12,15 @@ export type Category = { value: string; label: string };
 
 export type CategoriesType = Array<Category>;
 
-export interface SetCategory {
-  type: SET_CATEGORY;
-  payload: Category;
+export interface SetCategoryArguments {
+  value: string;
+  label: string;
+  taskId: number;
 }
 
-export type CategoriesActions = SetCategory;
+export interface SetCategoryAction {
+  type: SET_CATEGORY;
+  payload: SetCategoryArguments;
+}
+
+export type CategoriesActions = SetCategoryAction;

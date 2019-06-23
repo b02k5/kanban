@@ -7,7 +7,7 @@ import {
   REMOVE_TASKS
 } from "../constants/tasks";
 import { RemoveListAction } from "./lists";
-import { Category } from "./categories";
+import { Category, SetCategoryAction } from "./categories";
 
 export type TasksState = { [taskId: number]: TaskType };
 
@@ -98,4 +98,5 @@ export type TaskAction =
   | RemoveListAction
   | EditTaskNameAction
   | EditTaskDescriptionAction
-  | RemoveTasksAction;
+  | RemoveTasksAction
+  | SetCategoryAction;

@@ -5,6 +5,7 @@ import { TaskAction, TasksState, RemoveTasksAction } from "../types/tasks";
 import { taskConstants } from "../constants/tasks";
 import { listConstants } from "../constants/lists";
 import { RemoveListAction } from "../types/lists";
+import { categoriesConstants } from "../constants/categories";
 
 const removeTasks = (
   state: TasksState,
@@ -66,6 +67,19 @@ export const tasks: Reducer<TasksState, TaskAction> = (state = {}, action) => {
     }
     case taskConstants.REMOVE_TASKS: {
       return removeTasks(state, action);
+    }
+    case categoriesConstants.SET_CATEGORY: {
+      const { value, label, taskId } = action.payload;
+      return {
+        ...state,
+        [taskId]: {
+          ...state[taskId],
+          category: {
+            value,
+            label
+          }
+        }
+      };
     }
     default:
       return {
