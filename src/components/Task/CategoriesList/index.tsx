@@ -3,15 +3,15 @@ import React, { useContext } from "react";
 import Category from "../../Category";
 import { ContextList } from "../../../utils/context";
 
-import * as TagList from "./styles";
+import * as CategoriesList from "./styles";
 
 export default () => {
   const { category } = useContext(ContextList);
   return (
-    <TagList.List>
-      <TagList.Item>
+    <CategoriesList.List>
+      <CategoriesList.Item>
         <Category>{category.value}</Category>
-      </TagList.Item>
-    </TagList.List>
+      </CategoriesList.Item>
+    </CategoriesList.List>
   );
 };

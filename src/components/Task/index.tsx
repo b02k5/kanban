@@ -4,7 +4,7 @@ import Truncate from "react-truncate";
 
 import { TaskType } from "../../store/types/tasks";
 import TaskDetails from "../Modal/TaskDetails";
-import TagList from "./TagList";
+import CategoriesList from "./CategoriesList";
 
 import * as Task from "./styles";
 import { ContextList } from "../../utils/context";
@@ -41,7 +41,7 @@ export default (props: IProps) => {
                 {task.description}
               </Truncate>
             </Task.Description>
-            <Task.Footer>{task.category && <TagList />}</Task.Footer>
+            <Task.Footer>{task.category && <CategoriesList />}</Task.Footer>
           </Task.Main>
         )}
       </Draggable>
