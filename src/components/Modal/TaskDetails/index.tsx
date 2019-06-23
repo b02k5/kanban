@@ -43,7 +43,14 @@ export default ({
   };
 
   const checkNameForEmptiness = (element: HTMLTextAreaElement) => {
-    return element.value === "" && (element.value = name);
+    return (
+      element.value === "" &&
+      ((element.value = name),
+      setDetailField({
+        ...detailField,
+        name: name
+      }))
+    );
   };
 
   const setFieldBlur = (
