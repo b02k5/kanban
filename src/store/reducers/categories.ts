@@ -1,7 +1,7 @@
 import { Reducer } from "redux";
-import { CategoriesType } from "../types/categories";
+import { CategoriesType, CategoriesActions } from "../types/categories";
 
-export const categories: Reducer<CategoriesType, any> = (
+export const categories: Reducer<CategoriesType, CategoriesActions> = (
   state = [
     { value: "UI", label: "UI" },
     { value: "UX", label: "UX" },
