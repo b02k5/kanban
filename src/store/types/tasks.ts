@@ -31,6 +31,7 @@ export interface TaskType {
   name: string;
   description: string;
   date: string;
+  category: Category;
 }
 
 export interface AddTaskAction {
