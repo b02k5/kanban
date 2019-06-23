@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 import Modal from "../../Modal";
@@ -20,21 +20,62 @@ export default ({
   task: { id, date, name, description }
 }: IProps) => {
   const dispatch = useDispatch();
+  const refName = useRef<HTMLTextAreaElement>(null);
+  const refDesc = useRef<HTMLTextAreaElement>(null);
+
+  const [detailField, setDetailField] = useState({
+    name,
+    description
+  });
+
+  const setFieldValueHandle = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target === refName.current) {
+      setDetailField({
+        ...detailField,
+        name: e.target.value
+      });
+    } else {
+      setDetailField({
+        ...detailField,
+        description: e.target.value
+      });
+    }
+  };
+
+  const setFieldBlur = (
+    e: React.FocusEvent<HTMLTextAreaElement>,
+    refTextarea: React.RefObject<HTMLTextAreaElement>
+  ) => {
+    const node = refTextarea.current;
+    node && node.blur();
+
+    e.target === refName.current
+      ? node &&
+        e.target.value !== name &&
+        dispatch(editTaskName(detailField.name, id))
+      : node &&
+        e.target.value !== description &&
+        dispatch(editTaskDescription(node.value, id));
+  };
 
   return (
     <Modal modalClick={modalClick} containerStyles={TaskDetails.Container}>
       <TaskDetails.Time>{date}</TaskDetails.Time>
       <TaskDetails.Name
         maxRows={3}
-        onChange={e => dispatch(editTaskName(e.target.value, id))}
-        value={name}
+        onChange={e => setFieldValueHandle(e)}
+        value={detailField.name}
         placeholder="Task name"
+        onBlur={e => setFieldBlur(e, refName)}
+        inputRef={refName}
       />
       <TaskDetails.Description
         maxRows={10}
-        onChange={e => dispatch(editTaskDescription(e.target.value, id))}
-        value={description}
+        onChange={e => setFieldValueHandle(e)}
+        value={detailField.description}
         placeholder="Add description..."
+        onBlur={e => setFieldBlur(e, refDesc)}
+        inputRef={refDesc}
       />
       <TaskDetails.CloseButton onClick={modalClick} />
     </Modal>
