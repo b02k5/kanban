@@ -14,14 +14,16 @@ export const addTask = ({
   listId,
   id,
   name,
-  description
+  description,
+  category
 }: TaskArguments): AddTaskAction => ({
   type: taskConstants.ADD_TASK,
   payload: {
     listId,
     id,
     name,
-    description
+    description,
+    category
   }
 });
 

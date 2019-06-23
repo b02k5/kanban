@@ -7,6 +7,7 @@ import {
   REMOVE_TASKS
 } from "../constants/tasks";
 import { RemoveListAction } from "./lists";
+import { Category } from "./categories";
 
 export type TasksState = { [taskId: number]: TaskType };
 
@@ -15,12 +16,14 @@ export type TaskArguments = {
   id: number;
   name: string;
   description: string;
+  category: Category;
 };
 
 export type AddTaskArguments = {
   listId: number;
   name: string;
   description: string;
+  category: Category;
 };
 
 export interface TaskType {
@@ -37,6 +40,7 @@ export interface AddTaskAction {
     id: number;
     name: string;
     description: string;
+    category: Category;
   };
 }
 

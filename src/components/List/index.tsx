@@ -87,13 +87,19 @@ export default (props: IProps) => {
     node && !node.contains(e.target as Node) && setIsEditName(false);
   };
 
-  const addTaskHandle = ({ listId, name, description }: TaskArguments) => {
+  const addTaskHandle = ({
+    listId,
+    name,
+    description,
+    category
+  }: TaskArguments) => {
     const taskId: number = new Date().getTime();
     const taskArguments = {
       listId,
       id: taskId,
       name,
-      description
+      description,
+      category
     };
     dispatch(addTask(taskArguments));
     openModalHandle();
@@ -154,16 +160,24 @@ export default (props: IProps) => {
               />
               <More />
               {isTooltipOpen && (
-                <Tooltip  >
-                  {list.name === 'Done' &&
+                <Tooltip>
+                  {list.name === "Done" && (
                     <Item>
-                      <Button onClick={() => dispatch(removeTasks(list.id, list.tasks))}>
+                      <Button
+                        onClick={() =>
+                          dispatch(removeTasks(list.id, list.tasks))
+                        }
+                      >
                         Remove all tasks
-                    </Button>
+                      </Button>
                     </Item>
-                  }
+                  )}
                   <Item>
-                    <Button onClick={() => dispatch(removeList(boardId, list.id, list.tasks))}>
+                    <Button
+                      onClick={() =>
+                        dispatch(removeList(boardId, list.id, list.tasks))
+                      }
+                    >
                       Remove list
                     </Button>
                   </Item>

@@ -28,7 +28,7 @@ export const tasks: Reducer<TasksState, TaskAction> = (state = {}, action) => {
       return removeTasks(state, action);
     }
     case taskConstants.ADD_TASK: {
-      const { id, name, description } = action.payload;
+      const { id, name, description, category } = action.payload;
       const date = moment().format("D MMM YYYY");
 
       if (!state[id]) {
@@ -38,7 +38,8 @@ export const tasks: Reducer<TasksState, TaskAction> = (state = {}, action) => {
             id,
             name,
             description,
-            date
+            date,
+            category
           }
         };
       }
