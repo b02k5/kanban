@@ -3,7 +3,7 @@ import { createLogger } from "redux-logger";
 import rootReducer from "./reducers";
 import { saveState, loadState } from "../utils/localStorage";
 import throttle from "lodash/throttle";
-import thunk from "redux-thunk"
+import thunk from "redux-thunk";
 
 const logger = createLogger({
   collapsed: true
@@ -23,7 +23,8 @@ store.subscribe(
     saveState({
       boards: store.getState().boards,
       lists: store.getState().lists,
-      tasks: store.getState().tasks
+      tasks: store.getState().tasks,
+      categories: store.getState().categories
     });
   }, 1500)
 );
