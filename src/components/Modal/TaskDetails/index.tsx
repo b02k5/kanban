@@ -57,9 +57,9 @@ export default ({
     if (target === refName.current) {
       checkNameForEmptiness(target);
 
-      if (node && target.value !== name && target.value !== "") {
+      node &&
+        target.value !== name &&
         dispatch(editTaskName(detailField.name, id));
-      }
     } else {
       node &&
         e.target.value !== description &&
