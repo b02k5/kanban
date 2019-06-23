@@ -42,20 +42,29 @@ export default ({
     }
   };
 
+  const checkNameForEmptiness = (element: HTMLTextAreaElement) => {
+    return element.value === "" && (element.value = name);
+  };
+
   const setFieldBlur = (
     e: React.FocusEvent<HTMLTextAreaElement>,
     refTextarea: React.RefObject<HTMLTextAreaElement>
   ) => {
+    const target = e.target;
     const node = refTextarea.current;
     node && node.blur();
 
-    e.target === refName.current
-      ? node &&
-        e.target.value !== name &&
-        dispatch(editTaskName(detailField.name, id))
-      : node &&
+    if (target === refName.current) {
+      checkNameForEmptiness(target);
+
+      if (node && target.value !== name && target.value !== "") {
+        dispatch(editTaskName(detailField.name, id));
+      }
+    } else {
+      node &&
         e.target.value !== description &&
         dispatch(editTaskDescription(node.value, id));
+    }
   };
 
   return (
