@@ -1,78 +1,53 @@
-import React, { PureComponent } from "react";
-import Layout from "./layout";
-import { connect } from "react-redux";
+import React, { useState } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
 import { BoardsState } from "../../store/types/boards";
 import { addBoard } from "../../store/actions/boards";
 import { getBoards } from "../../store/selectors/boards";
+import BoardLink from "../BoardLink";
+import AddModal from "../Modal/Add";
+import { EAddNewComponent, ButtonAdd } from "../Buttons";
 
-interface IStateToProps {
-  boards: BoardsState;
-}
+import * as Main from "./styles";
 
-interface IDispatchToProps {
-  addBoard: (boardId: number, boardName: string) => void;
-}
+export default () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-interface IState {
-  boardValue: string;
-  isOpenCreateForm: boolean;
-}
+  const boards = useSelector<AppState, BoardsState>(state => getBoards(state));
 
-type Props = IStateToProps & IDispatchToProps;
+  const dispatch = useDispatch();
 
-class Main extends PureComponent<Props, IState> {
-  public state = {
-    boardValue: "",
-    isOpenCreateForm: false
+  const addBoardHandle = ({ name }: { name: string }) => {
+    dispatch(addBoard(new Date().getTime(), name));
+    setIsModalOpen(prevState => !prevState);
   };
 
-  public addBoardHandler = () => {
-    const createBoardId = new Date().getTime();
-    if (this.state.boardValue !== "") {
-      this.props.addBoard(createBoardId, this.state.boardValue);
-
-      this.setState({
-        boardValue: "",
-        isOpenCreateForm: false
-      });
-    }
-  };
-
-  public inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({
-      boardValue: e.target.value
-    });
-  };
-
-  public openCreateFormHandle = () => {
-    this.setState({
-      isOpenCreateForm: true
-    })
-  }
-
-  public render(): JSX.Element {
-    return (
-      <Layout
-        {...this.props}
-        {...this.state}
-        onAddBoard={this.addBoardHandler}
-        onInputChange={this.inputChangeHandler}
-        onOpenCreateForm={this.openCreateFormHandle}
-      />
-    );
-  }
-}
-
-const mapStateToProps = (state: AppState): IStateToProps => ({
-  boards: getBoards(state)
-});
-
-const mapDispatchToProps: IDispatchToProps = {
-  addBoard
+  return (
+    <Main.Main>
+      <Main.Container>
+        <Main.Title>Kanban Board</Main.Title>
+        <Main.Content>
+          <Main.BoardList>
+            {Object.keys(boards).map(board => (
+              <BoardLink key={boards[board].id} board={boards[board]} />
+            ))}
+            <ButtonAdd
+              actionName={EAddNewComponent.Board}
+              onClick={() => setIsModalOpen(prevState => !prevState)}
+            >
+              Create new board
+            </ButtonAdd>
+            {isModalOpen && (
+              <AddModal
+                name={EAddNewComponent.Board}
+                action={addBoardHandle}
+                onModalToggle={() => setIsModalOpen(prevState => !prevState)}
+              />
+            )}
+          </Main.BoardList>
+        </Main.Content>
+      </Main.Container>
+    </Main.Main>
+  );
 };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Main);
