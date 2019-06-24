@@ -32,7 +32,7 @@ export const Name = styled(Textarea)`
   border-radius: 5px;
   transition: 0.12s;
   &:focus {
-    border-color: #8ab8db;
+    border-color: #2684ff;
   }
 `;
 
@@ -47,7 +47,7 @@ export const Description = styled(Textarea)`
   border-radius: 5px;
   transition: 0.12s;
   &:focus {
-    border-color: #8ab8db;
+    border-color: #2684ff;
   }
 `;
 

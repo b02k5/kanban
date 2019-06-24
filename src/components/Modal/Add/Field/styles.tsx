@@ -15,6 +15,9 @@ export const TextareaAutoSize = styled(Textarea)`
   padding: 5px 7px;
   background-color: transparent;
   z-index: 2;
+  &:focus {
+    border-color: #2684ff;
+  }
 `;
 
 export const Label = styled.label<{ value: string }>`
