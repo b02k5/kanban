@@ -7,9 +7,7 @@
 }
 
 body {
-  background: url(https://www.insidescience.org/sites/default/files/5_heic1808a_crop.jpg)
-    no-repeat;
-  background-size: cover;
+  background-color: rosybrown;
   overflow-x: hidden;
 }
 
