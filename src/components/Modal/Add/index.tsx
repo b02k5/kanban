@@ -41,7 +41,7 @@ export default (props: IProps) => {
 
   const submitFormHandle = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (listId) {
-      if (fieldsForm.taskName && fieldsForm.taskDesc !== "") {
+      if (fieldsForm.taskName !== "") {
         e.preventDefault();
         action({
           listId: listId,
