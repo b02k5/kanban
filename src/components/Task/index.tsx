@@ -36,12 +36,18 @@ export default (props: IProps) => {
                 {task.name}
               </Truncate>
             </Task.Name>
-            <Task.Description>
-              <Truncate lines={3} ellipsis="..." width={200}>
-                {task.description}
-              </Truncate>
-            </Task.Description>
-            <Task.Footer>{task.category && <CategoriesList />}</Task.Footer>
+            {task.description && (
+              <Task.Description>
+                <Truncate lines={3} ellipsis="..." width={200}>
+                  {task.description}
+                </Truncate>
+              </Task.Description>
+            )}
+            {task.category && (
+              <Task.Footer>
+                <CategoriesList />
+              </Task.Footer>
+            )}
           </Task.Main>
         )}
       </Draggable>
