@@ -1,72 +1,64 @@
-import React, { PureComponent } from "react";
-import { connect } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import Layout from "./layout";
 import { AppState } from "../../store";
 import { getActiveBoard } from "../../store/selectors/boards";
 import { BoardType } from "../../store/types/boards";
 import { addList } from "../../store/actions/lists";
 import { getLists } from "../../store/selectors/lists";
 import { IList } from "../../store/types/lists";
+import { ButtonAdd, EAddNewComponent } from "../Buttons";
+import AddModal from "../Modal/Add";
+import Lists from "./Lists";
 
-interface IState {
-  isModalOpen: boolean;
-}
+import * as Board from "./styles";
 
-interface IStateToProps {
-  activeBoard: BoardType | undefined;
-  lists: IList[];
-}
+export default () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-interface IDispatchToProps {
-  addList: (boardId: number, listId: number, listName: string) => void;
-}
+  const activeBoard = useSelector<AppState, BoardType | undefined>(state =>
+    getActiveBoard(state.boards)
+  );
+  const lists = useSelector<AppState, IList[]>(state => getLists(state));
 
-type Props = IStateToProps & IDispatchToProps;
+  const dispatch = useDispatch();
 
-class Board extends PureComponent<Props, IState> {
-  public state = {
-    isModalOpen: false
-  };
-
-  public addListHandle = ({ name }: { name: string }) => {
-    const activeBoard: BoardType = this.props.activeBoard!;
+  const addListHandle = ({ name }: { name: string }) => {
+    const board: BoardType = activeBoard!;
     const listId: number = new Date().getTime();
 
-    this.props.addList(activeBoard.id, listId, name);
-    this.setState(prevState => ({
-      isModalOpen: !prevState.isModalOpen
-    }));
+    dispatch(addList(board.id, listId, name));
+
+    setIsModalOpen(prevState => !prevState);
   };
 
-  private modalToggleHandle = () => {
-    this.setState(prevState => ({
-      isModalOpen: !prevState.isModalOpen
-    }));
-  };
-
-  render(): JSX.Element {
-    return (
-      <Layout
-        {...this.props}
-        {...this.state}
-        onAddList={this.addListHandle}
-        onModalToggle={this.modalToggleHandle}
-      />
-    );
-  }
-}
-
-const mapStateToProps = (state: AppState): IStateToProps => ({
-  activeBoard: getActiveBoard(state.boards),
-  lists: getLists(state)
-});
-
-const mapDispatchToProps: IDispatchToProps = {
-  addList
+  return (
+    <Board.Main>
+      {activeBoard && (
+        <>
+          <Board.Header>
+            <Board.Name>{activeBoard.name}</Board.Name>
+          </Board.Header>
+          <Board.Content>
+            <Lists lists={lists} activeBoard={activeBoard} />
+            <Board.AddList>
+              <ButtonAdd
+                actionName={EAddNewComponent.List}
+                onClick={() => setIsModalOpen(prevState => !prevState)}
+              >
+                Add new list
+              </ButtonAdd>
+              {isModalOpen && (
+                <AddModal
+                  name={EAddNewComponent.List}
+                  action={addListHandle}
+                  onModalToggle={() => setIsModalOpen(prevState => !prevState)}
+                />
+              )}
+            </Board.AddList>
+          </Board.Content>
+        </>
+      )}
+    </Board.Main>
+  );
 };
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Board);
