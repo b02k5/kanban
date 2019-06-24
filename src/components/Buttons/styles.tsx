@@ -37,14 +37,12 @@ export const ButtonAdd = styled.button<{ actionName: EAddNewComponent }>`
   font-size: 14px;
   line-height: 19px;
   font-weight: 500;
-  width: ${props =>
-    props.actionName === EAddNewComponent.Task ? "100%" : "280px"}
+  width: 100%;
   border-radius: ${props =>
     props.actionName === EAddNewComponent.Task ? "0 0 5px 5px;" : "5px"};
   padding: 15px;
   border: 0;
   cursor: pointer;
-  margin-left: ${props => props.actionName === EAddNewComponent.List && "15px"};
   transition: 0.15s;
   background-color: ${props =>
     props.actionName === EAddNewComponent.Task

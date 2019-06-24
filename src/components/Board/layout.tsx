@@ -59,6 +59,8 @@ const ListItem = styled.li`
 
 const AddListWrapper = styled.div`
   flex: 0 0 auto;
+  width: 270px;
+  margin-left: 15px;
 `;
 
 export default ({
