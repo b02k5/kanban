@@ -52,7 +52,7 @@ export default () => {
                 <AddModal
                   name={EAddNewComponent.List}
                   action={addListHandle}
-                  onModalToggle={() => setIsModalOpen(prevState => !prevState)}
+                  closeModal={() => setIsModalOpen(prevState => !prevState)}
                 />
               )}
             </Board.AddList>

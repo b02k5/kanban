@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useSelector } from "react-redux";
 import Select from "react-select";
 
@@ -6,15 +6,15 @@ import Modal from "../index";
 import Field from "./Field";
 import { Button, EAddNewComponent } from "../../Buttons";
 import { EConfirmModalForm } from "../../Buttons";
-
-import * as ModalAdd from "./styles";
 import { AppState } from "../../../store";
 import { CategoriesType } from "../../../store/types/categories";
+import { ContextList } from "../../../utils/context";
+
+import * as ModalAdd from "./styles";
 
 interface IProps {
   name: EAddNewComponent;
-  listId?: number;
-  onModalToggle: () => void;
+  closeModal: () => void;
   action: ({  }: any) => void;
 }
 
@@ -37,29 +37,46 @@ export default (props: IProps) => {
     state => state.categories
   );
 
-  const { listId, onModalToggle, action, name } = props;
+  const { listId } = useContext(ContextList);
+
+  const { closeModal, action, name } = props;
 
   const submitFormHandle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (listId) {
-      if (fieldsForm.taskName !== "") {
-        e.preventDefault();
-        action({
-          listId: listId,
-          name: fieldsForm.taskName,
-          description: fieldsForm.taskDesc,
-          category: selectedOption
-        });
+    switch (name) {
+      case EAddNewComponent.Task: {
+        if (fieldsForm.taskName !== "") {
+          e.preventDefault();
+          action({
+            listId,
+            name: fieldsForm.taskName,
+            description: fieldsForm.taskDesc,
+            category: selectedOption
+          });
+        }
+        break;
       }
-    } else {
-      if (fieldsForm.taskName !== "") {
-        e.preventDefault();
-        action({ name: fieldsForm.taskName });
+      case EAddNewComponent.List: {
+        if (fieldsForm.taskName !== "") {
+          e.preventDefault();
+          action({ name: fieldsForm.taskName });
+        }
+        break;
       }
+      case EAddNewComponent.Board: {
+        if (fieldsForm.taskName !== "") {
+          e.preventDefault();
+          action({ name: fieldsForm.taskName });
+        }
+        break;
+      }
+
+      default:
+        break;
     }
   };
 
   return (
-    <Modal modalClick={onModalToggle} containerStyles={ModalAdd.Container}>
+    <Modal modalClick={closeModal} containerStyles={ModalAdd.Container}>
       <ModalAdd.Title>{`New ${name}`}</ModalAdd.Title>
       <ModalAdd.Form>
         <ModalAdd.Field>
@@ -132,7 +149,7 @@ export default (props: IProps) => {
           <Button
             styles={ModalAdd.Button}
             actionName={EConfirmModalForm.Cancel}
-            onClick={onModalToggle}
+            onClick={closeModal}
             disabled={false}
           >
             Cancel

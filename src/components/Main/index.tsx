@@ -42,7 +42,7 @@ export default () => {
               <AddModal
                 name={EAddNewComponent.Board}
                 action={addBoardHandle}
-                onModalToggle={() => setIsModalOpen(prevState => !prevState)}
+                closeModal={() => setIsModalOpen(prevState => !prevState)}
               />
             )}
           </Main.BoardList>

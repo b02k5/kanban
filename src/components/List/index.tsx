@@ -135,7 +135,9 @@ export default (props: IProps) => {
   };
 
   return (
-    <ContextList.Provider value={{ setIsTooltipOpen, tasks, openModalHandle }}>
+    <ContextList.Provider
+      value={{ setIsTooltipOpen, tasks, openModalHandle, listId: list.id }}
+    >
       <Draggable draggableId={`${list.id}`} index={index}>
         {provided => (
           <List.Main
@@ -199,8 +201,7 @@ export default (props: IProps) => {
               <AddModal
                 name={EAddNewComponent.Task}
                 action={addTaskHandle}
-                listId={list.id}
-                onModalToggle={openModalHandle}
+                closeModal={openModalHandle}
               />
             )}
           </List.Main>
