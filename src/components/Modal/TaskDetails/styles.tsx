@@ -27,7 +27,7 @@ export const Name = styled(Textarea)`
   font-weight: 500;
   resize: none;
   width: 100%;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
   border: 2px solid transparent;
   border-radius: 5px;
   transition: 0.12s;
