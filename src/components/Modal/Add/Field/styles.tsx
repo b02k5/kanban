@@ -18,6 +18,9 @@ export const TextareaAutoSize = styled(Textarea)`
   &:focus {
     border-color: #2684ff;
   }
+  &:invalid {
+    box-shadow: none;
+  }
 `;
 
 export const Label = styled.label<{ value: string }>`
