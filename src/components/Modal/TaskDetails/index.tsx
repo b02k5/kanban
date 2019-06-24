@@ -120,6 +120,32 @@ export default ({
         value={selectedOption}
         onChange={selectedOptionHandle}
         options={categories}
+        styles={{
+          control: provided => ({
+            ...provided,
+            display: "flex",
+            flexDirection: "row",
+            border: "1px solid rgba(9,45,66,0.4)",
+            borderRadius: "5px",
+            cursor: "pointer",
+            height: "34px",
+            marginTop: "15px"
+          }),
+          valueContainer: provided => ({
+            ...provided,
+            display: "flex",
+            flexDirection: "row",
+            fontSize: "15px",
+            lineHeight: "20px",
+            fontWeight: 500
+          }),
+          placeholder: () => ({
+            fontSize: "15px",
+            lineHeight: "20px",
+            fontWeight: 500,
+            color: "#36373a"
+          })
+        }}
       />
       <TaskDetails.CloseButton onClick={modalClick} />
     </Modal>
