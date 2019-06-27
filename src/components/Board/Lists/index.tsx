@@ -19,7 +19,7 @@ export default ({ lists }: IProps) => {
       direction="horizontal"
       type="list"
     >
-      {(provided: any) => (
+      {provided => (
         <Lists.List {...provided.droppableProps} ref={provided.innerRef}>
           {[...lists].map((list, index) => (
             <Lists.Item key={list.id}>
