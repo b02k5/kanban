@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../store";
 import { BoardsState } from "../../store/types/boards";
 import { addBoard } from "../../store/actions/boards";
-import { getBoards } from "../../store/selectors/boards";
 import BoardLink from "../BoardLink";
 import AddModal from "../Modal/Add";
 import { EAddNewComponent, ButtonAdd } from "../Buttons";
@@ -14,7 +13,7 @@ import * as Main from "./styles";
 export default () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const boards = useSelector<AppState, BoardsState>(state => getBoards(state));
+  const boards = useSelector<AppState, BoardsState>(state => state.boards);
 
   const dispatch = useDispatch();
 
