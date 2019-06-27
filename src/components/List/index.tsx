@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 
@@ -8,7 +8,7 @@ import { removeList, editListName } from "../../store/actions/lists";
 import { addTask, removeTasks } from "../../store/actions/tasks";
 import { getTasks } from "../../store/selectors/tasks";
 import { TaskType, TaskArguments } from "../../store/types/tasks";
-import { ContextList } from "../../utils/context";
+import { ContextList, ContextBoard } from "../../utils/context";
 import AddModal from "../Modal/Add/index";
 import Tooltip from "../Tooltip";
 import TaskList from "./TaskList";
@@ -20,7 +20,6 @@ import * as List from "./styles";
 
 interface IProps {
   list: IList;
-  boardId: number;
   index: number;
 }
 
@@ -59,9 +58,11 @@ export default (props: IProps) => {
     };
   }, [isEditName]);
 
-  const { list, boardId, index } = props;
+  const { list, index } = props;
   const listNameRef = useRef<HTMLTextAreaElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
+
+  const { boardId } = useContext(ContextBoard)
 
   const editNameListHandle = (
     e: React.ChangeEvent<HTMLTextAreaElement>,

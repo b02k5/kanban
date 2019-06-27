@@ -9,6 +9,7 @@ import { IList } from "../../store/types/lists";
 import { ButtonAdd, EAddNewComponent } from "../Buttons";
 import AddModal from "../Modal/Add";
 import Lists from "./Lists";
+import { ContextBoard } from "../../utils/context";
 
 import * as Board from "./styles";
 
@@ -34,30 +35,32 @@ export default (props: any) => {
   const { backgroundImage, name, id } = getActiveBoard;
 
   return (
-    <Board.Main backgroundImage={backgroundImage}>
-      <>
-        <Board.Header>
-          <Board.Name>{name}</Board.Name>
-        </Board.Header>
-        <Board.Content>
-          <Lists lists={lists} boardId={id} />
-          <Board.AddList>
-            <ButtonAdd
-              actionName={EAddNewComponent.List}
-              onClick={() => setIsModalOpen(prevState => !prevState)}
-            >
-              Add new list
+    <ContextBoard.Provider value={{ boardId: id }}>
+      <Board.Main backgroundImage={backgroundImage}>
+        <>
+          <Board.Header>
+            <Board.Name>{name}</Board.Name>
+          </Board.Header>
+          <Board.Content>
+            <Lists lists={lists} />
+            <Board.AddList>
+              <ButtonAdd
+                actionName={EAddNewComponent.List}
+                onClick={() => setIsModalOpen(prevState => !prevState)}
+              >
+                Add new list
               </ButtonAdd>
-            {isModalOpen && (
-              <AddModal
-                name={EAddNewComponent.List}
-                action={addListHandle}
-                closeModal={() => setIsModalOpen(prevState => !prevState)}
-              />
-            )}
-          </Board.AddList>
-        </Board.Content>
-      </>
-    </Board.Main>
+              {isModalOpen && (
+                <AddModal
+                  name={EAddNewComponent.List}
+                  action={addListHandle}
+                  closeModal={() => setIsModalOpen(prevState => !prevState)}
+                />
+              )}
+            </Board.AddList>
+          </Board.Content>
+        </>
+      </Board.Main>
+    </ContextBoard.Provider>
   );
 };
