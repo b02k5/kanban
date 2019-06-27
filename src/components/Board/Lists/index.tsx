@@ -3,18 +3,17 @@ import { Droppable } from "react-beautiful-dnd";
 
 import List from "../../List";
 import { IList } from "../../../store/types/lists";
-import { BoardType } from "../../../store/types/boards";
 
 import * as Lists from "./styles";
 
 interface IProps {
-  activeBoard: BoardType | undefined;
   lists: IList[];
+  boardId: number;
 }
 
-export default ({ lists, activeBoard }: IProps) => (
+export default ({ lists, boardId }: IProps) => (
   <Droppable
-    droppableId={`${activeBoard ? activeBoard.id : 0}`}
+    droppableId={`${boardId}`}
     direction="horizontal"
     type="list"
   >
@@ -25,7 +24,7 @@ export default ({ lists, activeBoard }: IProps) => (
             <List
               index={index}
               list={list}
-              boardId={activeBoard ? activeBoard.id : 0}
+              boardId={boardId}
             />
           </Lists.Item>
         ))}
