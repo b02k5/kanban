@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 
-import { ContextList } from "../../utils/context";
+import { ContextTask } from "../../utils/context";
 
 import * as Category from "./styles";
 
 export default () => {
-  const { category } = useContext(ContextList);
+  const category = useContext(ContextTask);
   return (
     <Category.Tag categoryName={category.value}>{category.value}</Category.Tag>
   );
