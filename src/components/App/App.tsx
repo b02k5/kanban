@@ -1,31 +1,20 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Main from "../Main";
 import Board from "../Board";
 import { changePositionList } from "../../store/actions/lists";
-import { ChangePositionListArgs } from "../../store/types/lists";
 import { moveTask, changePositionTasks } from "../../store/actions/tasks";
-import {
-  ChangePositionTaskArgs,
-  MoveTaskActionArgs
-} from "../../store/types/tasks";
+
 import "./App.css";
 
-interface IDispatchToProps {
-  changePositionTasks: ({  }: ChangePositionTaskArgs) => void;
-  moveTask: ({  }: MoveTaskActionArgs) => void;
-  changePositionList: ({  }: ChangePositionListArgs) => void;
-}
+export default (): JSX.Element => {
+  const dispatch = useDispatch();
 
-type Props = IDispatchToProps;
-
-const App: React.FunctionComponent<Props> = props => {
-  const onDragEnd = (result: DropResult, props: Props) => {
+  const onDragEnd = (result: DropResult) => {
     const { source, destination, draggableId, type } = result;
-    const { moveTask, changePositionTasks, changePositionList } = props;
     if (!destination) {
       return;
     }
@@ -44,7 +33,7 @@ const App: React.FunctionComponent<Props> = props => {
         sourceIndex: source.index,
         destinationIndex: destination.index
       };
-      changePositionList(changePositionListArgs);
+      dispatch(changePositionList(changePositionListArgs));
       return;
     }
 
@@ -55,7 +44,7 @@ const App: React.FunctionComponent<Props> = props => {
         sourceIndex: source.index,
         destinationIndex: destination.index
       };
-      changePositionTasks(changePositionTasksArgs);
+      dispatch(changePositionTasks(changePositionTasksArgs));
       return;
     } else {
       const moveTaskArgs = {
@@ -64,12 +53,12 @@ const App: React.FunctionComponent<Props> = props => {
         targetListId: Number(destination.droppableId),
         destinationIndex: destination.index
       };
-      moveTask(moveTaskArgs);
+      dispatch(moveTask(moveTaskArgs));
     }
   };
 
   return (
-    <DragDropContext onDragEnd={result => onDragEnd(result, props)}>
+    <DragDropContext onDragEnd={result => onDragEnd(result)}>
       <div className="App">
         <Switch>
           <Route path="/" component={Main} exact />
@@ -79,14 +68,3 @@ const App: React.FunctionComponent<Props> = props => {
     </DragDropContext>
   );
 };
-
-const mapDispatchToProps: IDispatchToProps = {
-  changePositionTasks,
-  moveTask,
-  changePositionList
-};
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(App);
