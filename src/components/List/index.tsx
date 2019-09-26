@@ -62,7 +62,7 @@ export default (props: IProps) => {
   const listNameRef = useRef<HTMLTextAreaElement>(null);
   const draggableRef = useRef<HTMLDivElement>(null);
 
-  const { boardId } = useContext(ContextBoard)
+  const boardId = useContext(ContextBoard);
 
   const editNameListHandle = (
     e: React.ChangeEvent<HTMLTextAreaElement>,

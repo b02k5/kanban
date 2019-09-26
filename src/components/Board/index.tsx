@@ -40,7 +40,7 @@ export default ({
   const { name, id } = getActiveBoard;
 
   return (
-    <ContextBoard.Provider value={{ boardId: id }}>
+    <ContextBoard.Provider value={id}>
       <Board.Main>
         <>
           <Board.Header>
