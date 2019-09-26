@@ -4,11 +4,9 @@ import { ContextList } from "../../utils/context";
 
 import * as Category from "./styles";
 
-interface IProps {
-  children: string;
-}
-
-export default ({ children }: IProps) => {
+export default () => {
   const { category } = useContext(ContextList);
-  return <Category.Tag categoryName={category.value}>{children}</Category.Tag>;
+  return (
+    <Category.Tag categoryName={category.value}>{category.value}</Category.Tag>
+  );
 };

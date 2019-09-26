@@ -1,16 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 
 import Category from "../../Category";
-import { ContextList } from "../../../utils/context";
 
 import * as CategoriesList from "./styles";
 
 export default () => {
-  const { category } = useContext(ContextList);
   return (
     <CategoriesList.List>
       <CategoriesList.Item>
-        <Category>{category.value}</Category>
+        <Category />
       </CategoriesList.Item>
     </CategoriesList.List>
   );
