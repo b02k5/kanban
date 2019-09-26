@@ -13,12 +13,17 @@ import { ContextBoard } from "../../utils/context";
 
 import * as Board from "./styles";
 
-export default (props: any) => {
+export default ({
+  match: { params }
+}: {
+  match: { params: { id: string } };
+}) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const getActiveBoard = useSelector<AppState, BoardType>(state => {
-    return state.boards[props.match.params.id];
+    return state.boards[params.id];
   });
+
   const lists = useSelector<AppState, IList[]>(state => getLists(state));
 
   const dispatch = useDispatch();
