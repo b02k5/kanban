@@ -16,12 +16,14 @@ interface IProps {
 
 export default (props: IProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const { task, index } = props;
-  const category = task.category;
+  const {
+    task: { id, date, name, description, category },
+    index
+  } = props;
 
   return (
     <ContextTask.Provider value={category}>
-      <Draggable draggableId={`${task.id}`} index={index}>
+      <Draggable draggableId={`${id}`} index={index}>
         {(provided, snapshot) => (
           <Task.Main
             draggable={true}
@@ -31,20 +33,20 @@ export default (props: IProps) => {
             ref={provided.innerRef}
             isDragging={snapshot.isDragging}
           >
-            <Task.Time>{task.date}</Task.Time>
+            <Task.Time>{date}</Task.Time>
             <Task.Name>
               <Truncate lines={2} ellipsis="..." width={200}>
-                {task.name}
+                {name}
               </Truncate>
             </Task.Name>
-            {task.description && (
+            {description && (
               <Task.Description>
                 <Truncate lines={3} ellipsis="..." width={200}>
-                  {task.description}
+                  {description}
                 </Truncate>
               </Task.Description>
             )}
-            {task.category && (
+            {category && (
               <Task.Footer>
                 <CategoriesList />
               </Task.Footer>
@@ -54,7 +56,7 @@ export default (props: IProps) => {
       </Draggable>
       {isModalOpen && (
         <TaskDetails
-          task={task}
+          task={{ id, date, name, description, category }}
           modalClick={() => setIsModalOpen(prevState => !prevState)}
         />
       )}
