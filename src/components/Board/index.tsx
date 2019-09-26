@@ -17,7 +17,7 @@ export default (props: any) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const getActiveBoard = useSelector<AppState, BoardType>(state => {
-    return state.boards[props.match.params.id]
+    return state.boards[props.match.params.id];
   });
   const lists = useSelector<AppState, IList[]>(state => getLists(state));
 
@@ -32,11 +32,11 @@ export default (props: any) => {
     setIsModalOpen(prevState => !prevState);
   };
 
-  const { backgroundImage, name, id } = getActiveBoard;
+  const { name, id } = getActiveBoard;
 
   return (
     <ContextBoard.Provider value={{ boardId: id }}>
-      <Board.Main backgroundImage={backgroundImage}>
+      <Board.Main>
         <>
           <Board.Header>
             <Board.Name>{name}</Board.Name>
