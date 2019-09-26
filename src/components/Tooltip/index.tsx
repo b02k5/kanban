@@ -1,9 +1,9 @@
-import React, { useEffect, useContext, useRef } from "react";
+import React, { useEffect, useContext, useRef, ReactNode } from "react";
 
 import { ContextList } from "../../utils/context";
 import * as Tooltip from "./styles";
 
-export default ({ children }: any): JSX.Element => {
+export default ({ children }: { children: ReactNode }): JSX.Element => {
   const { setIsTooltipOpen } = useContext(ContextList);
 
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -26,9 +26,7 @@ export default ({ children }: any): JSX.Element => {
   return (
     <Tooltip.Main ref={tooltipRef}>
       <Tooltip.Name>List Actions</Tooltip.Name>
-      <Tooltip.List>
-        {children}
-      </Tooltip.List>
+      <Tooltip.List>{children}</Tooltip.List>
     </Tooltip.Main>
   );
 };
