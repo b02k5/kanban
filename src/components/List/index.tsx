@@ -6,6 +6,7 @@ import { AppState } from "../../store";
 import { IList } from "../../store/types/lists";
 import { removeList, editListName } from "../../store/actions/lists";
 import { addTask, removeTasks } from "../../store/actions/tasks";
+import { toggleModal } from "../../store/actions/modal";
 import { getTasks } from "../../store/selectors/tasks";
 import { TaskType, TaskArguments } from "../../store/types/tasks";
 import { ContextList, ContextBoard } from "../../utils/context";
@@ -29,22 +30,22 @@ interface IInfoList {
 }
 
 export default (props: IProps) => {
-  // Create state
   const [isEditName, setIsEditName] = useState<boolean>(false);
   const [isTooltipOpen, setIsTooltipOpen] = useState<boolean>(false);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [infoList, setInfoList] = useState<IInfoList>({
     id: 0,
     name: props.list.name
   });
 
-  // Connect to redux
   const tasks = useSelector<AppState, TaskType[] | []>(state =>
     getTasks(state, props.list.id)
   );
+  const isModalOpen = useSelector<AppState, Boolean>(
+    state => state.modal.isModalOpen
+  );
+
   const dispatch = useDispatch();
 
-  // cDM && cDU
   useEffect(() => {
     if (isEditName) {
       document.addEventListener("click", clickOutsideHandle);
@@ -108,7 +109,7 @@ export default (props: IProps) => {
   };
 
   const openModalHandle = () => {
-    setIsModalOpen(prevState => !prevState);
+    dispatch(toggleModal());
   };
 
   const visibleNameHandle = () => {
