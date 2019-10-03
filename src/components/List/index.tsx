@@ -105,10 +105,6 @@ export default (props: IProps) => {
       category
     };
     dispatch(addTask(taskArguments));
-    openModalHandle();
-  };
-
-  const openModalHandle = () => {
     dispatch(toggleModal());
   };
 
@@ -138,7 +134,11 @@ export default (props: IProps) => {
 
   return (
     <ContextList.Provider
-      value={{ setIsTooltipOpen, tasks, openModalHandle, listId: list.id }}
+      value={{
+        setIsTooltipOpen,
+        tasks,
+        listId: list.id
+      }}
     >
       <Draggable draggableId={`${list.id}`} index={index}>
         {provided => (
@@ -203,7 +203,7 @@ export default (props: IProps) => {
               <AddModal
                 name={EAddNewComponent.Task}
                 action={addTaskHandle}
-                closeModal={openModalHandle}
+                closeModal={() => dispatch(toggleModal())}
               />
             )}
           </List.Main>

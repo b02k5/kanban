@@ -1,5 +1,7 @@
 import React, { useContext } from "react";
+import { useDispatch } from "react-redux";
 
+import { toggleModal } from "../../../store/actions/modal";
 import { ContextList } from "../../../utils/context";
 import Task from "../../Task";
 import { ButtonAdd, EAddNewComponent } from "../../Buttons";
@@ -7,7 +9,10 @@ import { ButtonAdd, EAddNewComponent } from "../../Buttons";
 import * as TaskList from "./styles";
 
 export default ({ provided, snapshot }: any) => {
-  const { tasks, openModalHandle } = useContext(ContextList);
+  const { tasks } = useContext(ContextList);
+
+  const dispatch = useDispatch();
+
   return (
     <TaskList.Wrapper>
       <TaskList.Overflow>
@@ -20,7 +25,10 @@ export default ({ provided, snapshot }: any) => {
           {provided.placeholder}
         </TaskList.List>
       </TaskList.Overflow>
-      <ButtonAdd actionName={EAddNewComponent.Task} onClick={openModalHandle}>
+      <ButtonAdd
+        actionName={EAddNewComponent.Task}
+        onClick={() => dispatch(toggleModal())}
+      >
         Add new task
       </ButtonAdd>
     </TaskList.Wrapper>

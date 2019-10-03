@@ -7,7 +7,6 @@ export const ContextList = createContext<{
   tasks: TaskType[];
   listId: number;
   setIsTooltipOpen: (value: boolean) => void;
-  openModalHandle?: any;
 }>({
   setIsTooltipOpen: value => value,
   tasks: [],
