@@ -24,7 +24,11 @@ store.subscribe(
       boards: store.getState().boards,
       lists: store.getState().lists,
       tasks: store.getState().tasks,
-      categories: store.getState().categories
+      categories: store.getState().categories,
+      modal: {
+        ...store.getState().modal,
+        isModalOpen: false
+      }
     });
   }, 1500)
 );
