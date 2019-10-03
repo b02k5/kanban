@@ -15,7 +15,7 @@ interface IProps {
 }
 
 export default (props: IProps) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalDetailOpen, setIsModalDetailOpen] = useState<boolean>(false);
   const {
     task: { id, date, name, description, category },
     index
@@ -27,7 +27,7 @@ export default (props: IProps) => {
         {(provided, snapshot) => (
           <Task.Main
             draggable={true}
-            onClick={() => setIsModalOpen(prevState => !prevState)}
+            onClick={() => setIsModalDetailOpen(prevState => !prevState)}
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
@@ -54,10 +54,10 @@ export default (props: IProps) => {
           </Task.Main>
         )}
       </Draggable>
-      {isModalOpen && (
+      {isModalDetailOpen && (
         <TaskDetails
           task={{ id, date, name, description, category }}
-          modalClick={() => setIsModalOpen(prevState => !prevState)}
+          modalClick={() => setIsModalDetailOpen(prevState => !prevState)}
         />
       )}
     </ContextTask.Provider>
