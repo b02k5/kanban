@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { AppState } from "../../store";
 import { BoardType } from "../../store/types/boards";
 import { addList } from "../../store/actions/lists";
+import { toggleModal } from "../../store/actions/modal";
 import { getLists } from "../../store/selectors/lists";
 import { IList } from "../../store/types/lists";
 import { ButtonAdd, EAddNewComponent } from "../Buttons";
@@ -18,12 +19,12 @@ export default ({
 }: {
   match: { params: { id: string } };
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
   const getActiveBoard = useSelector<AppState, BoardType>(state => {
     return state.boards[params.id];
   });
-
+  const isModalOpen = useSelector<AppState, Boolean>(
+    state => state.modal.isModalOpen
+  );
   const lists = useSelector<AppState, IList[]>(state => getLists(state));
 
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ export default ({
 
     dispatch(addList(board.id, listId, name));
 
-    setIsModalOpen(prevState => !prevState);
+    dispatch(toggleModal());
   };
 
   const { name, id } = getActiveBoard;
@@ -51,7 +52,7 @@ export default ({
             <Board.AddList>
               <ButtonAdd
                 actionName={EAddNewComponent.List}
-                onClick={() => setIsModalOpen(prevState => !prevState)}
+                onClick={() => dispatch(toggleModal())}
               >
                 Add new list
               </ButtonAdd>
@@ -59,7 +60,7 @@ export default ({
                 <AddModal
                   name={EAddNewComponent.List}
                   action={addListHandle}
-                  closeModal={() => setIsModalOpen(prevState => !prevState)}
+                  closeModal={() => dispatch(toggleModal())}
                 />
               )}
             </Board.AddList>
